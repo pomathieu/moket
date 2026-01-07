@@ -22,11 +22,12 @@ const sora = Sora({
 const jsonLd = {
   '@context': 'https://schema.org',
   '@type': 'LocalBusiness',
+  '@id': 'https://moket.fr/#localbusiness',
   name: 'MOKET',
   url: 'https://moket.fr',
   telephone: '+33635090095',
   areaServed: ['Paris', 'Île-de-France'],
-  description: 'Nettoyage textile profond à domicile : matelas, tapis, moquettes, canapés. Injecteur-extracteur professionnel.',
+  description: 'Nettoyage textile profond à domicile : matelas, tapis, moquettes, canapés.',
   image: 'https://moket.fr/og.jpg',
 };
 
@@ -39,7 +40,7 @@ export const metadata: Metadata = {
   description: 'Nettoyage textile profond à domicile : matelas, tapis, moquettes, canapés. Injecteur-extracteur professionnel. Intervention premium à Paris & Île-de-France.',
   applicationName: 'MOKET',
   alternates: {
-    canonical: '/',
+    canonical: 'https://moket.fr/',
   },
   openGraph: {
     type: 'website',
