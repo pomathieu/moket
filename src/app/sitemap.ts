@@ -14,6 +14,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
     '/services',
     '/pourquoi-moket',
     '/zones',
+    '/politique-confidentialite',
+    '/mentions-legales',
   ].map((p) => ({
     url: `${base}${p}`,
     lastModified: new Date(),
