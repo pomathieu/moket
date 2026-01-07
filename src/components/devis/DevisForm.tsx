@@ -223,6 +223,8 @@ export function DevisForm({ phone }: Props) {
       });
 
       if (res.ok) {
+        clearErrors();
+        setFileError(null);
         setFiles([]);
         reset({
           items: [{ service: 'canape', dimensions: '', details: '' }],
@@ -241,7 +243,7 @@ export function DevisForm({ phone }: Props) {
     }
   }
 
-  const showInlineErrors = submitCount > 0;
+  const showInlineErrors = submitCount > 0 && !sent?.ok;
 
   return (
     <form
