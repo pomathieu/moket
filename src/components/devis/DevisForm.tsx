@@ -256,7 +256,7 @@ export function DevisForm({ phone }: Props) {
       )}
 
       {/* PRESTATIONS (multiproduits) */}
-      <div className="rounded-2xl border border-border bg-card p-4 sm:p-5">
+      <div className="rounded-2xl border border-border bg-card p-2 sm:p-4">
         <div className="flex items-start justify-between gap-3">
           <div>
             <p className="font-semibold">Prestations</p>
@@ -282,7 +282,7 @@ export function DevisForm({ phone }: Props) {
             return (
               <div
                 key={field.id}
-                className="rounded-2xl border border-border bg-background p-4">
+                className="rounded-2xl border border-border bg-background p-2">
                 <div className="flex items-start justify-between gap-3">
                   <div className="grid gap-2 w-full">
                     <label className="text-sm font-medium">Type</label>
@@ -311,7 +311,7 @@ export function DevisForm({ phone }: Props) {
 
                 <div className="mt-4 grid gap-4">
                   <div className="grid gap-2">
-                    <label className="text-sm font-medium">
+                    <label className="text-base font-medium">
                       Dimensions / surface <span className="text-muted-foreground">(optionnel)</span>
                     </label>
                     <input
@@ -322,7 +322,7 @@ export function DevisForm({ phone }: Props) {
                   </div>
 
                   <div className="grid gap-2">
-                    <label className="text-sm font-medium">Détails</label>
+                    <label className="text-base font-medium">Détails</label>
                     <textarea
                       {...register(detName)}
                       placeholder="Ex : tache de café, odeur animal, auréole ancienne, textile fragile…"
