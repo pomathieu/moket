@@ -5,7 +5,8 @@ import { usePathname } from 'next/navigation';
 import { Menu, Phone, Sparkles, MapPin, Info, ChevronRight, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
-import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
+import { Sheet, SheetClose, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
+import React from 'react';
 
 const items = [
   { label: 'Devis', href: '/devis' },
@@ -27,14 +28,29 @@ const zones = [
   { label: 'Hauts-de-Seine', href: '/zones/hauts-de-seine' },
   { label: 'Val-de-Marne', href: '/zones/val-de-marne' },
   { label: 'Yvelines', href: '/zones/yvelines' },
+  { label: 'Seine-Maritime', href: '/zones/seine-maritime' },
+  { label: 'Calvados', href: '/zones/calvados' },
   { label: 'Toutes les zones', href: '/zones' },
 ];
 
 export default function MobileNav() {
   const pathname = usePathname();
 
+  // ✅ contrôle du Sheet
+  const [open, setOpen] = React.useState(false);
+
+  // ✅ ferme automatiquement dès que la route change
+  React.useEffect(() => {
+    setOpen(false);
+  }, [pathname]);
+
+  // ✅ ferme aussi sur click (utile si href = même page, ancres, etc.)
+  const close = React.useCallback(() => setOpen(false), []);
+
   return (
-    <Sheet>
+    <Sheet
+      open={open}
+      onOpenChange={setOpen}>
       <SheetTrigger asChild>
         <Button
           size="sm"
@@ -45,7 +61,6 @@ export default function MobileNav() {
         </Button>
       </SheetTrigger>
 
-      {/* Full width on mobile + scrollable content + sticky bottom CTA */}
       <SheetContent
         side="right"
         className={['w-screen sm:w-105 bg-[#F7F7F5] p-0 scrollbar-none', 'flex flex-col', 'max-h-dvh'].join(' ')}>
@@ -56,7 +71,8 @@ export default function MobileNav() {
             <div className="text-xs text-slate-600">Paris & Île-de-France</div>
           </SheetTitle>
 
-          <SheetTrigger asChild>
+          {/* ✅ bouton fermer : SheetClose (ou onClick={close}) */}
+          <SheetClose asChild>
             <Button
               size="sm"
               variant="outline"
@@ -64,7 +80,7 @@ export default function MobileNav() {
               aria-label="Fermer le menu">
               <X className="h-4 w-4" />
             </Button>
-          </SheetTrigger>
+          </SheetClose>
         </SheetHeader>
 
         <Separator className="bg-slate-200/70" />
@@ -82,21 +98,25 @@ export default function MobileNav() {
                 href="/devis"
                 label="Devis"
                 active={pathname === '/devis'}
+                onNavigate={close}
               />
               <QuickPill
                 href="/tarifs"
                 label="Tarifs"
                 active={pathname === '/tarifs'}
+                onNavigate={close}
               />
               <QuickPill
                 href="/notre-methode"
                 label="Méthode"
                 active={pathname === '/notre-methode'}
+                onNavigate={close}
               />
               <QuickPill
                 href="/pourquoi-moket"
                 label="Pourquoi"
                 active={pathname === '/pourquoi-moket'}
+                onNavigate={close}
               />
             </div>
 
@@ -114,6 +134,7 @@ export default function MobileNav() {
                   href={s.href}
                   label={s.label}
                   active={pathname === s.href}
+                  onNavigate={close}
                 />
               ))}
             </div>
@@ -132,6 +153,7 @@ export default function MobileNav() {
                   href={z.href}
                   label={z.label}
                   active={pathname === z.href}
+                  onNavigate={close}
                 />
               ))}
             </div>
@@ -150,11 +172,11 @@ export default function MobileNav() {
                   href={i.href}
                   label={i.label}
                   active={pathname === i.href}
+                  onNavigate={close}
                 />
               ))}
             </div>
 
-            {/* Spacer so content doesn't hide behind sticky bottom CTA */}
             <div className="h-24" />
           </div>
         </div>
@@ -166,7 +188,11 @@ export default function MobileNav() {
               asChild
               variant="accent"
               className="rounded-xl">
-              <Link href="/devis">Devis</Link>
+              <Link
+                href="/devis"
+                onClick={close}>
+                Devis
+              </Link>
             </Button>
             <Button
               asChild
@@ -191,10 +217,11 @@ function SectionTitle({ icon, label }: { icon: React.ReactNode; label: string })
   return <div className="inline-flex items-center gap-2 text-sm font-bold text-slate-700">{label}</div>;
 }
 
-function QuickPill({ href, label, active }: { href: string; label: string; active: boolean }) {
+function QuickPill({ href, label, active, onNavigate }: { href: string; label: string; active: boolean; onNavigate?: () => void }) {
   return (
     <Link
       href={href}
+      onClick={onNavigate}
       className={[
         'rounded-xl border px-3 py-2 text-sm shadow-sm transition',
         active ? 'bg-white border-slate-200/70 text-slate-900' : 'bg-white/70 border-slate-200/50 text-slate-700 hover:bg-white',
@@ -204,10 +231,11 @@ function QuickPill({ href, label, active }: { href: string; label: string; activ
   );
 }
 
-function NavRow({ href, label, active }: { href: string; label: string; active: boolean }) {
+function NavRow({ href, label, active, onNavigate }: { href: string; label: string; active: boolean; onNavigate?: () => void }) {
   return (
     <Link
       href={href}
+      onClick={onNavigate}
       className={['flex items-center justify-between rounded-xl px-3 py-2 text-sm transition', active ? 'bg-white border border-slate-200/70 text-slate-900' : 'text-slate-700 hover:bg-white/70'].join(
         ' '
       )}>

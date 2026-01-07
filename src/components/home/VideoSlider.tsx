@@ -3,14 +3,21 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import useEmblaCarousel from 'embla-carousel-react';
 import { Button } from '../ui/button';
-import { ArrowBigLeft, ArrowLeft, ArrowRight } from 'lucide-react';
+import { ArrowLeft, ArrowRight } from 'lucide-react';
 
 type VideoItem = {
   src: string;
   poster?: string;
 };
 
-export function VideoSlider({ videos, autoPlayActive = true }: { videos: VideoItem[]; autoPlayActive?: boolean }) {
+type Props = {
+  videos: VideoItem[];
+  autoPlayActive?: boolean;
+  /** Démarre l’autoplay après que le LCP soit probable (évite de perturber le rendu initial) */
+  startAfterLcpMs?: number;
+};
+
+export function VideoSlider({ videos, autoPlayActive = true, startAfterLcpMs = 1200 }: Props) {
   const [emblaRef, emblaApi] = useEmblaCarousel({
     loop: true,
     align: 'start',
@@ -18,6 +25,20 @@ export function VideoSlider({ videos, autoPlayActive = true }: { videos: VideoIt
   });
 
   const [selectedIndex, setSelectedIndex] = useState(0);
+
+  // Autoplay "gated" : false au tout début → true après LCP window
+  const [autoplayReady, setAutoplayReady] = useState(false);
+
+  useEffect(() => {
+    if (!autoPlayActive) return;
+
+    // On attend un peu + un frame, pour laisser le navigateur peindre le poster (LCP friendly)
+    const t = window.setTimeout(() => {
+      requestAnimationFrame(() => setAutoplayReady(true));
+    }, startAfterLcpMs);
+
+    return () => window.clearTimeout(t);
+  }, [autoPlayActive, startAfterLcpMs]);
 
   const onSelect = useCallback(() => {
     if (!emblaApi) return;
@@ -41,18 +62,17 @@ export function VideoSlider({ videos, autoPlayActive = true }: { videos: VideoIt
       if (!video) return;
 
       if (i === selectedIndex) {
-        if (autoPlayActive) {
-          // Certains navigateurs exigent muted + playsInline pour autoplay
+        if (autoPlayActive && autoplayReady) {
           video.muted = true;
           video.playsInline = true;
           void video.play().catch(() => {});
         }
       } else {
         video.pause();
-        video.currentTime = 0; // optionnel: remet au début
+        video.currentTime = 0;
       }
     });
-  }, [emblaApi, selectedIndex, autoPlayActive]);
+  }, [emblaApi, selectedIndex, autoPlayActive, autoplayReady]);
 
   const scrollPrev = useCallback(() => emblaApi?.scrollPrev(), [emblaApi]);
   const scrollNext = useCallback(() => emblaApi?.scrollNext(), [emblaApi]);
@@ -61,39 +81,43 @@ export function VideoSlider({ videos, autoPlayActive = true }: { videos: VideoIt
   const canScrollNext = emblaApi?.canScrollNext() ?? true;
 
   return (
-    <div className="relative rounded-2xl ">
+    <div className="relative rounded-2xl">
       <div
         ref={emblaRef}
         className="overflow-hidden rounded-2xl">
-        {/* Container */}
         <div className="flex touch-pan-y">
-          {videos.map((v, i) => (
-            <div
-              key={v.src}
-              className="min-w-0 flex-[0_0_100%] "
-              aria-hidden={i !== selectedIndex}>
-              <div className="aspect-video overflow-hidden rounded-xl ">
-                <video
-                  className="h-full w-full object-cover"
-                  autoPlay={autoPlayActive && i === selectedIndex}
-                  muted
-                  loop
-                  playsInline
-                  preload="metadata"
-                  poster={v.poster}
-                  controls={false}>
-                  <source
-                    src={v.src}
-                    type="video/mp4"
-                  />
-                </video>
+          {videos.map((v, i) => {
+            const isActive = i === selectedIndex;
+
+            return (
+              <div
+                key={v.src}
+                className="min-w-0 flex-[0_0_100%]"
+                aria-hidden={!isActive}>
+                <div className="aspect-video overflow-hidden rounded-xl">
+                  <video
+                    className="h-full w-full object-cover"
+                    // Important : l’attribut autoplay seul ne suffit pas; on gate via JS
+                    autoPlay={false}
+                    muted
+                    loop
+                    playsInline
+                    // Critique LCP : ne pas précharger la vidéo avant autoplayReady
+                    preload={autoPlayActive && autoplayReady && isActive ? 'metadata' : 'none'}
+                    poster={v.poster}
+                    controls={false}>
+                    <source
+                      src={v.src}
+                      type="video/mp4"
+                    />
+                  </video>
+                </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </div>
 
-      {/* Arrows */}
       <Button
         type="button"
         onClick={scrollPrev}
@@ -102,6 +126,7 @@ export function VideoSlider({ videos, autoPlayActive = true }: { videos: VideoIt
         aria-label="Previous video">
         <ArrowLeft className="text-black" />
       </Button>
+
       <Button
         type="button"
         onClick={scrollNext}
@@ -111,7 +136,6 @@ export function VideoSlider({ videos, autoPlayActive = true }: { videos: VideoIt
         <ArrowRight className="text-black" />
       </Button>
 
-      {/* Dots */}
       <div className="flex justify-center gap-2 pt-3 pb-3">
         {videos.map((_, i) => (
           <button

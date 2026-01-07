@@ -4,9 +4,14 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/
 import { Check, Shield, Droplets, Clock, Sparkles, BadgeCheck, Leaf, Footprints, SprayCan, Dot } from 'lucide-react';
 import { VideoSlider } from '@/components/home/VideoSlider';
 
+const videos = [
+  { src: '/videos/moket-hero.mp4', poster: '/images/posters/moket-hero.webp' },
+  { src: '/videos/moket-hero-2.mp4', poster: '/images/posters/moket-hero-2.webp' },
+];
+
 const FAQS = [
   {
-    q: 'En combien de temps ça sèche ?',
+    q: 'En combien de temps mon tissu sèche ?',
     a: 'La plupart du temps, le textile est sec en quelques heures. Ça varie selon la matière, l’aération et l’humidité ambiante. Grâce à l’extraction, on limite l’eau résiduelle, et on vous donne les bons gestes pour accélérer le séchage (aérer, chauffer légèrement, etc.).',
   },
   {
@@ -15,7 +20,7 @@ const FAQS = [
   },
   {
     q: 'Vous pouvez intervenir sur des tissus fragiles ?',
-    a: 'Oui, à condition d’adapter le protocole. On tient compte de la matière, de la couleur et de la tenue du textile. Si nécessaire, on fait un test discret avant de traiter la zone complète. Le but est simple : un résultat net, sans mauvaise surprise.',
+    a: 'Oui, à condition d’adapter le protocole. Chez MOKET nous tenons compte de la matière, de la couleur et de la tenue du textile. Si nécessaire, on fait un test discret avant de traiter la zone complète. Le but est simple : un résultat net, sans mauvaise surprise.',
   },
   {
     q: 'Vous traitez les odeurs (tabac, animaux, transpiration) ?',
@@ -27,43 +32,29 @@ const FAQS = [
   },
   {
     q: 'Vous vous déplacez où ?',
-    a: 'Paris et Île-de-France. Vous pouvez vérifier votre zone sur la page dédiée, ou nous appeler directement.',
+    a: 'Nous intervenons en Île-de-France et en Normandie. Vous pouvez vérifier votre zone sur la page dédiée, ou nous appeler directement.',
+  },
+  {
+    q: 'Comment obtenir un devis ?',
+    a: 'Le plus simple : vous envoyez 2–3 photos (vue d’ensemble + tache) et on vous répond rapidement avec un devis clair. On confirme sur place si besoin.',
+  },
+  {
+    q: 'Intervenez-vous le week-end ?',
+    a: 'Oui, selon disponibilités. Dites-nous votre zone (Île-de-France ou Normandie) et vos créneaux, on vous propose une date.',
   },
 ];
 
-const videos = [
-  { src: '/videos/moket-hero.mp4', poster: '' },
-  { src: '/videos/moket-hero-2.mp4', poster: '' },
-];
-
 export default function Home() {
-  const faqJsonLd = {
-    '@context': 'https://schema.org',
-    '@type': 'FAQPage',
-    mainEntity: FAQS.map((f) => ({
-      '@type': 'Question',
-      name: f.q,
-      acceptedAnswer: { '@type': 'Answer', text: f.a },
-    })),
-  };
-
   return (
     <main className="overflow-x-hidden ">
-      {/* FAQ schema for rich results */}
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
-      />
-
       {/* HERO */}
-      <section className="mx-auto max-w-7xl flex p-4  lg:px-8 pt-8 lg:pt-20 pb-24">
+      <section className="mx-auto max-w-7xl flex p-4  lg:px-8  lg:pt-20 pb-24">
         <div className="grid gap-10 lg:grid-cols-2 lg:space-x-8 lg:items-center">
           <div className="max-w-2xl">
-            <h1 className="text-4xl md:text-5xl font-extrabold -tracking-normal text-foreground">Nettoyage en profondeur de textile à domicile</h1>
-            <p className="mt-4 text-lg text-muted-foreground">
-              Matelas, canapés, tapis, moquettes — nettoyage par <strong>injecteur-extracteur professionnel</strong>. Intervention à domicile sur<strong>Paris & Île-de-France</strong>.
+            <h1 className="text-4xl md:text-5xl font-extrabold -tracking-normal text-foreground">Nettoyage de canapés, matelas et moquettes à domicile</h1>{' '}
+            <p className="mt-4 text text-muted-foreground">
+              Nettoyage par <strong>injecteur-extracteur professionnel</strong>. Intervention à domicile en <strong>Île-de-France</strong> et <strong>Normandie</strong>.
             </p>
-
             <div className="mt-8 flex flex-col mx-auto w-52 sm:w-full sm:flex-row sm:justify-center gap-3">
               <Button
                 asChild
@@ -77,29 +68,27 @@ export default function Home() {
                 size="lg"
                 variant="outline"
                 className="rounded-full w-48">
-                <a href="tel:+33635090095">Appeler</a>
+                <a href="tel:+33635090095">Appeler le 06 35 09 00 95</a>
               </Button>
             </div>
-
-            <ul className="mt-8 grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm text-slate-700">
+            <ul className="mt-8 grid grid-cols-1 sm:grid-cols-2 gap-1 lg:gap-3 text-sm text-slate-700">
               <li className="flex items-center gap-2">
                 <Dot className="h-8 w-8 " />
                 Résultat visible dès la fin de l’intervention
               </li>
               <li className="flex items-center gap-2">
                 <Dot className="h-8 w-8 " />
-                Produits selectionnés selon la nature du textile
+                Produits sélectionnés selon la nature du textile
               </li>
               <li className="flex items-center gap-2">
                 <Dot className="h-8 w-8 " />
-                Calfeutrage & protections des environnements
+                Protection des lieux & intervention propre{' '}
               </li>
               <li className="flex items-center gap-2">
                 <Dot className="h-8 w-8 " />
-                Intervention propre & respectueuse des matériaux
+                Devis clair & sans surprise
               </li>
             </ul>
-
             <div className="mt-8 rounded-2xl border border-border  p-5 text-sm text-slate-700">
               <p className="font-semibold text-slate-900">Ce que vous obtiendrez à la fin de l'intervention</p>
               <ul className="mt-3 space-y-2">
@@ -113,42 +102,45 @@ export default function Home() {
                 </li>
                 <li className="flex gap-2">
                   <Check className="h-4 w-4 text-primary mt-0.5" />
-                  Diminution drastique des accariens et allergènes pour un confort au quotidien
+                  Diminution nette des accariens et allergènes pour un confort au quotidien
                 </li>
               </ul>
             </div>
           </div>
 
           {/* HERO MEDIA */}
-          <VideoSlider videos={videos} />
+          <VideoSlider
+            videos={videos}
+            autoPlayActive
+            startAfterLcpMs={1200}
+          />
         </div>
       </section>
 
-      {/* PREMIUM STANDARD */}
+      {/* METHOD FEATURES */}
       <section className="bg-muted py-20 md:py-48 p-4 lg:px-8">
         <div className="mx-auto max-w-7xl ">
-          <h2 className="text-3xl font-bold">Service premium, matériel professionnel, produits de qualité</h2>
+          <h2 className="text-3xl font-bold">Une méthode professionnelle pour le nettoyage de vos textiles à domicile</h2>
           <p className="mt-3 text-muted-foreground max-w-3xl">
-            À domicile, la différence se joue sur les détails : propreté, méthode, respect des matériaux. Chez MOKET, on travaille avec un protocole clair, et on cherche un résultat concret
-            {''}
-            <strong>sans prendre de risques inutiles sur le textile</strong>.
+            À domicile, la différence se joue sur les détails : propreté, méthode et respect des matériaux. Chez MOKET, chaque prestation de <strong>nettoyage de textiles</strong> repose sur un
+            protocole clair, adapté aux <strong>canapés, matelas, tapis et moquettes</strong>, pour un résultat concret <strong>sans prendre de risques inutiles sur le textile</strong>.
           </p>
 
           <div className="mt-10 grid grid-cols-1 md:grid-cols-3 gap-6">
             <Feature
               icon={<Footprints className="h-5 w-5" />}
               title="Protection & propreté"
-              text="Nous rentrons chez vous avec des couvres-chaussures, nous protégeons les zones concernées, et nous nettoyons après intervention."
+              text="Nous rentrons chez vous avec des couvre-chaussures, nous protégeons les zones concernées, et nous nettoyons après intervention."
             />
             <Feature
               icon={<Shield className="h-5 w-5" />}
               title="Matériel de qualité professionnelle"
-              text="Nous utilisons des matériels réservés aux professionnels qui garantissent efficacité et performance."
+              text="Nous utilisons du matériel réservé aux professionnels qui garantit efficacité et performance."
             />
             <Feature
               icon={<SprayCan className="h-5 w-5" />}
               title="Produits de qualité et adaptés"
-              text="Nous appliquons des produits professionnels, selectionnés selon la nature du textile et le type de salissures à traiter."
+              text="Nous appliquons des produits professionnels, sélectionnés selon la nature du textile et le type de salissures à traiter."
             />
           </div>
 
@@ -156,7 +148,7 @@ export default function Home() {
             <Feature
               icon={<Droplets className="h-5 w-5" />}
               title="Injection-extraction professionnelle"
-              text="On nettoie au cœur des fibres puis on extrait immédiatement. C’est ce qui fait la différence par rapport à un simple nettoyage de surface."
+              text="Méthode d’injection-extraction professionnelle pour un nettoyage en profondeur des fibres, utilisée pour le nettoyage de canapés, matelas et moquettes."
             />
             <Feature
               icon={<Clock className="h-5 w-5" />}
@@ -170,13 +162,28 @@ export default function Home() {
             />
           </div>
 
-          <div className="mt-12 flex flex-col w-52 md:w-full md:justify-center mx-auto sm:flex-row  gap-3">
+          <div className="mt-12 flex flex-col w-fit   md:justify-center mx-auto sm:flex-col  gap-3">
             <Button
               asChild
               size="lg"
               variant="accent"
-              className="rounded-full">
-              <Link href="/notre-methode">Voir la méthode en détail</Link>
+              className="rounded-full hidden lg:block w-full">
+              <Link
+                className=""
+                href="/notre-methode">
+                Découvrir notre méthode de nettoyage professionnel
+              </Link>
+            </Button>
+            <Button
+              asChild
+              size="lg"
+              variant="accent"
+              className="rounded-full lg:hidden block w-full">
+              <Link
+                className=""
+                href="/notre-methode">
+                Découvrir notre méthode
+              </Link>
             </Button>
             <Button
               asChild
@@ -192,11 +199,17 @@ export default function Home() {
       {/* SERVICES */}
       <section className=" py-20 md:py-48 p-4 lg:px-8">
         <div className="mx-auto max-w-7xl px-4">
-          <h2 className="text-3xl font-bold">Nos services de nettoyage textile</h2>
+          <h2 className="text-3xl font-bold">Services de nettoyage canapé, matelas, tapis et moquette</h2>
           <p className="mt-3 text-muted-foreground max-w-3xl">
-            Votre enfant a renversé un tasse de chocolat sur le tapis ? Votre chien a fait ses besoins sur la moquette ? Votre jeans a délavé le canapé ? Nous avons la solution adaptée à chaque
-            situation.
+            Votre enfant a renversé <strong>une</strong> tasse de chocolat sur le tapis ? Votre chien a eu un accident sur la moquette ? Un <strong>jean a déteint</strong> sur le canapé ? Nous avons
+            une solution adaptée à chaque situation.
           </p>
+
+          <p className="mt-3 text-muted-foreground max-w-3xl">
+            Nous réalisons le <strong>nettoyage de canapé en tissu</strong>, le <strong>nettoyage de matelas</strong>, le <strong>nettoyage de tapis</strong> et le{' '}
+            <strong>nettoyage de moquette</strong>, à domicile, avec une méthode <strong>d’injection-extraction</strong>.
+          </p>
+
           <div className="grid gap-10 mt-10 lg:grid-cols-2 lg:items-center">
             <div className=" grid grid-cols-1 sm:grid-cols-2 gap-6">
               <ServiceCard
@@ -205,7 +218,7 @@ export default function Home() {
                 desc="Taches, odeurs, poussières — protocole adapté à la matière."
               />
               <ServiceCard
-                title="Canapé en tissu"
+                title="Nettoyage de canapé en tissu"
                 href="/services/canape-tissu"
                 desc="Traces d’usage, zones grasses, odeurs : nettoyage en profondeur."
               />
@@ -220,7 +233,11 @@ export default function Home() {
                 desc="Surfaces, pièces, bureaux — devis au m²."
               />
             </div>
-            <VideoSlider videos={videos} />
+            <VideoSlider
+              videos={videos}
+              autoPlayActive
+              startAfterLcpMs={0}
+            />
           </div>
 
           <div className="mt-8">
@@ -234,14 +251,14 @@ export default function Home() {
         </div>
       </section>
 
-      {/* METHOD + VIDEO */}
+      {/* METHOD */}
       <section className="bg-muted py-20 md:py-48 p-4 lg:px-8">
         <div className="mx-auto max-w-7xl px-4">
-          <div className="grid gap-10 lg:grid-cols-2 lg:items-center">
+          <div className="lg:grid gap-10 lg:grid-cols-2 lg:items-center">
             <div>
-              <h2 className="text-3xl font-bold">Notre méthode (simple et efficace)</h2>
+              <h2 className="text-3xl font-bold">Notre méthode d’injection-extraction (simple et efficace)</h2>
               <p className="mt-3 text-muted-foreground">
-                On ne se contente pas de “rafraîchir”. L’idée est de retirer ce qui est dans la fibre, puis d’extraire immédiatement. C’est ce qui fait la différence.
+                On ne se contente pas de “rafraîchir”. L’idée est de retirer ce qui est dans la fibre, puis d’extraire immédiatement (méthode d’injection-extraction).
               </p>
 
               <ol className="mt-8 space-y-4 text-sm">
@@ -251,7 +268,7 @@ export default function Home() {
                 />
                 <Step
                   title="2) Pré-traitement"
-                  text="On traite d’abord les zones problématiques. On effectue une action manuelle adaptée et soignée"
+                  text="On traite d’abord les zones problématiques. On effectue une action manuelle adaptée et soignée."
                 />
                 <Step
                   title="3) Injection-extraction"
@@ -263,7 +280,7 @@ export default function Home() {
                 />
               </ol>
 
-              <div className="mt-8 flex gap-3">
+              <div className="mt-8 flex-col flex mx-auto space-y-4 justify-center gap-3">
                 <Button
                   asChild
                   size="lg"
@@ -285,8 +302,8 @@ export default function Home() {
       </section>
 
       {/* TARIFS */}
-      <section className="py-20">
-        <div className="mx-auto max-w-7xl px-4">
+      <section className="py-20 md:py-24 p-4 lg:px-8">
+        <div className="mx-auto max-w-7xl px-4 ">
           <h2 className="text-3xl font-bold">Tarifs indicatifs</h2>
           <p className="mt-3 text-muted-foreground max-w-3xl">
             Le tarif dépend de la taille, de l’état et du textile. Le plus efficace : <strong>vous envoyez 2–3 photos</strong> et on vous répond avec un devis clair, sans surprise.
@@ -296,9 +313,9 @@ export default function Home() {
             <div className="rounded-2xl border border-border bg-card p-6">
               <p className="font-semibold text-slate-900">Exemples (à adapter)</p>
               <ul className="mt-3 space-y-2 text-sm text-slate-700">
-                <li>• Matelas : à partir de XX €</li>
-                <li>• Canapé en tissu : à partir de XX €</li>
-                <li>• Tapis : à partir de XX €</li>
+                <li>• Matelas : à partir de 70–90 €</li>
+                <li>• Canapé en tissu : à partir de 110–150 €</li>
+                <li>• Tapis : à partir de 25–40 €</li>
                 <li>• Moquette : sur devis (m² / état)</li>
               </ul>
               <p className="mt-3 text-xs text-muted-foreground">
@@ -345,10 +362,12 @@ export default function Home() {
       </section>
 
       {/* ZONES */}
-      <section className="bg-muted py-20">
-        <div className="mx-auto max-w-7xl px-4">
+      <section className="bg-muted  py-20 md:py-24 p-4 lg:px-8">
+        <div className="mx-auto max-w-7xl px-4 ">
           <h2 className="text-3xl font-bold">Zones d’intervention</h2>
-          <p className="mt-3 text-muted-foreground max-w-3xl">Intervention à domicile à Paris et en Île-de-France. Pour le SEO local, chaque zone a sa page dédiée.</p>
+          <p className="mt-3 text-muted-foreground max-w-3xl">
+            Intervention à domicile en <strong>Île-de-France</strong> et en <strong>Normandie</strong>. Consultez votre zone pour connaître les modalités et délais.
+          </p>
 
           <div className="mt-8 flex flex-wrap gap-3">
             <Button
@@ -374,6 +393,22 @@ export default function Home() {
             <Button
               asChild
               variant="outline">
+              <Link href="/zones/seine-saint-denis">Seine-Saint-Denis</Link>
+            </Button>
+            <Button
+              asChild
+              variant="outline">
+              <Link href="/zones/seine-maritime">Seine-Maritime</Link>
+            </Button>
+            <Button
+              asChild
+              variant="outline">
+              <Link href="/zones/calvados">Calvados</Link>
+            </Button>
+
+            <Button
+              asChild
+              variant="outline">
               <Link href="/zones">Toutes les zones</Link>
             </Button>
           </div>
@@ -381,7 +416,7 @@ export default function Home() {
       </section>
 
       {/* FAQ */}
-      <section className="py-24">
+      <section className=" py-20 md:py-24 p-4 lg:px-8">
         <div className="mx-auto max-w-7xl px-4">
           <div className="max-w-3xl">
             <h2 className="text-3xl font-bold">FAQ</h2>
@@ -418,7 +453,7 @@ export default function Home() {
               size="lg"
               variant="outline"
               className="rounded-full">
-              <a href="tel:+33635090095">Appeler</a>
+              <a href="tel:+33635090095">Appeler le 06 35 09 00 95</a>
             </Button>
           </div>
         </div>

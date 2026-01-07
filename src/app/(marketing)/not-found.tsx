@@ -1,4 +1,6 @@
 'use client';
+import { Button } from '@/components/ui/button';
+import Link from 'next/link';
 
 export default function NotFound() {
   return (
@@ -10,8 +12,16 @@ export default function NotFound() {
           <div className="flex flex-wrap items-center justify-center gap-3"></div>
 
           <div className="pt-6 text-sm text-slate-500">
-            <p>Vous pouvez aussi explorer :</p>
-            <div className="flex flex-wrap justify-center gap-3 mt-2"></div>
+            <Button
+              asChild
+              variant="accent"
+              className="rounded-full">
+              <Link
+                href="/"
+                className="text-primary font-medium hover:underline">
+                Retour à l’accueil
+              </Link>
+            </Button>
           </div>
         </div>
       </section>

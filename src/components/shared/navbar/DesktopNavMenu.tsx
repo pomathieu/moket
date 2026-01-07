@@ -1,7 +1,7 @@
+import * as React from 'react';
 import Link from 'next/link';
 import { NavigationMenu, NavigationMenuContent, NavigationMenuItem, NavigationMenuLink, NavigationMenuList, NavigationMenuTrigger } from '@/components/ui/navigation-menu';
 import { cn } from '@/lib/utils';
-import { MapPin, Sparkles, Info } from 'lucide-react';
 
 const services = [
   { title: 'Matelas', href: '/services/matelas', desc: 'Anti-odeurs, anti-acariens, taches.' },
@@ -16,6 +16,8 @@ const zones = [
   { title: 'Val-de-Marne', href: '/zones/val-de-marne' },
   { title: 'Yvelines', href: '/zones/yvelines' },
   { title: 'Toutes les zones', href: '/zones' },
+  { title: 'Seine-Maritime', href: '/zones/seine-maritime' },
+  { title: 'Calvados', href: '/zones/calvados' },
 ];
 
 export default function DesktopNavMenu() {
@@ -83,29 +85,27 @@ export default function DesktopNavMenu() {
 
         {/* Liens simples */}
         <NavigationMenuItem>
-          <Link
+          <NavigationMenuLink
             href="/tarifs"
-            passHref>
-            <NavigationMenuLink className={linkClassName}>Tarifs</NavigationMenuLink>
-          </Link>
+            className={linkClassName}>
+            Tarifs
+          </NavigationMenuLink>
         </NavigationMenuItem>
 
         <NavigationMenuItem>
-          <Link
+          <NavigationMenuLink
             href="/notre-methode"
-            passHref>
-            <NavigationMenuLink className={linkClassName}>Notre méthode</NavigationMenuLink>
-          </Link>
+            className={linkClassName}>
+            Notre méthode
+          </NavigationMenuLink>
         </NavigationMenuItem>
 
         <NavigationMenuItem>
-          <Link
+          <NavigationMenuLink
             href="/pourquoi-moket"
-            passHref>
-            <NavigationMenuLink className={linkClassName}>
-              <span className="inline-flex items-center gap-2">Pourquoi MOKET</span>
-            </NavigationMenuLink>
-          </Link>
+            className={linkClassName}>
+            <span className="inline-flex items-center gap-2">Pourquoi MOKET</span>
+          </NavigationMenuLink>
         </NavigationMenuItem>
       </NavigationMenuList>
     </NavigationMenu>

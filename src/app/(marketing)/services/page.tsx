@@ -1,4 +1,136 @@
-function page() {
-  return <div>page</div>;
+import Link from 'next/link';
+import type { Metadata } from 'next';
+import { SERVICES } from '@/lib/services';
+
+export const metadata: Metadata = {
+  title: 'Services de nettoyage textile à domicile | MOKET',
+  description: 'Découvrez les services MOKET : nettoyage de matelas, canapé en tissu, tapis et moquette à domicile. Méthode injection-extraction, devis rapide.',
+  alternates: { canonical: 'https://moket.fr/services' },
+  robots: { index: true, follow: true },
+  openGraph: {
+    title: 'Services de nettoyage textile à domicile | MOKET',
+    description: 'Nettoyage de matelas, canapé en tissu, tapis et moquette à domicile. Méthode injection-extraction, devis rapide.',
+    url: 'https://moket.fr/services',
+    type: 'website',
+    siteName: 'MOKET',
+    locale: 'fr_FR',
+  },
+};
+
+const HUB = {
+  useCases: ['Taches du quotidien (boissons, nourriture)', 'Odeurs (animaux, tabac, transpiration)', 'Auréoles / traces d’usage', 'Textiles ternis, encrassés (zones de passage)'],
+  limits: ['Décolorations et brûlures (ce n’est pas une tache)', 'Certaines taches très anciennes “fixées”', 'Fibres endommagées par usure (on améliore, sans “réparer”)'],
+  priceHint: 'Le tarif dépend du textile, des dimensions/surfaces et de l’état. Le plus efficace : envoyer 2–3 photos + dimensions approximatives pour un devis clair.',
+};
+
+const LOCAL_LINKS = [
+  { label: 'Paris', zone: 'paris' },
+  { label: 'Hauts-de-Seine', zone: 'hauts-de-seine' },
+  { label: 'Val-de-Marne', zone: 'val-de-marne' },
+];
+
+export default function ServicesPage() {
+  return (
+    <main className="mx-auto max-w-7xl px-4 py-12">
+      <h1 className="text-3xl font-bold">Services de nettoyage textile à domicile</h1>
+      <p className="mt-3 text-muted-foreground max-w-3xl">
+        Nettoyage textile à domicile par <strong>injection-extraction</strong>. On adapte le protocole selon la matière, la couleur et le type de salissures pour un résultat net.
+      </p>
+
+      {/* SEO hub (global, pas par service) */}
+      <section className="mt-10 grid gap-6 md:grid-cols-2">
+        <div className="rounded-2xl border bg-white p-6">
+          <h2 className="text-xl font-semibold">Cas fréquents</h2>
+          <ul className="mt-3 list-disc pl-5 text-muted-foreground">
+            {HUB.useCases.map((x) => (
+              <li key={x}>{x}</li>
+            ))}
+          </ul>
+        </div>
+
+        <div className="rounded-2xl border bg-white p-6">
+          <h2 className="text-xl font-semibold">Résultat réaliste</h2>
+          <ul className="mt-3 list-disc pl-5 text-muted-foreground">
+            {HUB.limits.map((x) => (
+              <li key={x}>{x}</li>
+            ))}
+          </ul>
+        </div>
+      </section>
+
+      <section className="mt-6 rounded-2xl border bg-white p-6">
+        <h2 className="text-xl font-semibold">Tarif indicatif</h2>
+        <p className="mt-2 text-muted-foreground">{HUB.priceHint}</p>
+      </section>
+
+      {/* Services grid */}
+      <section className="mt-10">
+        <h2 className="text-2xl font-bold">Choisir un service</h2>
+
+        <div className="mt-6 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+          {SERVICES.map((s) => (
+            <article
+              key={s.slug}
+              className="rounded-2xl border bg-white p-6 transition hover:shadow-sm">
+              <h3 className="text-lg font-semibold">{s.title}</h3>
+              <p className="mt-2 text-sm text-muted-foreground">{s.short}</p>
+
+              <div className="mt-4">
+                <Link
+                  href={`/services/${s.slug}`}
+                  className="text-sm text-slate-700 underline underline-offset-4">
+                  Voir le service
+                </Link>
+              </div>
+
+              {/* ✅ Maillage vers pages locales (crawl + SEO local) */}
+              <div className="mt-4">
+                <p className="text-xs font-semibold text-slate-700">Exemples par zone</p>
+                <div className="mt-2 flex flex-wrap gap-2">
+                  {LOCAL_LINKS.map((z) => (
+                    <Link
+                      key={`${z.zone}-${s.slug}`}
+                      href={`/zones/${z.zone}/${s.slug}`}
+                      className="rounded-full border bg-white px-3 py-1 text-xs text-slate-700 hover:bg-muted">
+                      {z.label}
+                    </Link>
+                  ))}
+                </div>
+              </div>
+            </article>
+          ))}
+        </div>
+      </section>
+
+      {/* CTA */}
+      <section className="mt-12 rounded-2xl border bg-white p-6 flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+        <div>
+          <h2 className="text-xl font-semibold">Obtenir un devis</h2>
+          <p className="mt-1 text-muted-foreground">Envoie 2–3 photos (vue d’ensemble + zone) : réponse rapide.</p>
+        </div>
+        <div className="flex gap-3">
+          <Link
+            href="/devis"
+            className="rounded-xl bg-primary px-5 py-2 text-sm text-white">
+            Demander un devis
+          </Link>
+          <a
+            href="tel:+33635090095"
+            className="rounded-xl border px-5 py-2 text-sm">
+            Appeler
+          </a>
+        </div>
+      </section>
+
+      {/* Micro-FAQ hub */}
+      <section className="mt-12 max-w-3xl">
+        <h2 className="text-xl font-semibold">Questions fréquentes</h2>
+        <div className="mt-4 space-y-3 text-muted-foreground">
+          <p>• On annonce un résultat réaliste (décolorations/brûlures ≠ taches).</p>
+          <p>• Extraction puissante pour limiter l’eau résiduelle.</p>
+          <p>• Protocole adapté au textile (test discret si besoin).</p>
+        </div>
+      </section>
+    </main>
+  );
 }
-export default page;
