@@ -128,7 +128,7 @@ export default function NotreMethodePage() {
       </Script>
 
       {/* HERO */}
-      <section className="mx-auto max-w-7xl p-4 lg:px-8 lg:pt-20 pb-16 md:pb-24">
+      <section className="mx-auto max-w-7xl p-4 lg:px-8 lg:pt-12 pb-16 md:pb-24">
         <div className="grid gap-10 lg:grid-cols-2 lg:space-x-8 lg:items-center">
           <div className="max-w-2xl">
             <h1 className="mt-3 text-4xl md:text-5xl font-extrabold -tracking-normal text-foreground">Notre méthode de nettoyage (simple et efficace)</h1>

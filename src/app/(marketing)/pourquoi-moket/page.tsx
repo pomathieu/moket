@@ -89,7 +89,7 @@ export default function PourquoiMoketPage() {
       </Script>
 
       {/* HERO */}
-      <section className="mx-auto max-w-7xl p-4 lg:px-8 lg:pt-20 pb-16 md:pb-24">
+      <section className="mx-auto max-w-7xl p-4 lg:px-8 lg:pt-12 pb-16 md:pb-24">
         <div className="max-w-5xl">
           <h1 className="mt-3 text-4xl md:text-5xl font-extrabold -tracking-normal text-foreground">Pourquoi choisir MOKET ?</h1>
 
