@@ -42,6 +42,14 @@ const FAQS = [
     q: 'Intervenez-vous le week-end ?',
     a: 'Oui, selon disponibilités. Dites-nous votre zone (Île-de-France ou Normandie) et vos créneaux, on vous propose une date.',
   },
+  {
+    q: 'Est-ce que ça aide pour les allergies / acariens ?',
+    a: 'Le nettoyage par injection-extraction retire une partie des poussières et salissures incrustées. Cela peut améliorer le confort au quotidien et aider à réduire une partie des allergènes/acariens selon l’état du textile.',
+  },
+  {
+    q: 'Proposez-vous une “désinfection” ?',
+    a: 'On réalise un nettoyage en profondeur et un assainissement du textile. Pour une désinfection au sens strict, cela dépend du protocole et des produits utilisés : on vous indique clairement ce qui est fait et ce qui ne peut pas être garanti.',
+  },
 ];
 
 export default function Home() {
@@ -53,7 +61,8 @@ export default function Home() {
           <div className="max-w-2xl">
             <h1 className="text-4xl md:text-5xl font-extrabold -tracking-normal text-foreground">Nettoyage de canapés, matelas et moquettes à domicile</h1>{' '}
             <p className="mt-4 text text-muted-foreground">
-              Nettoyage par <strong>injecteur-extracteur professionnel</strong>. Intervention à domicile en <strong>Île-de-France</strong> et <strong>Normandie</strong>.
+              Nettoyage par <strong>injecteur-extracteur professionnel</strong>. Intervention à domicile en <strong>Île-de-France</strong> et <strong>Normandie</strong>. Idéal pour les odeurs, les
+              acariens et les allergènes sur canapé, matelas, tapis, moquette
             </p>
             <div className="mt-8 flex flex-col mx-auto w-52 sm:w-full sm:flex-row sm:justify-center gap-3">
               <Button
@@ -102,7 +111,7 @@ export default function Home() {
                 </li>
                 <li className="flex gap-2">
                   <Check className="h-4 w-4 text-primary mt-0.5" />
-                  Diminution nette des accariens et allergènes pour un confort au quotidien
+                  Aide à réduire acariens, poussières et allergènes, selon l’état du textile (meilleur confort au quotidien)
                 </li>
               </ul>
             </div>
@@ -157,8 +166,8 @@ export default function Home() {
             />
             <Feature
               icon={<Leaf className="h-5 w-5" />}
-              title="Hygiène & qualité"
-              text="On vise un résultat net : salissures retirées, rendu homogène, et un textile plus sain au quotidien."
+              title="Hygiène & assainissement"
+              text="On retire la saleté incrustée (pas juste en surface) : poussières et odeurs sont mieux traitées, pour un textile plus sain au quotidien."
             />
           </div>
 
@@ -306,20 +315,20 @@ export default function Home() {
         <div className="mx-auto max-w-7xl px-4 ">
           <h2 className="text-3xl font-bold">Tarifs indicatifs</h2>
           <p className="mt-3 text-muted-foreground max-w-3xl">
-            Le tarif dépend de la taille, de l’état et du textile. Le plus efficace : <strong>vous envoyez 2–3 photos</strong> et on vous répond avec un devis clair, sans surprise.
+            Les tarifs ci-dessous sont fixes. Pour un chiffrage précis, envoyez simplement 2–3 photos : nous vous répondrons rapidement avec un devis clair.
           </p>
 
           <div className="mt-8 grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="rounded-2xl border border-border bg-card p-6">
-              <p className="font-semibold text-slate-900">Exemples (à adapter)</p>
+              <p className="font-semibold text-slate-900">Tarifs fixes</p>
               <ul className="mt-3 space-y-2 text-sm text-slate-700">
-                <li>• Matelas : à partir de 70–90 €</li>
-                <li>• Canapé en tissu : à partir de 110–150 €</li>
-                <li>• Tapis : à partir de 25–40 €</li>
-                <li>• Moquette : sur devis (m² / état)</li>
+                <li>• Matelas : 90 € (1 place) / 120 € (2 places)</li>
+                <li>• Canapé en tissu : 120 € (2–3 places) / 160 € (4–5 places)</li>
+                <li>• Tapis : 30 € /m²</li>
+                <li>• Moquette : 9 € /m²</li>
               </ul>
               <p className="mt-3 text-xs text-muted-foreground">
-                On préfère annoncer un résultat réaliste : une décoloration ou une brûlure ne “partira” pas. En revanche, l’encrassement et les taches courantes, oui, très souvent.
+                Les brûlures et décolorations ne disparaissent pas complètement. En revanche, l’encrassement et les taches courantes sont généralement éliminés.
               </p>
             </div>
 

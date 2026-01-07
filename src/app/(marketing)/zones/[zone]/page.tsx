@@ -117,7 +117,7 @@ export default async function ZonePage({ params }: PageProps) {
   const faq = buildFaq(zoneData.title);
 
   return (
-    <main className="mx-auto max-w-7xl px-4 py-12">
+    <main className="mx-auto max-w-7xl px-4 py-2 lg:py-12">
       <Script
         id="jsonld-zone"
         type="application/ld+json">

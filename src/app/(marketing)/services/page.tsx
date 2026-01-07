@@ -31,7 +31,7 @@ const LOCAL_LINKS = [
 
 export default function ServicesPage() {
   return (
-    <main className="mx-auto max-w-7xl px-4 py-12">
+    <main className="mx-auto max-w-7xl px-4 py-2 lg:py-12">
       <h1 className="text-3xl font-bold">Services de nettoyage textile à domicile</h1>
       <p className="mt-3 text-muted-foreground max-w-3xl">
         Nettoyage textile à domicile par <strong>injection-extraction</strong>. On adapte le protocole selon la matière, la couleur et le type de salissures pour un résultat net.
@@ -123,12 +123,23 @@ export default function ServicesPage() {
       </section>
 
       {/* Micro-FAQ hub */}
-      <section className="mt-12 max-w-3xl">
+      <section className="mt-12 pb-12 max-w-3xl">
         <h2 className="text-xl font-semibold">Questions fréquentes</h2>
-        <div className="mt-4 space-y-3 text-muted-foreground">
-          <p>• On annonce un résultat réaliste (décolorations/brûlures ≠ taches).</p>
-          <p>• Extraction puissante pour limiter l’eau résiduelle.</p>
-          <p>• Protocole adapté au textile (test discret si besoin).</p>
+        <div className="mt-6 space-y-6">
+          <div>
+            <h3 className="font-semibold">Quels textiles nettoyez-vous à domicile ?</h3>
+            <p className="mt-2 text-muted-foreground">
+              Nous nettoyons les matelas, canapés en tissu, tapis et moquettes avec une méthode d’injection-extraction. Pour les autres textiles (canapés en cuir, fauteuils, rideaux, etc.),
+              contactez-nous pour un devis personnalisé.
+            </p>
+          </div>
+
+          <div>
+            <h3 className="font-semibold">Comment prendre soin de mes textiles après le nettoyage ?</h3>
+            <p className="mt-2 text-muted-foreground">
+              Évitez l’exposition directe au soleil et l’humidité excessive. Aérez régulièrement la pièce et utilisez des housses de protection pour prolonger la propreté de vos textiles.
+            </p>
+          </div>
         </div>
       </section>
     </main>

@@ -163,7 +163,7 @@ export default async function ZoneServicePage({ params }: PageProps) {
   if (!zone || !service) notFound();
 
   return (
-    <main className="mx-auto max-w-7xl px-4 py-12">
+    <main className="mx-auto max-w-7xl px-4 py-2 lg:py-12">
       <Script
         id="jsonld-zone-service"
         type="application/ld+json">

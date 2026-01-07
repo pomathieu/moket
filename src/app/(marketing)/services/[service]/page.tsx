@@ -118,7 +118,7 @@ export default async function ServicePage({ params }: PageProps) {
   const seoBody = service.seoBody ?? { intro2: undefined, useCases: [], limits: [], priceHint: '' };
 
   return (
-    <main className="mx-auto max-w-7xl px-4 py-12">
+    <main className="mx-auto max-w-7xl px-4 py-2 lg:py-12">
       <Script
         id="jsonld-service"
         type="application/ld+json">

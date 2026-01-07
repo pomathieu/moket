@@ -67,11 +67,9 @@ export default function MobileNav() {
         {/* Header */}
         <SheetHeader className="px-5 pt-5 pb-4">
           <SheetTitle className="text-left">
-            <div className="text-sm font-extrabold tracking-tight text-primary">MOKET</div>
-            <div className="text-xs text-slate-600">Paris & Île-de-France</div>
+            <div className="text-3xl pl-2 font-black tracking-tight text-primary">MOKET</div>
           </SheetTitle>
 
-          {/* ✅ bouton fermer : SheetClose (ou onClick={close}) */}
           <SheetClose asChild>
             <Button
               size="sm"
@@ -206,7 +204,7 @@ export default function MobileNav() {
               </a>
             </Button>
           </div>
-          <p className="mt-2 text-[11px] text-slate-600">Réponse rapide. Intervention à domicile — Paris & IDF.</p>
+          <p className="mt-2 text-[11px] text-center text-slate-600">Réponse rapide. Intervention à domicile — Paris, Île-de-France, Normandie.</p>
         </div>
       </SheetContent>
     </Sheet>

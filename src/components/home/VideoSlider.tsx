@@ -142,7 +142,7 @@ export function VideoSlider({ videos, autoPlayActive = true, startAfterLcpMs = 1
             key={i}
             type="button"
             onClick={() => emblaApi?.scrollTo(i)}
-            className={['h-2.5 w-2.5 rounded-full border border-border transition', i === selectedIndex ? 'bg-foreground' : 'bg-transparent'].join(' ')}
+            className={['h-2.5 w-2.5 rounded-full  transition', i === selectedIndex ? 'bg-foreground' : 'border border-border bg-transparent'].join(' ')}
             aria-label={`Go to video ${i + 1}`}
             aria-current={i === selectedIndex}
           />

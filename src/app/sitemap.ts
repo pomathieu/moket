@@ -12,6 +12,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     '/tarifs',
     '/notre-methode',
     '/services',
+    '/pourquoi-moket',
     '/zones',
   ].map((p) => ({
     url: `${base}${p}`,
@@ -27,15 +28,21 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.6,
   }));
 
+  const servicesRoutes = SERVICES.map((s) => ({
+    url: `${base}/services/${s.slug}`,
+    lastModified: new Date(),
+    changeFrequency: 'monthly' as const,
+    priority: 0.6,
+  }));
 
   const zoneServiceRoutes = ZONES.flatMap((z) =>
   SERVICES.map((s) => ({
-    url: `https://moket.fr/zones/${z.slug}/${s.slug}`,
+    url: `${base}/zones/${z.slug}/${s.slug}`,
     lastModified: new Date(),
     changeFrequency: 'monthly' as const,
     priority: 0.55,
   }))
   );
   
-  return [...staticRoutes, ...zoneRoutes, ...zoneServiceRoutes];
+  return [...staticRoutes, ...zoneRoutes, ...servicesRoutes, ...zoneServiceRoutes];
 }

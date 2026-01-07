@@ -1,6 +1,8 @@
 import Link from 'next/link';
 import { Separator } from '@/components/ui/separator';
 import { Mail, Phone } from 'lucide-react';
+import { ZONES } from '@/lib/zones';
+import { SERVICES } from '@/lib/services';
 
 export default function Footer() {
   const year = new Date().getFullYear();
@@ -22,41 +24,15 @@ export default function Footer() {
             className="space-y-3 text-center lg:text-left">
             <h4 className="font-medium text-slate-900">Services</h4>
             <ul className="space-y-2 text-sm text-slate-700">
-              <li>
-                <Link
-                  href="/services"
-                  className="hover:underline">
-                  Tous les services
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/services/matelas"
-                  className="hover:underline">
-                  Matelas
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/services/canape-tissu"
-                  className="hover:underline">
-                  Canapé en tissu
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/services/tapis"
-                  className="hover:underline">
-                  Tapis
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/services/moquette"
-                  className="hover:underline">
-                  Moquette
-                </Link>
-              </li>
+              {SERVICES.map((service) => (
+                <li key={service.slug}>
+                  <Link
+                    href={`/services/${service.slug}`}
+                    className="hover:underline">
+                    {service.title}
+                  </Link>
+                </li>
+              ))}
             </ul>
           </nav>
 
@@ -66,41 +42,15 @@ export default function Footer() {
             className="space-y-3 text-center lg:text-left">
             <h4 className="font-medium text-slate-900">Zones</h4>
             <ul className="space-y-2 text-sm text-slate-700">
-              <li>
-                <Link
-                  href="/zones"
-                  className="hover:underline">
-                  Toutes les zones
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/zones/paris"
-                  className="hover:underline">
-                  Paris
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/zones/hauts-de-seine"
-                  className="hover:underline">
-                  Hauts-de-Seine
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/zones/val-de-marne"
-                  className="hover:underline">
-                  Val-de-Marne
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/zones/yvelines"
-                  className="hover:underline">
-                  Yvelines
-                </Link>
-              </li>
+              {ZONES.map((zone) => (
+                <li key={zone.slug}>
+                  <Link
+                    href={`/zones/${zone.slug}`}
+                    className="hover:underline">
+                    {zone.title}
+                  </Link>
+                </li>
+              ))}
             </ul>
           </nav>
 

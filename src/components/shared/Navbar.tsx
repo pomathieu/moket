@@ -15,7 +15,7 @@ export default function Navbar() {
             href="/"
             className="flex items-center gap-3 hover:opacity-90">
             <div className="leading-tight">
-              <div className="text-2xl pl-2 font-black tracking-tight text-primary">MOKET</div>
+              <div className="text-3xl pl-2 font-black tracking-tight text-primary">MOKET</div>
             </div>
           </Link>
 
