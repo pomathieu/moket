@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 
 const SITE_NAME = 'MOKET';
-const SITE_URL = 'https://www.moket.fr';
+const SITE_URL = 'https://moket.fr';
 
 // Société qui porte l’activité (éditeur)
 const LEGAL_ENTITY = {

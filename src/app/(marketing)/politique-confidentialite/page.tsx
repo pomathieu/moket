@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 
 const SITE_NAME = 'MOKET';
-const SITE_URL = 'https://www.moket.fr';
+const SITE_URL = 'https://moket.fr';
 
 const LEGAL_ENTITY = {
   name: 'The Trade Copilot',

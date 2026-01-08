@@ -60,7 +60,7 @@ export async function POST(req: Request) {
   try {
     const RESEND_FROM = process.env.RESEND_FROM;
     const RESEND_TO_OWNER = process.env.RESEND_TO_OWNER;
-    const SITE_URL = process.env.SITE_URL ?? "https://www.moket.fr";
+    const SITE_URL = process.env.SITE_URL ?? "https://moket.fr";
 
     if (!process.env.RESEND_API_KEY || !RESEND_FROM || !RESEND_TO_OWNER) {
       return NextResponse.json(
