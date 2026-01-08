@@ -6,7 +6,7 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/
 import { Camera, Check, Clock, MapPin, MessageSquare, Phone, Shield } from 'lucide-react';
 import { DevisForm } from '@/components/devis/DevisForm';
 
-const SITE_URL = 'https://www.moket.fr';
+const SITE_URL = 'https://moket.fr';
 const BRAND = 'MOKET';
 const PHONE = '+33635090095';
 const PHONE_DISPLAY = '06 35 09 00 95';
@@ -48,23 +48,79 @@ const FAQS = [
 ];
 
 export default function DevisPage() {
-  const jsonLdFaq = {
+  const pageUrl = `${SITE_URL}/devis`;
+
+  const jsonLd = {
     '@context': 'https://schema.org',
-    '@type': 'FAQPage',
-    mainEntity: FAQS.map((f) => ({
-      '@type': 'Question',
-      name: f.q,
-      acceptedAnswer: { '@type': 'Answer', text: f.a },
-    })),
+    '@graph': [
+      {
+        '@type': 'WebPage',
+        '@id': `${pageUrl}#webpage`,
+        url: pageUrl,
+        name: 'Demander un devis',
+        description: 'Demandez un devis rapide : envoyez 2–3 photos (vue d’ensemble + tache), choisissez votre service et votre zone. Intervention à domicile en Île-de-France et Normandie.',
+        inLanguage: 'fr-FR',
+        isPartOf: { '@id': `${SITE_URL}/#website` },
+        about: { '@id': `${SITE_URL}/#localbusiness` },
+        breadcrumb: { '@id': `${pageUrl}#breadcrumb` },
+        mainEntity: { '@id': `${pageUrl}#faq` },
+        potentialAction: [
+          {
+            '@type': 'CommunicateAction',
+            name: 'Appeler pour un devis',
+            target: `tel:${PHONE}`,
+          },
+          {
+            '@type': 'CommunicateAction',
+            name: 'Envoyer un message WhatsApp pour un devis',
+            target: WHATSAPP_LINK,
+          },
+          {
+            '@type': 'Action',
+            name: 'Demander un devis via le formulaire',
+            target: `${pageUrl}#form`,
+          },
+        ],
+      },
+
+      {
+        '@type': 'ContactPage',
+        '@id': `${pageUrl}#contactpage`,
+        url: pageUrl,
+        name: 'Demander un devis',
+        isPartOf: { '@id': `${pageUrl}#webpage` },
+        about: { '@id': `${SITE_URL}/#localbusiness` },
+      },
+
+      {
+        '@type': 'BreadcrumbList',
+        '@id': `${pageUrl}#breadcrumb`,
+        itemListElement: [
+          { '@type': 'ListItem', position: 1, name: 'Accueil', item: `${SITE_URL}/` },
+          { '@type': 'ListItem', position: 2, name: 'Devis', item: pageUrl },
+        ],
+      },
+
+      {
+        '@type': 'FAQPage',
+        '@id': `${pageUrl}#faq`,
+        isPartOf: { '@id': `${pageUrl}#webpage` },
+        mainEntity: FAQS.map((f) => ({
+          '@type': 'Question',
+          name: f.q,
+          acceptedAnswer: { '@type': 'Answer', text: f.a },
+        })),
+      },
+    ],
   };
 
   return (
-    <main className="mx-auto max-w-7xl px-4 py-12">
+    <main className="mx-auto max-w-7xl p-4 lg:px-8 lg:pt-12 pb-16 md:pb-24">
       <Script
-        id="ld-faq-devis"
-        type="application/ld+json">
-        {JSON.stringify(jsonLdFaq)}
-      </Script>
+        id="jsonld-devis"
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
 
       {/* HERO */}
       <section className="md:grid gap-6 md:gap-8">

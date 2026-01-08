@@ -1,6 +1,8 @@
+// frontend/src/app/%28marketing%29/services/page.tsx
 import Link from 'next/link';
 import type { Metadata } from 'next';
 import { SERVICES } from '@/lib/services';
+import Script from 'next/script';
 
 export const metadata: Metadata = {
   title: 'Services de nettoyage textile à domicile | MOKET',
@@ -29,10 +31,55 @@ const LOCAL_LINKS = [
   { label: 'Val-de-Marne', zone: 'val-de-marne' },
 ];
 
+const base = 'https://moket.fr';
+const pageUrl = `${base}/services`;
+
+const servicesJsonLd = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'WebPage',
+      '@id': `${pageUrl}#webpage`,
+      url: pageUrl,
+      name: 'Services de nettoyage textile à domicile',
+      isPartOf: { '@id': `${base}/#website` },
+      inLanguage: 'fr-FR',
+      breadcrumb: { '@id': `${pageUrl}#breadcrumb` },
+    },
+    {
+      '@type': 'BreadcrumbList',
+      '@id': `${pageUrl}#breadcrumb`,
+      itemListElement: [
+        { '@type': 'ListItem', position: 1, name: 'Accueil', item: `${base}/` },
+        { '@type': 'ListItem', position: 2, name: 'Services', item: pageUrl },
+      ],
+    },
+    // ✅ Liste des services
+    {
+      '@type': 'ItemList',
+      '@id': `${pageUrl}#services`,
+      name: 'Liste des services',
+      itemListElement: SERVICES.map((s, idx) => ({
+        '@type': 'ListItem',
+        position: idx + 1,
+        name: s.title,
+        url: `${base}/services/${s.slug}`,
+      })),
+    },
+  ],
+};
+
 export default function ServicesPage() {
   return (
-    <main className="mx-auto max-w-7xl px-4 py-2 lg:py-12">
-      <h1 className="text-3xl font-bold">Services de nettoyage textile à domicile</h1>
+    <main className="mx-auto max-w-7xl p-4 lg:px-8 lg:pt-12 pb-16 md:pb-24">
+      <Script
+        id="jsonld-services"
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(servicesJsonLd) }}
+      />
+
+      <h1 className="text-3xl lg:text-5xl font-extrabold">Services de nettoyage textile à domicile</h1>
+
       <p className="mt-3 text-muted-foreground max-w-3xl">
         Nettoyage textile à domicile par <strong>injection-extraction</strong>. On adapte le protocole selon la matière, la couleur et le type de salissures pour un résultat net.
       </p>

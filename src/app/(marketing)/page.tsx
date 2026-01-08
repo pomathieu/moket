@@ -53,26 +53,76 @@ const FAQS = [
   },
 ];
 
+function QuickAnswers() {
+  return (
+    <div className="mt-6 rounded-2xl border border-border bg-card p-5 text-sm">
+      <p className="font-semibold">Réponses rapides</p>
+      <ul className="mt-2 space-y-1 text-muted-foreground">
+        <li>
+          <strong>Tarifs :</strong> Matelas dès 90€, canapé tissu dès 120€, tapis 30€/m², moquette 9€/m².
+        </li>
+        <li>
+          <strong>Durée :</strong> généralement 45–90 min (selon taille/état).
+        </li>
+        <li>
+          <strong>Séchage :</strong> souvent quelques heures (aération + chauffage léger).
+        </li>
+        <li>
+          <strong>Zones :</strong> Île-de-France et Normandie.
+        </li>
+        <li>
+          <strong>Méthode :</strong> injection-extraction + pré-traitement ciblé.
+        </li>
+      </ul>
+    </div>
+  );
+}
+
 export default function Home() {
-  const faqJsonLd = {
+  const base = 'https://moket.fr';
+  const pageUrl = `${base}/`;
+
+  const homeJsonLd = {
     '@context': 'https://schema.org',
-    '@type': 'FAQPage',
-    mainEntity: FAQS.map((f) => ({
-      '@type': 'Question',
-      name: f.q,
-      acceptedAnswer: { '@type': 'Answer', text: f.a },
-    })),
+    '@graph': [
+      {
+        '@type': 'WebPage',
+        '@id': `${pageUrl}#webpage`,
+        url: pageUrl,
+        name: 'MOKET - Nettoyage textile à domicile',
+        isPartOf: { '@id': `${base}/#website` },
+        inLanguage: 'fr-FR',
+        breadcrumb: { '@id': `${pageUrl}#breadcrumb` },
+        mainEntity: { '@id': `${pageUrl}#faq` },
+      },
+      {
+        '@type': 'BreadcrumbList',
+        '@id': `${pageUrl}#breadcrumb`,
+        itemListElement: [{ '@type': 'ListItem', position: 1, name: 'Accueil', item: pageUrl }],
+      },
+      {
+        '@type': 'FAQPage',
+        '@id': `${pageUrl}#faq`,
+        isPartOf: { '@id': `${pageUrl}#webpage` },
+        mainEntity: FAQS.map((f) => ({
+          '@type': 'Question',
+          name: f.q,
+          acceptedAnswer: { '@type': 'Answer', text: f.a },
+        })),
+      },
+    ],
   };
+
   return (
     <>
       <main className="overflow-x-hidden ">
         <Script
-          id="ld-faq-home"
+          id="jsonld-home"
           type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(homeJsonLd) }}
         />
         {/* HERO */}
-        <section className="mx-auto max-w-7xl flex p-4  lg:px-8  lg:pt-20 pb-24">
+        <section className="mx-auto max-w-7xl p-4 lg:px-8 lg:pt-12 pb-16 md:pb-24">
           <div className="grid gap-10 lg:grid-cols-2 lg:space-x-8 lg:items-center">
             <div className="max-w-2xl">
               <h1 className="text-4xl md:text-5xl font-extrabold -tracking-normal text-foreground">Nettoyage de canapés, matelas et moquettes à domicile</h1>{' '}
@@ -80,6 +130,7 @@ export default function Home() {
                 Nettoyage par <strong>injecteur-extracteur professionnel</strong>. Intervention à domicile en <strong>Île-de-France</strong> et <strong>Normandie</strong>. Idéal pour les odeurs, les
                 acariens et les allergènes sur canapé, matelas, tapis, moquette
               </p>
+              <QuickAnswers />
               <div className="mt-8 flex flex-col mx-auto w-52 sm:w-full sm:flex-row sm:justify-center gap-3">
                 <Button
                   asChild
@@ -114,23 +165,6 @@ export default function Home() {
                   Devis clair & sans surprise
                 </li>
               </ul>
-              <div className="mt-8 rounded-2xl border border-border  p-5 text-sm text-slate-700">
-                <p className="font-semibold text-slate-900">Ce que vous obtiendrez à la fin de l'intervention</p>
-                <ul className="mt-3 space-y-2">
-                  <li className="flex gap-2">
-                    <Check className="h-4 w-4 text-primary mt-0.5" />
-                    Des tissus ravivés de leur couleur et débarrassés des taches courantes
-                  </li>
-                  <li className="flex gap-2">
-                    <Check className="h-4 w-4 text-primary mt-0.5" />
-                    Une neutralisation des odeurs et une protection contre les salissures futures
-                  </li>
-                  <li className="flex gap-2">
-                    <Check className="h-4 w-4 text-primary mt-0.5" />
-                    Aide à réduire acariens, poussières et allergènes, selon l’état du textile (meilleur confort au quotidien)
-                  </li>
-                </ul>
-              </div>
             </div>
 
             {/* HERO MEDIA */}
@@ -139,6 +173,24 @@ export default function Home() {
               autoPlayActive
               startAfterLcpMs={1200}
             />
+          </div>
+
+          <div className="mt-8 rounded-2xl max-w-2xl mx-auto border border-border  p-5 text-sm text-slate-700">
+            <p className="font-semibold text-slate-900">Ce que vous obtiendrez à la fin de l'intervention</p>
+            <ul className="mt-3 space-y-2">
+              <li className="flex gap-2">
+                <Check className="h-4 w-4 text-primary mt-0.5" />
+                Des tissus ravivés de leur couleur et débarrassés des taches courantes
+              </li>
+              <li className="flex gap-2">
+                <Check className="h-4 w-4 text-primary mt-0.5" />
+                Une neutralisation des odeurs et une protection contre les salissures futures
+              </li>
+              <li className="flex gap-2">
+                <Check className="h-4 w-4 text-primary mt-0.5" />
+                Aide à réduire acariens, poussières et allergènes, selon l’état du textile (meilleur confort au quotidien)
+              </li>
+            </ul>
           </div>
         </section>
 

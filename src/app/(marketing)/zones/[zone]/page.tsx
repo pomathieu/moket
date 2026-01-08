@@ -1,3 +1,4 @@
+// frontend/src/app/%28marketing%29/zones/%5Bzone%5D/page.tsx
 import Link from 'next/link';
 import Script from 'next/script';
 import { notFound } from 'next/navigation';
@@ -66,39 +67,45 @@ function buildFaq(zoneTitle: string) {
 }
 
 function buildJsonLd(zoneTitle: string, zoneSlug: string) {
-  const faq = buildFaq(zoneTitle);
   const base = 'https://moket.fr';
+  const pageUrl = `${base}/zones/${zoneSlug}`;
+  const faq = buildFaq(zoneTitle);
 
   return {
     '@context': 'https://schema.org',
     '@graph': [
       {
+        '@type': 'WebPage',
+        '@id': `${pageUrl}#webpage`,
+        url: pageUrl,
+        name: `Zone d’intervention : ${zoneTitle}`,
+        isPartOf: { '@id': `${base}/#website` },
+        breadcrumb: { '@id': `${pageUrl}#breadcrumb` },
+        mainEntity: { '@id': `${pageUrl}#service` },
+      },
+      {
         '@type': 'BreadcrumbList',
+        '@id': `${pageUrl}#breadcrumb`,
         itemListElement: [
-          { '@type': 'ListItem', position: 1, name: 'Zones', item: `${base}/zones` },
-          { '@type': 'ListItem', position: 2, name: zoneTitle, item: `${base}/zones/${zoneSlug}` },
+          { '@type': 'ListItem', position: 1, name: 'Accueil', item: `${base}/` },
+          { '@type': 'ListItem', position: 2, name: 'Zones', item: `${base}/zones` },
+          { '@type': 'ListItem', position: 3, name: zoneTitle, item: pageUrl },
         ],
       },
       {
-        '@type': 'LocalBusiness',
-        name: 'MOKET',
-        url: base,
-        telephone: '+33635090095',
-        areaServed: zoneTitle,
-        priceRange: '€€',
-        address: { '@type': 'PostalAddress', addressCountry: 'FR', addressLocality: 'Paris' },
-        openingHours: ['Mo-Sa 09:00-19:00'],
-        // sameAs: ['https://www.instagram.com/...', 'https://www.google.com/maps?...'],
-      },
-      {
         '@type': 'Service',
+        '@id': `${pageUrl}#service`,
         name: `Nettoyage textile à domicile à ${zoneTitle}`,
-        provider: { '@type': 'LocalBusiness', name: 'MOKET', url: base },
-        areaServed: zoneTitle,
+        provider: { '@id': `${base}/#localbusiness` },
+        areaServed: { '@type': 'AdministrativeArea', name: zoneTitle },
         serviceType: ['Nettoyage matelas', 'Nettoyage canapé tissu', 'Nettoyage tapis', 'Nettoyage moquette'],
+        url: pageUrl,
+        mainEntityOfPage: { '@id': `${pageUrl}#webpage` },
       },
       {
         '@type': 'FAQPage',
+        '@id': `${pageUrl}#faq`,
+        isPartOf: { '@id': `${pageUrl}#webpage` },
         mainEntity: faq.map((f) => ({
           '@type': 'Question',
           name: f.q,
@@ -117,12 +124,12 @@ export default async function ZonePage({ params }: PageProps) {
   const faq = buildFaq(zoneData.title);
 
   return (
-    <main className="mx-auto max-w-7xl px-4 py-2 lg:py-12">
+    <main className="mx-auto max-w-7xl p-4 lg:px-8 lg:pt-12 pb-16 md:pb-24">
       <Script
         id="jsonld-zone"
-        type="application/ld+json">
-        {JSON.stringify(buildJsonLd(zoneData.title, zoneData.slug))}
-      </Script>
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(buildJsonLd(zoneData.title, zoneData.slug)) }}
+      />
 
       <nav className="text-sm text-muted-foreground">
         <Link
@@ -133,7 +140,7 @@ export default async function ZonePage({ params }: PageProps) {
         <span aria-hidden="true">/</span> <span>{zoneData.title}</span>
       </nav>
 
-      <h1 className="mt-4 text-3xl font-bold">{zoneData.seo.h1}</h1>
+      <h1 className="mt-4 text-3xl lg:text-5xl font-extrabold">{zoneData.seo.h1}</h1>
       <p className="mt-3 text-muted-foreground max-w-3xl">{zoneData.seo.description}</p>
 
       {/* Blocs SEO utiles */}

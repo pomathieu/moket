@@ -1,3 +1,4 @@
+// frontend/src/app/%28marketing%29/services/%5Bservice%5D/page.tsx
 import Link from 'next/link';
 import Script from 'next/script';
 import { notFound } from 'next/navigation';
@@ -49,9 +50,57 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   };
 }
 
-function buildJsonLd(serviceTitle: string, serviceSlug: string, faq: { q: string; a: string }[]) {
+function buildJsonLd(service: { title: string; slug: string; seo: { title: string; description: string }; faq: { q: string; a: string }[] }) {
   const base = 'https://moket.fr';
-  const pageUrl = `${base}/services/${serviceSlug}`;
+  const pageUrl = `${base}/services/${service.slug}`;
+
+  // Mapping prix "dès" (à adapter à tes slugs exacts)
+  const offerBySlug: Record<string, any | null> = {
+    matelas: {
+      '@type': 'Offer',
+      name: 'Nettoyage de matelas à domicile',
+      priceCurrency: 'EUR',
+      price: 90,
+      url: pageUrl,
+      seller: { '@id': `${base}/#localbusiness` },
+    },
+    'canape-tissu': {
+      '@type': 'Offer',
+      name: 'Nettoyage de canapé en tissu à domicile',
+      priceCurrency: 'EUR',
+      price: 120,
+      url: pageUrl,
+      seller: { '@id': `${base}/#localbusiness` },
+    },
+    tapis: {
+      '@type': 'Offer',
+      name: 'Nettoyage de tapis à domicile',
+      priceCurrency: 'EUR',
+      priceSpecification: {
+        '@type': 'UnitPriceSpecification',
+        price: 30,
+        priceCurrency: 'EUR',
+        unitText: 'm²',
+      },
+      url: pageUrl,
+      seller: { '@id': `${base}/#localbusiness` },
+    },
+    moquette: {
+      '@type': 'Offer',
+      name: 'Nettoyage de moquette à domicile',
+      priceCurrency: 'EUR',
+      priceSpecification: {
+        '@type': 'UnitPriceSpecification',
+        price: 9,
+        priceCurrency: 'EUR',
+        unitText: 'm²',
+      },
+      url: pageUrl,
+      seller: { '@id': `${base}/#localbusiness` },
+    },
+  };
+
+  const offer = offerBySlug[service.slug] ?? null;
 
   return {
     '@context': 'https://schema.org',
@@ -61,49 +110,55 @@ function buildJsonLd(serviceTitle: string, serviceSlug: string, faq: { q: string
         '@id': `${base}/#website`,
         url: base,
         name: 'MOKET',
+        inLanguage: 'fr-FR',
       },
       {
         '@type': 'WebPage',
         '@id': `${pageUrl}#webpage`,
         url: pageUrl,
-        name: serviceTitle,
+        name: service.seo.title,
+        description: service.seo.description,
         isPartOf: { '@id': `${base}/#website` },
+        inLanguage: 'fr-FR',
+        breadcrumb: { '@id': `${pageUrl}#breadcrumb` },
+        mainEntity: { '@id': `${pageUrl}#service` },
       },
       {
         '@type': 'BreadcrumbList',
+        '@id': `${pageUrl}#breadcrumb`,
         itemListElement: [
-          { '@type': 'ListItem', position: 1, name: 'Services', item: `${base}/services` },
-          { '@type': 'ListItem', position: 2, name: serviceTitle, item: pageUrl },
+          { '@type': 'ListItem', position: 1, name: 'Accueil', item: `${base}/` },
+          { '@type': 'ListItem', position: 2, name: 'Services', item: `${base}/services` },
+          { '@type': 'ListItem', position: 3, name: service.title, item: pageUrl },
         ],
       },
-      {
-        '@type': 'LocalBusiness',
-        '@id': `${base}/#localbusiness`,
-        name: 'MOKET',
-        url: base,
-        telephone: '+33635090095',
-        priceRange: '€€',
-        address: { '@type': 'PostalAddress', addressCountry: 'FR', addressLocality: 'Paris' },
-        openingHours: ['Mo-Sa 09:00-19:00'],
-      },
+
+      // ✅ On NE redéclare PAS LocalBusiness ici. On référence juste l'@id du RootLayout.
       {
         '@type': 'Service',
-        name: serviceTitle,
-        mainEntityOfPage: { '@id': `${pageUrl}#webpage` },
-
-        provider: { '@id': `${base}/#localbusiness` },
-        serviceType: serviceTitle,
+        '@id': `${pageUrl}#service`,
+        name: service.title,
+        serviceType: service.title,
+        description: service.seo.description,
         url: pageUrl,
+        mainEntityOfPage: { '@id': `${pageUrl}#webpage` },
+        provider: { '@id': `${base}/#localbusiness` },
+        areaServed: [
+          { '@type': 'AdministrativeArea', name: 'Île-de-France' },
+          { '@type': 'AdministrativeArea', name: 'Normandie' },
+        ],
+        ...(offer ? { offers: offer } : {}),
       },
+
       {
         '@type': 'FAQPage',
         '@id': `${pageUrl}#faq`,
-        mainEntity: faq.map((f) => ({
+        isPartOf: { '@id': `${pageUrl}#webpage` },
+        mainEntity: service.faq.map((f) => ({
           '@type': 'Question',
           name: f.q,
           acceptedAnswer: { '@type': 'Answer', text: f.a },
         })),
-        isPartOf: { '@id': `${pageUrl}#webpage` },
       },
     ],
   };
@@ -118,12 +173,12 @@ export default async function ServicePage({ params }: PageProps) {
   const seoBody = service.seoBody ?? { intro2: undefined, useCases: [], limits: [], priceHint: '' };
 
   return (
-    <main className="mx-auto max-w-7xl px-4 py-2 lg:py-12">
+    <main className="mx-auto max-w-7xl p-4 lg:px-8 lg:pt-12 pb-16 md:pb-24">
       <Script
         id="jsonld-service"
-        type="application/ld+json">
-        {JSON.stringify(buildJsonLd(service.title, service.slug, service.faq))}
-      </Script>
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(buildJsonLd(service)) }}
+      />
 
       <nav className="text-sm text-muted-foreground">
         <Link
@@ -134,7 +189,7 @@ export default async function ServicePage({ params }: PageProps) {
         <span aria-hidden="true">/</span> <span>{service.title}</span>
       </nav>
 
-      <h1 className="mt-4 text-3xl font-bold">{service.seo.h1}</h1>
+      <h1 className="mt-4 text-3xl lg:text-5xl font-extrabold">{service.seo.h1}</h1>
       <p className="mt-3 text-muted-foreground max-w-3xl">{service.seo.description}</p>
 
       {seoBody.intro2 ? <p className="mt-2 text-muted-foreground max-w-3xl">{seoBody.intro2}</p> : null}

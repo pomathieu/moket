@@ -3,10 +3,10 @@ import Script from 'next/script';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
-import { BadgeCheck, Check, Clock, Droplets, FileImage, Leaf, Shield, Sparkles, SprayCan, Footprints } from 'lucide-react';
+import { BadgeCheck, Check, Clock, Droplets, FileImage, Leaf, Shield, SprayCan, Footprints } from 'lucide-react';
 import { VideoSlider } from '@/components/home/VideoSlider';
 
-const SITE_URL = 'https://www.moket.fr'; // TODO
+const SITE_URL = 'https://moket.fr';
 const BRAND = 'MOKET';
 const PHONE = '+33635090095';
 const PHONE_DISPLAY = '06 35 09 00 95';
@@ -36,7 +36,7 @@ const STEPS = [
   },
   {
     title: '2) Pré-traitement ciblé',
-    text: 'On traite d’abord les zones problématiques (taches,_Row gasses, auréoles). Action manuelle adaptée, sans agresser la fibre.',
+    text: 'On traite d’abord les zones problématiques (taches, zones grasses, auréoles). Action manuelle adaptée, sans agresser la fibre.',
     icon: <SprayCan className="h-5 w-5" />,
   },
   {
@@ -94,38 +94,67 @@ const FAQS = [
 ];
 
 export default function NotreMethodePage() {
-  const jsonLdFaq = {
-    '@context': 'https://schema.org',
-    '@type': 'FAQPage',
-    mainEntity: FAQS.map((f) => ({
-      '@type': 'Question',
-      name: f.q,
-      acceptedAnswer: { '@type': 'Answer', text: f.a },
-    })),
-  };
+  const pageUrl = `${SITE_URL}/notre-methode`;
 
-  const jsonLdService = {
+  const jsonLd = {
     '@context': 'https://schema.org',
-    '@type': 'Service',
-    name: 'Nettoyage de textiles à domicile (injection-extraction)',
-    provider: { '@type': 'Organization', name: BRAND, url: SITE_URL },
-    areaServed: ['Île-de-France', 'Normandie'],
-    serviceType: ['Nettoyage canapé tissu', 'Nettoyage matelas', 'Nettoyage tapis', 'Nettoyage moquette'],
-    url: `${SITE_URL}/notre-methode`,
+    '@graph': [
+      {
+        '@type': 'WebPage',
+        '@id': `${pageUrl}#webpage`,
+        url: pageUrl,
+        name: 'Notre méthode d’injection-extraction',
+        description:
+          'Découvrez la méthode MOKET : diagnostic, pré-traitement, injection-extraction, finition. Canapés, matelas, tapis, moquettes. Intervention à domicile en Île-de-France et Normandie.',
+        inLanguage: 'fr-FR',
+        isPartOf: { '@id': `${SITE_URL}/#website` },
+        breadcrumb: { '@id': `${pageUrl}#breadcrumb` },
+        mainEntity: { '@id': `${pageUrl}#faq` }, // AEO : page -> FAQ
+        about: { '@id': `${SITE_URL}/#localbusiness` },
+      },
+      {
+        '@type': 'BreadcrumbList',
+        '@id': `${pageUrl}#breadcrumb`,
+        itemListElement: [
+          { '@type': 'ListItem', position: 1, name: 'Accueil', item: `${SITE_URL}/` },
+          { '@type': 'ListItem', position: 2, name: 'Notre méthode', item: pageUrl },
+        ],
+      },
+      {
+        '@type': 'Service',
+        '@id': `${pageUrl}#service`,
+        name: 'Nettoyage de textiles à domicile (injection-extraction)',
+        serviceType: 'Nettoyage textile à domicile',
+        url: pageUrl,
+        provider: { '@id': `${SITE_URL}/#localbusiness` }, // référence unique (RootLayout)
+        areaServed: [
+          { '@type': 'AdministrativeArea', name: 'Île-de-France' },
+          { '@type': 'AdministrativeArea', name: 'Normandie' },
+        ],
+        // utile pour le matching sémantique
+        category: ['Nettoyage canapé tissu', 'Nettoyage matelas', 'Nettoyage tapis', 'Nettoyage moquette'],
+        mainEntityOfPage: { '@id': `${pageUrl}#webpage` },
+      },
+      {
+        '@type': 'FAQPage',
+        '@id': `${pageUrl}#faq`,
+        isPartOf: { '@id': `${pageUrl}#webpage` },
+        mainEntity: FAQS.map((f) => ({
+          '@type': 'Question',
+          name: f.q,
+          acceptedAnswer: { '@type': 'Answer', text: f.a },
+        })),
+      },
+    ],
   };
 
   return (
     <main className="overflow-x-hidden">
       <Script
-        id="ld-faq-notre-methode"
-        type="application/ld+json">
-        {JSON.stringify(jsonLdFaq)}
-      </Script>
-      <Script
-        id="ld-service-notre-methode"
-        type="application/ld+json">
-        {JSON.stringify(jsonLdService)}
-      </Script>
+        id="jsonld-notre-methode"
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
 
       {/* HERO */}
       <section className="mx-auto max-w-7xl p-4 lg:px-8 lg:pt-12 pb-16 md:pb-24">

@@ -3,11 +3,11 @@ import Script from 'next/script';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
-import { Check, Clock, CreditCard, Dot, MapPin, Phone, Shield, Sparkles } from 'lucide-react';
+import { Check, Clock, CreditCard, Dot, Phone, Shield, Sparkles } from 'lucide-react';
 import { ZONES } from '@/lib/zones';
-import { SERVICES } from '@/lib/services';
+// import { SERVICES } from '@/lib/services'; // (non utilisé ici)
 
-const SITE_URL = 'https://www.moket.fr';
+const SITE_URL = 'https://moket.fr';
 const BRAND = 'MOKET';
 const PHONE = '+33635090095';
 const PHONE_DISPLAY = '06 35 09 00 95';
@@ -86,62 +86,108 @@ export const metadata: Metadata = {
 };
 
 export default function TarifsPage() {
-  const jsonLdLocalBusiness = {
+  const pageUrl = `${SITE_URL}/tarifs`;
+
+  // Helpers prix -> chiffres (utile pour Offer.price quand possible)
+  const toNumber = (s: string) => {
+    const n = Number(
+      String(s)
+        .replace(/[^\d,]/g, '')
+        .replace(',', '.')
+    );
+    return Number.isFinite(n) ? n : undefined;
+  };
+
+  const jsonLd = {
     '@context': 'https://schema.org',
-    '@type': 'LocalBusiness',
-    name: BRAND,
-    url: SITE_URL,
-    telephone: PHONE,
-    areaServed: ['Île-de-France', 'Normandie'],
-    makesOffer: PRICES.map((p) => ({
-      '@type': 'Offer',
-      itemOffered: {
-        '@type': 'Service',
-        name: p.title,
-        url: `${SITE_URL}${p.href}`,
+    '@graph': [
+      {
+        '@type': 'WebPage',
+        '@id': `${pageUrl}#webpage`,
+        url: pageUrl,
+        name: 'Tarifs',
+        description:
+          'Tarifs clairs et prestations de nettoyage textile à domicile (canapé tissu, matelas, tapis, moquette) par injection-extraction. Intervention en Île-de-France et Normandie. Devis rapide sur photos.',
+        inLanguage: 'fr-FR',
+        isPartOf: { '@id': `${SITE_URL}/#website` },
+        about: { '@id': `${SITE_URL}/#localbusiness` },
+        breadcrumb: { '@id': `${pageUrl}#breadcrumb` },
+        mainEntity: [{ '@id': `${pageUrl}#offercatalog` }, { '@id': `${pageUrl}#faq` }],
+        potentialAction: [
+          { '@type': 'Action', name: 'Demander un devis', target: `${SITE_URL}/devis` },
+          { '@type': 'CommunicateAction', name: 'Appeler', target: `tel:${PHONE}` },
+        ],
       },
-    })),
-  };
 
-  const jsonLdServices = {
-    '@context': 'https://schema.org',
-    '@graph': PRICES.map((p) => ({
-      '@type': 'Service',
-      name: p.title,
-      provider: { '@type': 'LocalBusiness', name: BRAND },
-      areaServed: ['Île-de-France', 'Normandie'],
-      url: `${SITE_URL}${p.href}`,
-    })),
-  };
+      {
+        '@type': 'BreadcrumbList',
+        '@id': `${pageUrl}#breadcrumb`,
+        itemListElement: [
+          { '@type': 'ListItem', position: 1, name: 'Accueil', item: `${SITE_URL}/` },
+          { '@type': 'ListItem', position: 2, name: 'Tarifs', item: pageUrl },
+        ],
+      },
 
-  const jsonLdFaq = {
-    '@context': 'https://schema.org',
-    '@type': 'FAQPage',
-    mainEntity: FAQS.map((f) => ({
-      '@type': 'Question',
-      name: f.q,
-      acceptedAnswer: { '@type': 'Answer', text: f.a },
-    })),
+      // Catalogue d'offres (propre + exploitable par Google)
+      {
+        '@type': 'OfferCatalog',
+        '@id': `${pageUrl}#offercatalog`,
+        name: 'Tarifs MOKET',
+        url: pageUrl,
+        itemListElement: PRICES.map((p, idx) => ({
+          '@type': 'Offer',
+          position: idx + 1,
+          url: `${SITE_URL}${p.href}`,
+          priceCurrency: 'EUR',
+          // Si plusieurs variantes (2 places / 4 places / prix au m²), on met une plage indicative
+          // et on détaille les variantes dans additionalProperty.
+          price: p.items.length === 1 ? toNumber(p.items[0].price) : undefined,
+          priceSpecification:
+            p.items.length > 1
+              ? {
+                  '@type': 'PriceSpecification',
+                  priceCurrency: 'EUR',
+                  minPrice: Math.min(...p.items.map((it) => toNumber(it.price)).filter((x): x is number => typeof x === 'number')),
+                  maxPrice: Math.max(...p.items.map((it) => toNumber(it.price)).filter((x): x is number => typeof x === 'number')),
+                }
+              : undefined,
+          itemOffered: {
+            '@type': 'Service',
+            name: p.title,
+            description: p.desc,
+            provider: { '@id': `${SITE_URL}/#localbusiness` },
+            areaServed: ['Île-de-France', 'Normandie'],
+            url: `${SITE_URL}${p.href}`,
+            additionalProperty: p.items.map((it) => ({
+              '@type': 'PropertyValue',
+              name: it.label,
+              value: it.price,
+            })),
+          },
+        })),
+      },
+
+      {
+        '@type': 'FAQPage',
+        '@id': `${pageUrl}#faq`,
+        isPartOf: { '@id': `${pageUrl}#webpage` },
+        mainEntity: FAQS.map((f) => ({
+          '@type': 'Question',
+          name: f.q,
+          acceptedAnswer: { '@type': 'Answer', text: f.a },
+        })),
+      },
+    ],
   };
 
   return (
-    <main className="mx-auto max-w-7xl px-4 py-2 lg:py-12">
-      {/* JSON-LD */}
+    <main className="mx-auto max-w-7xl p-4 lg:px-8 lg:pt-12 pb-16 md:pb-24">
+      {/* JSON-LD unique */}
       <Script
-        id="ld-localbusiness"
-        type="application/ld+json">
-        {JSON.stringify(jsonLdLocalBusiness)}
-      </Script>
-      <Script
-        id="ld-services"
-        type="application/ld+json">
-        {JSON.stringify(jsonLdServices)}
-      </Script>
-      <Script
-        id="ld-faq"
-        type="application/ld+json">
-        {JSON.stringify(jsonLdFaq)}
-      </Script>
+        id="jsonld-tarifs"
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
 
       {/* HERO */}
       <section className="grid gap-6 md:gap-8">
@@ -255,7 +301,7 @@ export default function TarifsPage() {
         <div className="grid gap-6 lg:grid-cols-2 lg:items-start">
           <div className="rounded-2xl border border-border bg-card p-6">
             <h2 className="text-2xl font-bold">Ce qui est inclus</h2>
-            <p className="mt-2 text-muted-foreground text-sm">Une prestation profressionnelle c'est à dire = savoir faire + méthode + protection + finition.</p>
+            <p className="mt-2 text-muted-foreground text-sm">Une prestation professionnelle : savoir-faire + méthode + protection + finition.</p>
 
             <ul className="mt-6 space-y-3 text-sm">
               <li className="flex gap-2">
@@ -312,7 +358,7 @@ export default function TarifsPage() {
               />
             </div>
 
-            <div className="mt-6 flex flex-col  gap-3">
+            <div className="mt-6 flex flex-col gap-3">
               <Button
                 asChild
                 variant="accent"
@@ -399,8 +445,6 @@ export default function TarifsPage() {
           </Button>
         </div>
       </section>
-
-      {/* Sticky mobile CTA */}
     </main>
   );
 }

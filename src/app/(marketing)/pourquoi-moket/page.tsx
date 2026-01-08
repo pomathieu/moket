@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import { BadgeCheck, Check, Shield, Sparkles, Clock, Leaf, Dot, Phone } from 'lucide-react';
 
-const SITE_URL = 'https://www.moket.fr'; // TODO
+const SITE_URL = 'https://moket.fr';
 const BRAND = 'MOKET';
 const PHONE = '+33635090095';
 const PHONE_DISPLAY = '06 35 09 00 95';
@@ -70,23 +70,58 @@ const FAQS = [
 ];
 
 export default function PourquoiMoketPage() {
-  const jsonLdFaq = {
+  const pageUrl = `${SITE_URL}/pourquoi-moket`;
+
+  const jsonLd = {
     '@context': 'https://schema.org',
-    '@type': 'FAQPage',
-    mainEntity: FAQS.map((f) => ({
-      '@type': 'Question',
-      name: f.q,
-      acceptedAnswer: { '@type': 'Answer', text: f.a },
-    })),
+    '@graph': [
+      // WebPage (la page)
+      {
+        '@type': 'WebPage',
+        '@id': `${pageUrl}#webpage`,
+        url: pageUrl,
+        name: `Pourquoi choisir ${BRAND} ?`,
+        description: 'Pourquoi choisir MOKET : intervention propre, protocole clair, matériel pro, produits adaptés, devis transparent, respect du textile. Île-de-France & Normandie.',
+        inLanguage: 'fr-FR',
+        isPartOf: { '@id': `${SITE_URL}/#website` },
+        breadcrumb: { '@id': `${pageUrl}#breadcrumb` },
+        // AEO : la FAQ est l'entité principale de réponse
+        mainEntity: { '@id': `${pageUrl}#faq` },
+        // Bonus : rattache à l'entité business déjà déclarée dans le RootLayout
+        about: { '@id': `${SITE_URL}/#localbusiness` },
+      },
+
+      // Breadcrumbs
+      {
+        '@type': 'BreadcrumbList',
+        '@id': `${pageUrl}#breadcrumb`,
+        itemListElement: [
+          { '@type': 'ListItem', position: 1, name: 'Accueil', item: `${SITE_URL}/` },
+          { '@type': 'ListItem', position: 2, name: 'Pourquoi MOKET', item: pageUrl },
+        ],
+      },
+
+      // FAQPage
+      {
+        '@type': 'FAQPage',
+        '@id': `${pageUrl}#faq`,
+        isPartOf: { '@id': `${pageUrl}#webpage` },
+        mainEntity: FAQS.map((f) => ({
+          '@type': 'Question',
+          name: f.q,
+          acceptedAnswer: { '@type': 'Answer', text: f.a },
+        })),
+      },
+    ],
   };
 
   return (
     <main className="overflow-x-hidden">
       <Script
-        id="ld-faq-pourquoi"
-        type="application/ld+json">
-        {JSON.stringify(jsonLdFaq)}
-      </Script>
+        id="jsonld-pourquoi-moket"
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
 
       {/* HERO */}
       <section className="mx-auto max-w-7xl p-4 lg:px-8 lg:pt-12 pb-16 md:pb-24">

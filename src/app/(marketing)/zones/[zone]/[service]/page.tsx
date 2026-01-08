@@ -1,3 +1,4 @@
+// frontend/src/app/%28marketing%29/zones/%5Bzone%5D/%5Bservice%5D/page.tsx
 import Link from 'next/link';
 import Script from 'next/script';
 import { notFound } from 'next/navigation';
@@ -78,18 +79,57 @@ function jsonLd(zoneTitle: string, zoneSlug: string, serviceTitle: string, servi
   const pageUrl = `${base}/zones/${zoneSlug}/${serviceSlug}`;
   const faq = buildLocalFaq(zoneTitle, serviceTitle);
 
+  // ✅ Offer (prix) selon le service (adapte tes slugs si besoin)
+  const offerBySlug: Record<string, any | null> = {
+    matelas: {
+      '@type': 'Offer',
+      name: `Nettoyage de matelas à domicile à ${zoneTitle}`,
+      priceCurrency: 'EUR',
+      price: 90,
+      url: pageUrl,
+      seller: { '@id': `${base}/#localbusiness` },
+    },
+    'canape-tissu': {
+      '@type': 'Offer',
+      name: `Nettoyage de canapé en tissu à domicile à ${zoneTitle}`,
+      priceCurrency: 'EUR',
+      price: 120,
+      url: pageUrl,
+      seller: { '@id': `${base}/#localbusiness` },
+    },
+    tapis: {
+      '@type': 'Offer',
+      name: `Nettoyage de tapis à domicile à ${zoneTitle}`,
+      priceCurrency: 'EUR',
+      priceSpecification: {
+        '@type': 'UnitPriceSpecification',
+        price: 30,
+        priceCurrency: 'EUR',
+        unitText: 'm²',
+      },
+      url: pageUrl,
+      seller: { '@id': `${base}/#localbusiness` },
+    },
+    moquette: {
+      '@type': 'Offer',
+      name: `Nettoyage de moquette à domicile à ${zoneTitle}`,
+      priceCurrency: 'EUR',
+      priceSpecification: {
+        '@type': 'UnitPriceSpecification',
+        price: 9,
+        priceCurrency: 'EUR',
+        unitText: 'm²',
+      },
+      url: pageUrl,
+      seller: { '@id': `${base}/#localbusiness` },
+    },
+  };
+
+  const offer = offerBySlug[serviceSlug] ?? null;
+
   return {
     '@context': 'https://schema.org',
     '@graph': [
-      // Website
-      {
-        '@type': 'WebSite',
-        '@id': `${base}/#website`,
-        url: base,
-        name: 'MOKET',
-        inLanguage: 'fr-FR',
-      },
-
       // WebPage (page locale)
       {
         '@type': 'WebPage',
@@ -99,45 +139,32 @@ function jsonLd(zoneTitle: string, zoneSlug: string, serviceTitle: string, servi
         isPartOf: { '@id': `${base}/#website` },
         inLanguage: 'fr-FR',
         mainEntity: { '@id': `${pageUrl}#service` },
+        breadcrumb: { '@id': `${pageUrl}#breadcrumb` }, // ✅ optionnel mais propre
       },
 
-      // Breadcrumbs
+      // ✅ Breadcrumbs (avec Accueil)
       {
         '@type': 'BreadcrumbList',
+        '@id': `${pageUrl}#breadcrumb`,
         itemListElement: [
-          { '@type': 'ListItem', position: 1, name: 'Zones', item: `${base}/zones` },
-          { '@type': 'ListItem', position: 2, name: zoneTitle, item: `${base}/zones/${zoneSlug}` },
-          { '@type': 'ListItem', position: 3, name: serviceTitle, item: pageUrl },
+          { '@type': 'ListItem', position: 1, name: 'Accueil', item: `${base}/` },
+          { '@type': 'ListItem', position: 2, name: 'Zones', item: `${base}/zones` },
+          { '@type': 'ListItem', position: 3, name: zoneTitle, item: `${base}/zones/${zoneSlug}` },
+          { '@type': 'ListItem', position: 4, name: serviceTitle, item: pageUrl },
         ],
       },
 
-      // LocalBusiness (unique)
-      {
-        '@type': 'LocalBusiness',
-        '@id': `${base}/#localbusiness`,
-        name: 'MOKET',
-        url: base,
-        telephone: '+33635090095',
-        priceRange: '€€',
-        address: {
-          '@type': 'PostalAddress',
-          addressCountry: 'FR',
-          addressLocality: 'Paris',
-        },
-        openingHours: ['Mo-Sa 09:00-19:00'],
-      },
-
-      // Service localisé
+      // ✅ Service localisé (référence LocalBusiness via @id uniquement)
       {
         '@type': 'Service',
         '@id': `${pageUrl}#service`,
         name: `${serviceTitle} à ${zoneTitle}`,
         serviceType: serviceTitle,
-        areaServed: zoneTitle,
-        provider: { '@id': `${base}/#localbusiness` },
+        areaServed: { '@type': 'AdministrativeArea', name: zoneTitle },
+        provider: { '@id': `${base}/#localbusiness` }, // ✅ reference only
         url: pageUrl,
         mainEntityOfPage: { '@id': `${pageUrl}#webpage` },
-        // petit bonus : info tournée si tu en as une
+        ...(offer ? { offers: offer } : {}), // ✅ Offer = prix
         ...(zoneShortNote ? { slogan: zoneShortNote } : {}),
       },
 
@@ -163,12 +190,12 @@ export default async function ZoneServicePage({ params }: PageProps) {
   if (!zone || !service) notFound();
 
   return (
-    <main className="mx-auto max-w-7xl px-4 py-2 lg:py-12">
+    <main className="mx-auto max-w-7xl p-4 lg:px-8 lg:pt-12 pb-16 md:pb-24">
       <Script
         id="jsonld-zone-service"
-        type="application/ld+json">
-        {JSON.stringify(jsonLd(zone.title, zone.slug, service.title, service.slug, zone.shortNote))}
-      </Script>
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd(zone.title, zone.slug, service.title, service.slug, zone.shortNote)) }}
+      />
 
       <nav className="text-sm text-muted-foreground">
         <Link
@@ -186,8 +213,8 @@ export default async function ZoneServicePage({ params }: PageProps) {
         <span>{service.title}</span>
       </nav>
 
-      <h1 className="mt-4 text-3xl font-bold">
-        {service.title} à {zone.title}
+      <h1 className="mt-4 text-3xl lg:text-5xl font-extrabold">
+        {service.title} dans {zone.title}
       </h1>
 
       {zone.shortNote ? (
