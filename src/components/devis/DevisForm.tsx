@@ -1,5 +1,11 @@
 'use client';
 
+declare global {
+  interface Window {
+    dataLayer?: any[];
+  }
+}
+
 import * as React from 'react';
 import { useFieldArray, useForm } from 'react-hook-form';
 import { Button } from '@/components/ui/button';
@@ -217,12 +223,26 @@ export function DevisForm({ phone }: Props) {
       const res = await fetch('/api/devis', { method: 'POST', body: form });
       const data = (await res.json()) as { ok: boolean; message?: string };
 
+      const ok = res.ok && data.ok;
+
       setSent({
-        ok: res.ok && data.ok,
+        ok,
         message: data.message ?? (res.ok ? 'Demande envoyée. On revient vers toi rapidement avec un devis clair.' : 'Impossible d’envoyer pour le moment. Réessaie ou appelle-nous.'),
       });
 
-      if (res.ok) {
+      if (ok) {
+        window.dataLayer = window.dataLayer || [];
+        window.dataLayer.push({
+          event: 'submit_devis',
+          service: primary.service,
+          city: values.city?.trim(),
+          postalCode: values.postalCode?.trim(),
+          items_count: values.items?.length ?? 1,
+          has_phone: Boolean(values.phone?.trim()),
+          has_email: Boolean(values.email?.trim()),
+          photos_count: files.length,
+        });
+
         clearErrors();
         setFileError(null);
         setFiles([]);
