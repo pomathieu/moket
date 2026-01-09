@@ -45,7 +45,12 @@ const STEPS = [
     icon: <Droplets className="h-5 w-5" />,
   },
   {
-    title: '4) Finition & conseils',
+    title: '4) Séchage vapeur',
+    text: 'On utilise de la vapeur pour accélérer le séchage et assainir le textile.',
+    icon: <Droplets className="h-5 w-5" />,
+  },
+  {
+    title: '5) Finition & conseils',
     text: 'On homogénéise le rendu, on contrôle le séchage, et on vous donne les bons gestes (aération, chauffage léger, etc.).',
     icon: <Clock className="h-5 w-5" />,
   },
@@ -236,7 +241,7 @@ export default function NotreMethodePage() {
       {/* STEPS */}
       <section className="py-20 md:py-28 p-4 lg:px-8">
         <div className="mx-auto max-w-7xl">
-          <h2 className="text-3xl font-bold">Les 4 étapes de la méthode MOKET</h2>
+          <h2 className="text-3xl font-bold">Les 5 étapes de la méthode MOKET</h2>
           <p className="mt-3 text-muted-foreground max-w-3xl">
             Un protocole simple, reproductible, et adapté à <strong>canapé</strong>, <strong>matelas</strong>, <strong>tapis</strong> et <strong>moquette</strong>.
           </p>

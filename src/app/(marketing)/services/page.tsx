@@ -3,6 +3,29 @@ import Link from 'next/link';
 import type { Metadata } from 'next';
 import { SERVICES } from '@/lib/services';
 import Script from 'next/script';
+import { ImageSlider } from '@/components/home/ImageSlider';
+
+const images = [
+  { src: '/images/services/Canape.jpg', width: 1200, height: 630, alt: 'MOKET — Nettoyage de canapé' },
+  {
+    src: '/images/services/Matelas.jpg',
+    width: 1200,
+    height: 630,
+    alt: 'MOKET — Nettoyage de matelas',
+  },
+  {
+    src: '/images/services/Tapis.jpg',
+    width: 1200,
+    height: 630,
+    alt: 'MOKET — Nettoyage de tapis',
+  },
+  {
+    src: '/images/services/Canape2.jpg',
+    width: 1200,
+    height: 630,
+    alt: 'MOKET — Nettoyage de canapé',
+  },
+];
 
 export const metadata: Metadata = {
   title: 'Services de nettoyage textile à domicile | MOKET',
@@ -113,39 +136,50 @@ export default function ServicesPage() {
       {/* Services grid */}
       <section className="mt-10">
         <h2 className="text-2xl font-bold">Choisir un service</h2>
+        <div className="grid gap-10 mt-10 lg:grid-cols-2 lg:items-start">
+          {/* Colonne gauche : cards */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+            {SERVICES.map((s) => (
+              <article
+                key={s.slug}
+                className="rounded-2xl border bg-white p-6 transition hover:shadow-sm">
+                <h3 className="text-lg font-semibold">{s.title}</h3>
+                <p className="mt-2 text-sm text-muted-foreground">{s.short}</p>
 
-        <div className="mt-6 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-          {SERVICES.map((s) => (
-            <article
-              key={s.slug}
-              className="rounded-2xl border bg-white p-6 transition hover:shadow-sm">
-              <h3 className="text-lg font-semibold">{s.title}</h3>
-              <p className="mt-2 text-sm text-muted-foreground">{s.short}</p>
-
-              <div className="mt-4">
-                <Link
-                  href={`/services/${s.slug}`}
-                  className="text-sm text-slate-700 underline underline-offset-4">
-                  Voir le service
-                </Link>
-              </div>
-
-              {/* ✅ Maillage vers pages locales (crawl + SEO local) */}
-              <div className="mt-4">
-                <p className="text-xs font-semibold text-slate-700">Exemples par zone</p>
-                <div className="mt-2 flex flex-wrap gap-2">
-                  {LOCAL_LINKS.map((z) => (
-                    <Link
-                      key={`${z.zone}-${s.slug}`}
-                      href={`/zones/${z.zone}/${s.slug}`}
-                      className="rounded-full border bg-white px-3 py-1 text-xs text-slate-700 hover:bg-muted">
-                      {z.label}
-                    </Link>
-                  ))}
+                <div className="mt-4">
+                  <Link
+                    href={`/services/${s.slug}`}
+                    className="text-sm text-slate-700 underline underline-offset-4">
+                    Voir le service
+                  </Link>
                 </div>
-              </div>
-            </article>
-          ))}
+
+                <div className="mt-4">
+                  <p className="text-xs font-semibold text-slate-700">Exemples par zone</p>
+                  <div className="mt-2 flex flex-wrap gap-2">
+                    {LOCAL_LINKS.map((z) => (
+                      <Link
+                        key={`${z.zone}-${s.slug}`}
+                        href={`/zones/${z.zone}/${s.slug}`}
+                        className="rounded-full border bg-white px-3 py-1 text-xs text-slate-700 hover:bg-muted">
+                        {z.label}
+                      </Link>
+                    ))}
+                  </div>
+                </div>
+              </article>
+            ))}
+          </div>
+
+          {/* Colonne droite : slider */}
+          <div className="lg:sticky lg:top-24">
+            <ImageSlider
+              images={images}
+              autoPlayActive
+              intervalMs={3200}
+              heightClass="h-[360px] md:h-[520px] lg:h-[560px]"
+            />
+          </div>
         </div>
       </section>
 

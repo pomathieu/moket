@@ -3,11 +3,34 @@ import { Button } from '@/components/ui/button';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import { Check, Shield, Droplets, Clock, Sparkles, BadgeCheck, Leaf, Footprints, SprayCan, Dot } from 'lucide-react';
 import { VideoSlider } from '@/components/home/VideoSlider';
+import { ImageSlider } from '@/components/home/ImageSlider';
 import Script from 'next/script';
 
 const videos = [
   { src: '/videos/moket-hero.mp4', poster: '/images/posters/moket-hero.webp' },
   { src: '/videos/moket-hero-2.mp4', poster: '/images/posters/moket-hero-2.webp' },
+];
+
+const images = [
+  { src: '/images/services/Canape.jpg', width: 1200, height: 630, alt: 'MOKET — Nettoyage de canapé' },
+  {
+    src: '/images/services/Matelas.jpg',
+    width: 1200,
+    height: 630,
+    alt: 'MOKET — Nettoyage de matelas',
+  },
+  {
+    src: '/images/services/Tapis.jpg',
+    width: 1200,
+    height: 630,
+    alt: 'MOKET — Nettoyage de tapis',
+  },
+  {
+    src: '/images/services/Canape2.jpg',
+    width: 1200,
+    height: 630,
+    alt: 'MOKET — Nettoyage de canapé',
+  },
 ];
 
 const FAQS = [
@@ -310,11 +333,12 @@ export default function Home() {
                   desc="Surfaces, pièces, bureaux — devis au m²."
                 />
               </div>
-              <VideoSlider
-                videos={videos}
+              <ImageSlider
+                images={images}
                 autoPlayActive
-                startAfterLcpMs={0}
-              />
+                intervalMs={3200}
+                heightClass="h-[360px] md:h-[520px] lg:h-[560px]"
+              />{' '}
             </div>
 
             <div className="mt-8">
@@ -352,7 +376,11 @@ export default function Home() {
                     text="On nettoie en profondeur avec de l'eau chaude puis on extrait l’eau chargée en saletés."
                   />
                   <Step
-                    title="4) Finition"
+                    title="4) Séchage vapeur"
+                    text="On utilise de la vapeur pour accélérer le séchage et assainir le textile."
+                  />
+                  <Step
+                    title="5) Finition"
                     text="On homogénéise le rendu, on soigne le textile si besoin, et on vous fournit des conseils simples."
                   />
                 </ol>
