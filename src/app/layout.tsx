@@ -149,7 +149,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         {GTM_ID && (
           <Script
             id="gtm-head"
-            strategy="afterInteractive">
+            strategy="beforeInteractive">
             {`
               (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
               new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
