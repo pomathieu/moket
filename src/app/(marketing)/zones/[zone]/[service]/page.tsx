@@ -1,4 +1,6 @@
 // frontend/src/app/%28marketing%29/zones/%5Bzone%5D/%5Bservice%5D/page.tsx
+export const dynamic = 'force-static';
+
 import Link from 'next/link';
 import Script from 'next/script';
 import { notFound } from 'next/navigation';

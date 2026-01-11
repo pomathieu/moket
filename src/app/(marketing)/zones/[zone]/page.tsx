@@ -1,9 +1,13 @@
 // frontend/src/app/%28marketing%29/zones/%5Bzone%5D/page.tsx
+
+export const dynamic = 'force-static';
+
 import Link from 'next/link';
 import Script from 'next/script';
 import { notFound } from 'next/navigation';
 import type { Metadata } from 'next';
 import { getZone, ZONES } from '@/lib/zones';
+import { getCitiesByZone } from '@/lib/cities';
 
 type PageProps = { params: Promise<{ zone: string }> };
 
@@ -122,6 +126,9 @@ export default async function ZonePage({ params }: PageProps) {
   if (!zoneData) notFound();
 
   const faq = buildFaq(zoneData.title);
+  const zoneCities = getCitiesByZone(zoneData.slug)
+    .filter((c) => (c.indexable ?? true) === true)
+    .slice(0, 12);
 
   return (
     <main className="mx-auto max-w-7xl p-4 lg:px-8 lg:pt-12 pb-16 md:pb-24">
@@ -167,16 +174,29 @@ export default async function ZonePage({ params }: PageProps) {
       </section>
 
       {/* Villes / couverture */}
-      {zoneData.cities?.length ? (
+      {zoneCities.length ? (
+        <section className="mt-10">
+          <h2 className="text-xl font-semibold">Villes principales couvertes</h2>
+          <div className="mt-4 flex flex-wrap gap-2">
+            {zoneCities.map((c) => (
+              <Link
+                key={c.slug}
+                href={`/zones/${zoneData.slug}/ville/${c.slug}`}
+                className="rounded-full border bg-white px-3 py-1 text-sm text-slate-700 hover:bg-slate-50">
+                {c.name}
+              </Link>
+            ))}
+          </div>
+        </section>
+      ) : zoneData.cities?.length ? (
         <section className="mt-10">
           <h2 className="text-xl font-semibold">Villes couvertes</h2>
-          <p className="mt-2 text-muted-foreground">Exemples de secteurs dans {zoneData.title} :</p>
           <div className="mt-4 flex flex-wrap gap-2">
-            {zoneData.cities.map((c) => (
+            {zoneData.cities.map((name) => (
               <span
-                key={c}
+                key={name}
                 className="rounded-full border bg-white px-3 py-1 text-sm text-slate-700">
-                {c}
+                {name}
               </span>
             ))}
           </div>
