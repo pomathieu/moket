@@ -348,9 +348,9 @@ export default function DevisPage() {
       </section>
 
       {/* Sticky mobile CTA */}
-      <div className="fixed bottom-4 left-0 right-0 z-50 px-4 md:hidden">
+      <div className="fixed bottom-0 left-0 right-0 z-50 md:hidden">
         <div className="mx-auto max-w-7xl">
-          <div className="rounded-2xl border border-border bg-background/95 backdrop-blur p-3 shadow-sm grid grid-cols-3 gap-3">
+          <div className=" border border-border bg-background/95 backdrop-blur p-3 shadow-sm grid grid-cols-3 gap-3">
             <Button
               asChild
               variant="accent"
