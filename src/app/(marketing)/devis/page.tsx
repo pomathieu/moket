@@ -212,7 +212,7 @@ export default function DevisPage() {
         {/* SIDEBAR */}
         <aside className="lg:col-span-2 space-y-6">
           <div className="rounded-2xl border border-border bg-card p-6">
-            <h3 className="font-semibold text-lg">Ce que tu reçois</h3>
+            <h3 className="font-semibold text-lg">Ce que vous recevez</h3>
             <ul className="mt-4 space-y-3 text-sm text-slate-700">
               <li className="flex gap-2">
                 <Check className="h-4 w-4 text-primary mt-0.5" />
