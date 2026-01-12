@@ -1,4 +1,5 @@
 'use client';
+import { Separator } from '@/components/ui/separator';
 
 declare global {
   interface Window {
@@ -9,7 +10,7 @@ declare global {
 import * as React from 'react';
 import { useFieldArray, useForm } from 'react-hook-form';
 import { Button } from '@/components/ui/button';
-import { Check, FileImage, Sparkles, Trash2, Plus, Minus } from 'lucide-react';
+import { Check, FileImage, Sparkles, Trash2, Plus, Minus, Divide } from 'lucide-react';
 
 type Props = { phone: string };
 
@@ -268,7 +269,7 @@ export function DevisForm({ phone }: Props) {
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className="mt-6 space-y-6">
+      className="mt-6 space-y-4">
       {/* GLOBAL CHECKLIST */}
       {missing.length > 0 && showInlineErrors && (
         <div className="rounded-2xl border border-rose-200 bg-rose-50 px-4 py-3 text-sm text-rose-900">
@@ -304,9 +305,13 @@ export function DevisForm({ phone }: Props) {
             return (
               <div
                 key={field.id}
-                className="rounded-2xl border border-border bg-background p-2">
+                className="rounded-2xl  p-2">
                 <div className="flex items-start justify-between gap-3">
                   <div className="grid gap-2 w-full">
+                    <p className="font-semibold text-sm">
+                      Article {''}
+                      {idx + 1}
+                    </p>
                     <label className="text-sm font-medium">Type</label>
                     <select
                       {...register(serviceName, { required: true })}
@@ -333,7 +338,7 @@ export function DevisForm({ phone }: Props) {
 
                 <div className="mt-4 grid gap-4">
                   <div className="grid gap-2">
-                    <label className="text-base font-medium">
+                    <label className="text-sm font-medium">
                       Dimensions / surface <span className="text-muted-foreground">(optionnel)</span>
                     </label>
                     <input
@@ -344,7 +349,7 @@ export function DevisForm({ phone }: Props) {
                   </div>
 
                   <div className="grid gap-2">
-                    <label className="text-base font-medium">Détails</label>
+                    <label className="text-sm font-medium">Détails</label>
                     <textarea
                       {...register(detName)}
                       placeholder="Ex : tache de café, odeur animal, auréole ancienne, textile fragile…"
@@ -359,7 +364,8 @@ export function DevisForm({ phone }: Props) {
       </div>
 
       {/* ZONE */}
-      <div className="rounded-2xl border border-border bg-card p-4 sm:p-5">
+      <Separator className="my-2" />
+      <div className="rounded-2xl bg-card p-4 sm:p-4">
         <p className="font-semibold">Zone d’intervention</p>
 
         <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -392,9 +398,10 @@ export function DevisForm({ phone }: Props) {
           </div>
         </div>
       </div>
+      <Separator className="my-2" />
 
       {/* CONTACT */}
-      <div className="rounded-2xl border border-border bg-card p-4 sm:p-5">
+      <div className="rounded-2xl  p-4 sm:p-4">
         <p className="font-semibold">Contact</p>
         <p className="mt-1 text-xs text-muted-foreground">
           Email <strong>ou</strong> téléphone (au choix).
