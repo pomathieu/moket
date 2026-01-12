@@ -7,6 +7,8 @@ import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import { Sheet, SheetClose, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
 import React from 'react';
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
+import { CITIES } from '@/lib/cities';
 
 const items = [
   { label: 'Devis', href: '/devis' },
@@ -144,16 +146,76 @@ export default function MobileNav() {
               icon={<MapPin className="h-4 w-4" />}
               label="Zones"
             />
-            <div className="space-y-1">
-              {zones.map((z) => (
-                <NavRow
-                  key={z.href}
-                  href={z.href}
-                  label={z.label}
-                  active={pathname === z.href}
-                  onNavigate={close}
-                />
-              ))}
+            <div className="space-y-2">
+              <Accordion
+                type="multiple"
+                className="space-y-2">
+                {zones
+                  .filter((z) => z.href !== '/zones') // on garde "Toutes les zones" en bas
+                  .filter((z) => z.href !== '/zones')
+                  .map((z) => {
+                    const zoneSlug = z.href.replace('/zones/', '');
+                    const zoneCities = CITIES.filter((c) => c.zoneSlug === zoneSlug && c.indexable !== false).slice(0, 6);
+
+                    return (
+                      <AccordionItem
+                        key={z.href}
+                        value={z.href}
+                        className="border-0">
+                        <div className="rounded-xl border border-slate-200/70 bg-white/70">
+                          <AccordionTrigger className="px-3 py-2 text-sm text-slate-800 hover:no-underline">
+                            <span className="inline-flex items-center gap-2">
+                              <MapPin className="h-4 w-4" />
+                              {z.label}
+                            </span>
+                          </AccordionTrigger>
+
+                          <AccordionContent className="px-3 pb-3">
+                            <div className="space-y-1">
+                              {/* Lien zone */}
+                              <NavRow
+                                href={z.href}
+                                label={`Voir ${z.label}`}
+                                active={pathname === z.href}
+                                onNavigate={close}
+                              />
+
+                              {/* Villes (limitées) */}
+                              {zoneCities.map((c) => {
+                                const href = `/zones/${c.zoneSlug}/${c.slug}`;
+                                return (
+                                  <NavRow
+                                    key={href}
+                                    href={href}
+                                    label={c.name}
+                                    active={pathname === href}
+                                    onNavigate={close}
+                                  />
+                                );
+                              })}
+
+                              {/* CTA “Toutes les villes” (optionnel si tu as une page liste) */}
+                              <NavRow
+                                href={z.href}
+                                label="Toutes les villes"
+                                active={false}
+                                onNavigate={close}
+                              />
+                            </div>
+                          </AccordionContent>
+                        </div>
+                      </AccordionItem>
+                    );
+                  })}
+              </Accordion>
+
+              {/* “Toutes les zones” en simple lien */}
+              <NavRow
+                href="/zones"
+                label="Toutes les zones"
+                active={pathname === '/zones'}
+                onNavigate={close}
+              />
             </div>
 
             <Separator className="bg-slate-200/70" />

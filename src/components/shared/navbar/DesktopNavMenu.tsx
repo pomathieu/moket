@@ -2,6 +2,7 @@ import * as React from 'react';
 import Link from 'next/link';
 import { NavigationMenu, NavigationMenuContent, NavigationMenuItem, NavigationMenuLink, NavigationMenuList, NavigationMenuTrigger } from '@/components/ui/navigation-menu';
 import { cn } from '@/lib/utils';
+import { CITIES } from '@/lib/cities';
 
 const services = [
   { title: 'Matelas', href: '/services/matelas', desc: 'Anti-odeurs, anti-acariens, taches.' },
@@ -19,6 +20,10 @@ const zones = [
   { title: 'Seine-Maritime', href: '/zones/seine-maritime' },
   { title: 'Calvados', href: '/zones/calvados' },
 ];
+
+const topCities = CITIES.filter((c) => c.indexable !== false)
+  .slice(0, 8)
+  .map((c) => ({ title: c.name, href: `/zones/${c.zoneSlug}/${c.slug}` }));
 
 export default function DesktopNavMenu() {
   return (
@@ -60,7 +65,7 @@ export default function DesktopNavMenu() {
             <span className="inline-flex items-center gap-2">Zones</span>
           </NavigationMenuTrigger>
           <NavigationMenuContent>
-            <div className="w-105 p-4">
+            <div className="w-130 p-4">
               <div className="mb-3">
                 <Link
                   href="/zones"
@@ -70,14 +75,39 @@ export default function DesktopNavMenu() {
                 <p className="text-xs text-slate-600 mt-1">Paris & Île-de-France — déplacement à domicile.</p>
               </div>
 
-              <div className="grid grid-cols-2 gap-2">
-                {zones.map((z) => (
-                  <SimpleLink
-                    key={z.href}
-                    href={z.href}
-                    label={z.title}
-                  />
-                ))}
+              <div className="grid grid-cols-2 gap-4">
+                {/* Colonne Zones */}
+                <div className="space-y-2">
+                  <div className="text-xs font-semibold text-slate-700">Zones</div>
+                  <div className="grid grid-cols-1 gap-2">
+                    {zones.map((z) => (
+                      <SimpleLink
+                        key={z.href}
+                        href={z.href}
+                        label={z.title}
+                      />
+                    ))}
+                  </div>
+                </div>
+
+                {/* Colonne Villes */}
+                <div className="space-y-2">
+                  <div className="text-xs font-semibold text-slate-700">Villes (sélection)</div>
+                  <div className="grid grid-cols-1 gap-2">
+                    {topCities.map((c) => (
+                      <SimpleLink
+                        key={c.href}
+                        href={c.href}
+                        label={c.title}
+                      />
+                    ))}
+                  </div>
+                  <Link
+                    href="/zones"
+                    className="text-xs text-slate-600 hover:underline">
+                    Voir toutes les villes →
+                  </Link>
+                </div>
               </div>
             </div>
           </NavigationMenuContent>
