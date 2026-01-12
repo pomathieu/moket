@@ -44,6 +44,7 @@ const jsonLd = {
       openingHours: 'Mo-Sa 09:00-19:00',
       areaServed: [
         { '@type': 'AdministrativeArea', name: 'Île-de-France' },
+        { '@type': 'AdministrativeArea', name: 'Paris' },
         { '@type': 'AdministrativeArea', name: 'Normandie' },
       ],
       contactPoint: [
