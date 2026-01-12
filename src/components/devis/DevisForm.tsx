@@ -50,15 +50,15 @@ function totalSize(list: File[]) {
 }
 
 function inputBase(hasError?: boolean) {
-  return ['h-11 rounded-xl border bg-background px-3 text-sm outline-none', 'focus:ring-2 focus:ring-ring/20', hasError ? 'border-rose-400 focus:ring-rose-200' : 'border-border'].join(' ');
+  return ['h-11 rounded-xl border bg-background px-3 text-base outline-none', 'focus:ring-2 focus:ring-ring/20', hasError ? 'border-rose-400 focus:ring-rose-200' : 'border-border'].join(' ');
 }
 
 function textareaBase(hasError?: boolean) {
-  return ['min-h-28 rounded-xl border bg-background px-3 py-2 text-sm outline-none', 'focus:ring-2 focus:ring-ring/20', hasError ? 'border-rose-400 focus:ring-rose-200' : 'border-border'].join(' ');
+  return ['min-h-28 rounded-xl border bg-background px-3 py-2 text-base outline-none', 'focus:ring-2 focus:ring-ring/20', hasError ? 'border-rose-400 focus:ring-rose-200' : 'border-border'].join(' ');
 }
 
 function selectBase(hasError?: boolean) {
-  return ['h-11 rounded-xl border bg-background px-3 text-sm outline-none', 'focus:ring-2 focus:ring-ring/20', hasError ? 'border-rose-400 focus:ring-rose-200' : 'border-border'].join(' ');
+  return ['h-11 rounded-xl border bg-background px-3 text-base outline-none', 'focus:ring-2 focus:ring-ring/20', hasError ? 'border-rose-400 focus:ring-rose-200' : 'border-border'].join(' ');
 }
 
 export function DevisForm({ phone }: Props) {
