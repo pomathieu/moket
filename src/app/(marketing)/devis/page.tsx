@@ -385,7 +385,7 @@ export default function DevisPage() {
 
 function MiniCard({ icon, title, text }: { icon: React.ReactNode; title: string; text: string }) {
   return (
-    <div className="rounded-2xl border border-border bg-card p-4">
+    <div className="rounded-2xl border border-border  p-4">
       <div className="flex items-start gap-3">
         <div className="text-primary mt-0.5">{icon}</div>
         <div>
