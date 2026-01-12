@@ -14,7 +14,7 @@ export default function Footer() {
         {/* Brand */}
         <div className="mb-10 text-center space-y-3">
           <div className="text-2xl font-extrabold tracking-tight text-[#0B1F3B]">MOKET</div>
-          <p className="text-sm text-slate-600">Nettoyage textile profond à domicile — Paris & Île-de-France.</p>
+          <p className="text-sm text-slate-600">Nettoyage textile profond à domicile — Paris, Île-de-France et Normandie.</p>
         </div>
 
         <div className="grid gap-10 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
