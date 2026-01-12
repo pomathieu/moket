@@ -51,15 +51,15 @@ function totalSize(list: File[]) {
 }
 
 function inputBase(hasError?: boolean) {
-  return ['h-11 rounded-xl border bg-background px-3 text-base outline-none', 'focus:ring-2 focus:ring-ring/20', hasError ? 'border-rose-400 focus:ring-rose-200' : 'border-border'].join(' ');
+  return ['h-9 rounded-xl border bg-background px-3 text-base outline-none', 'focus:ring-2 focus:ring-ring/20', hasError ? 'border-rose-400 focus:ring-rose-200' : 'border-border'].join(' ');
 }
 
 function textareaBase(hasError?: boolean) {
-  return ['min-h-28 rounded-xl border bg-background px-3 py-2 text-base outline-none', 'focus:ring-2 focus:ring-ring/20', hasError ? 'border-rose-400 focus:ring-rose-200' : 'border-border'].join(' ');
+  return ['min-h-14 rounded-xl border bg-background px-3 py-2 text-base outline-none', 'focus:ring-2 focus:ring-ring/20', hasError ? 'border-rose-400 focus:ring-rose-200' : 'border-border'].join(' ');
 }
 
 function selectBase(hasError?: boolean) {
-  return ['h-11 rounded-xl border bg-background px-3 text-base outline-none', 'focus:ring-2 focus:ring-ring/20', hasError ? 'border-rose-400 focus:ring-rose-200' : 'border-border'].join(' ');
+  return ['h-9 rounded-xl border bg-background px-3 text-base outline-none', 'focus:ring-2 focus:ring-ring/20', hasError ? 'border-rose-400 focus:ring-rose-200' : 'border-border'].join(' ');
 }
 
 export function DevisForm({ phone }: Props) {
@@ -269,7 +269,7 @@ export function DevisForm({ phone }: Props) {
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className="mt-6 space-y-4">
+      className="mt-4 space-y-4">
       {/* GLOBAL CHECKLIST */}
       {missing.length > 0 && showInlineErrors && (
         <div className="rounded-2xl border border-rose-200 bg-rose-50 px-4 py-3 text-sm text-rose-900">
@@ -279,11 +279,11 @@ export function DevisForm({ phone }: Props) {
       )}
 
       {/* PRESTATIONS (multiproduits) */}
-      <div className="rounded-2xl border border-border bg-card p-2 sm:p-4">
+      <div className="rounded-2xl  p-2 sm:p-2">
         <div className="flex items-start justify-between gap-3">
           <div>
             <p className="font-semibold">Prestations</p>
-            <p className="mt-1 text-xs text-muted-foreground">Ajoute plusieurs éléments si besoin (ex : canapé + tapis + matelas).</p>
+            <p className="mt-1 text-xs text-muted-foreground">Ajoutez plusieurs éléments si besoin (ex : canapé + tapis + matelas).</p>
           </div>
 
           <Button
@@ -364,8 +364,8 @@ export function DevisForm({ phone }: Props) {
       </div>
 
       {/* ZONE */}
-      <Separator className="my-2" />
-      <div className="rounded-2xl bg-card p-4 sm:p-4">
+      <Separator />
+      <div className="rounded-2xl bg-card p-2 sm:p-2">
         <p className="font-semibold">Zone d’intervention</p>
 
         <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -398,10 +398,10 @@ export function DevisForm({ phone }: Props) {
           </div>
         </div>
       </div>
-      <Separator className="my-2" />
+      <Separator />
 
       {/* CONTACT */}
-      <div className="rounded-2xl  p-4 sm:p-4">
+      <div className="rounded-2xl  p-2 sm:p-2">
         <p className="font-semibold">Contact</p>
         <p className="mt-1 text-xs text-muted-foreground">
           Email <strong>ou</strong> téléphone (au choix).

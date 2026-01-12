@@ -194,13 +194,11 @@ export default function DevisPage() {
         <div
           id="form"
           className="lg:col-span-3">
-          <div className="rounded-2xl border border-border bg-card p-6">
+          <div className="rounded-2xl border border-border bg-card p-4">
             <h2 className="text-2xl font-bold">Ton devis en 2 minutes</h2>
-            <p className="mt-2 text-sm text-muted-foreground">Plus les infos sont précises, plus le devis est fiable (matière, dimensions, taches).</p>
+            <p className="mt-2 text-xs text-muted-foreground">Plus les infos sont précises, plus le devis est fiable (matière, dimensions, taches).</p>
 
-            <div className="mt-6">
-              <DevisForm phone={PHONE} />
-            </div>
+            <DevisForm phone={PHONE} />
           </div>
 
           <div className="mt-6 rounded-2xl border border-border bg-muted/40 p-6">
