@@ -342,7 +342,7 @@ export function DevisForm({ phone }: Props) {
       const data = (await res.json()) as { ok: boolean; message?: string };
 
       const ok = res.ok && data.ok;
-      toast(ok ? 'Devis envoyé ! Nous te recontactons rapidement.' : 'Erreur serveur. Réessaie plus tard.');
+      toast(ok ? 'Devis envoyé ! Nous vous recontactons rapidement.' : 'Erreur serveur. Réessaie plus tard.');
 
       if (ok) {
         window.dataLayer = window.dataLayer || [];
