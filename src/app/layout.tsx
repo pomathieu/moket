@@ -186,7 +186,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <div className="flex min-h-dvh flex-col">{children}</div>
 
           <Toaster
-            position="top-right"
+            position="bottom-right"
             toastOptions={{
               classNames: {
                 toast: 'bg-card text-foreground border border-border shadow-sm rounded-xl',

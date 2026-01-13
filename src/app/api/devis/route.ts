@@ -135,12 +135,14 @@ export async function POST(req: Request) {
       );
     }
 
+    {/*}
     if (files.length < 1) {
       return NextResponse.json(
         { ok: false, message: "Ajoute au moins 1 photo (idéalement 2–3)." },
         { status: 400 }
       );
     }
+    */}
 
     const totalBytes = files.reduce((acc, f) => acc + (f.size ?? 0), 0);
     if (totalBytes > MAX_TOTAL_BYTES) {

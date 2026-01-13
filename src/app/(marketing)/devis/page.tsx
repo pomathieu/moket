@@ -133,7 +133,7 @@ export default function DevisPage() {
           </p>
         </div>
 
-        <div className="lg:flex flex-col hidden items-center pt-4 pb-4 md:flex-row gap-3">
+        <div className="lg:flex flex-col hidden items-center md:flex-row gap-3">
           <Button
             asChild
             size="lg"
@@ -169,7 +169,7 @@ export default function DevisPage() {
           </Button>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-3 pt-4">
+        <div className="hidden lg:grid grid-cols-1 md:grid-cols-3 gap-3 ">
           <MiniCard
             icon={<Camera className="h-4 w-4" />}
             title="1) Photos"
@@ -189,13 +189,13 @@ export default function DevisPage() {
       </section>
 
       {/* CONTENT */}
-      <section className="mt-10  md:mt-14 grid gap-8 lg:grid-cols-5 lg:items-start">
+      <section className="mt-10  grid gap-8 lg:grid-cols-5 lg:items-start">
         {/* FORM */}
         <div
           id="form"
           className="lg:col-span-3">
           <div className="rounded-2xl border border-border bg-card p-4">
-            <h2 className="text-2xl font-bold">Ton devis en 2 minutes</h2>
+            <h2 className="text-2xl font-bold">Devis en 2 minutes</h2>
             <p className="mt-2 text-xs text-muted-foreground">Plus les infos sont précises, plus le devis est fiable (matière, dimensions, taches).</p>
 
             <DevisForm phone={PHONE} />
@@ -308,7 +308,7 @@ export default function DevisPage() {
             </div>
           </div>
 
-          <div className="rounded-2xl border border-border bg-muted/40 p-6">
+          <div className="rounded-2xl sr-only border border-border bg-muted/40 p-6">
             <div className="flex items-start gap-3">
               <div className="text-primary mt-0.5">
                 <Shield className="h-5 w-5" />
@@ -350,7 +350,7 @@ export default function DevisPage() {
       {/* Sticky mobile CTA */}
       <div className="fixed bottom-0 left-0 right-0 z-50 md:hidden">
         <div className="mx-auto max-w-7xl">
-          <div className=" border border-border bg-background/95 backdrop-blur p-3 shadow-sm grid grid-cols-3 gap-3">
+          <div className=" border border-border bg-background/9 5 backdrop-blur p-3 shadow-sm grid grid-cols-3 gap-3">
             <Button
               asChild
               variant="accent"
