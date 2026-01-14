@@ -7,7 +7,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const base = 'https://moket.fr';
 
   const STATIC_DATE = new Date('2026-01-08');
-  const CITY_DATE = new Date('2026-01-11');
+  const CITY_DATE = new Date('2026-01-14');
 
   /* =========================
      Pages statiques
