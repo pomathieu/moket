@@ -557,7 +557,7 @@ export function DevisForm({ phone }: Props) {
                 return (
                   <div
                     key={field.id}
-                    className="rounded-2xl bg-muted/50 p-3">
+                    className="rounded-2xl bg-accent/50 text- p-3">
                     <div className="flex items-start justify-between gap-3">
                       <div className="grid gap-2 w-full">
                         <p className="font-semibold text-sm">Article {idx + 1}</p>
@@ -839,7 +839,7 @@ export function DevisForm({ phone }: Props) {
             <Button
               type="button"
               variant="outline"
-              className="rounded-full"
+              className="rounded-full cursor-pointer"
               onClick={goPrev}
               disabled={step === 0 || isSubmitting}>
               <ChevronLeft className="h-4 w-4 mr-1" />
@@ -852,7 +852,7 @@ export function DevisForm({ phone }: Props) {
               <Button
                 type="button"
                 variant="accent"
-                className="rounded-full"
+                className="rounded-full cursor-pointer"
                 onClick={goNext}
                 disabled={isSubmitting}>
                 {ctaLabel}
