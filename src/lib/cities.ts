@@ -449,6 +449,29 @@ export const CITIES: City[] = [
       trustSignals: ['Extraction efficace', 'Diagnostic avant traitement', 'Intervention soignée'],
       localUseCases: ['Canapé tissu', 'Matelas', 'Tapis', 'Moquette'],
     },
+    },
+    {
+    zoneSlug: 'seine-maritime',
+    slug: 'elbeuf',
+    name: 'Elbeuf',
+    display: { postalCode: '76600', departmentCode: '76', regionLabel: 'Normandie' },
+    geo: { lat: 49.2833, lng: 1.0346 },
+    market: {
+      segments: ['Particuliers', 'Commerces', 'Bureaux', 'Commerces'],
+      angle: 'Textiles exposés à la fréquentation : extraction efficace + remise à neuf.',
+    },
+    seo: {
+      h1: 'Nettoyage textile à Elbeuf',
+      title: 'Nettoyage textile à Elbeuf : matelas, canapé tissu, tapis, moquette | MOKET',
+      description:
+        'À Elbeuf : nettoyage à domicile de matelas, canapé tissu, tapis et moquette. Devis rapide sur photos, intervention soignée.',
+    },
+    seoBody: {
+      introLocal:
+        'À Elbeuf, on privilégie une extraction efficace pour maîtriser le séchage : diagnostic, pré-traitement puis injection-extraction, avec une attention particulière aux textiles exposés à l’humidité ambiante.',
+      trustSignals: ['Extraction efficace', 'Diagnostic avant traitement', 'Intervention soignée'],
+      localUseCases: ['Canapé tissu', 'Matelas', 'Tapis', 'Moquette'],
+    },
   },
   {
     zoneSlug: 'seine-maritime',
