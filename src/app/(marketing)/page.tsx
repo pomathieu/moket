@@ -5,6 +5,7 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/
 import { Check, Shield, Droplets, Clock, Sparkles, BadgeCheck, Leaf, Footprints, SprayCan, Dot, PhoneCall, FileText, List } from 'lucide-react';
 import { VideoSlider } from '@/components/home/VideoSlider';
 import { ImageSlider } from '@/components/home/ImageSlider';
+import { PriceCalculator } from '@/components/home/PriceCalculator';
 
 const videos = [
   { src: '/videos/moket-hero.mp4', poster: '/images/posters/moket-hero.webp' },
@@ -377,9 +378,16 @@ export default function Home() {
             </div>
           </div>
         </section>
-
+        <section className="py-16 bg-muted md:py-28 p-4 lg:px-8">
+          <div className="mx-auto max-w-7xl px-4">
+            <h2 className="text-3xl font-bold pb-4">Calculateur en ligne</h2>
+            <PriceCalculator phone="+33635090095" />
+          </div>
+        </section>
         {/* METHOD (steps) */}
-        <section className="bg-muted py-16 md:py-28 p-4 lg:px-8">
+        <section
+          className="
+         py-16 md:py-28 p-4 lg:px-8">
           <div className="mx-auto max-w-7xl px-4">
             <div className="lg:grid gap-10 lg:grid-cols-2 lg:items-center">
               <div>
@@ -431,7 +439,7 @@ export default function Home() {
         </section>
 
         {/* TARIFS */}
-        <section className="py-16 md:py-24 p-4 lg:px-8">
+        <section className="py-16 bg-muted md:py-24 p-4 lg:px-8">
           <div className="mx-auto max-w-7xl px-4">
             <h2 className="text-3xl font-bold">Tarifs indicatifs</h2>
             <p className="mt-3 text-muted-foreground max-w-3xl">Tarifs fixes. Pour un chiffrage précis, envoyez 2–3 photos : on répond rapidement avec un devis clair.</p>
@@ -487,7 +495,7 @@ export default function Home() {
         </section>
 
         {/* ZONES */}
-        <section className="bg-muted py-16 md:py-24 p-4 lg:px-8">
+        <section className="py-16 md:py-24 p-4 lg:px-8">
           <div className="mx-auto max-w-7xl px-4">
             <h2 className="text-3xl font-bold">Zones d’intervention</h2>
             <p className="mt-3 text-muted-foreground max-w-3xl">
@@ -548,7 +556,7 @@ export default function Home() {
         </section>
 
         {/* FAQ */}
-        <section className="py-16 md:py-24 p-4 lg:px-8">
+        <section className="bg-muted not-even:py-16 md:py-24 p-4 lg:px-8">
           <div className="mx-auto max-w-7xl px-4">
             <div className="max-w-3xl">
               <h2 className="text-3xl font-bold">FAQ</h2>
