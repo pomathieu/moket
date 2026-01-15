@@ -13,8 +13,6 @@ declare global {
   }
 }
 
-type Props = { phone: string };
-
 type Service = 'matelas' | 'canape' | 'tapis' | 'moquette' | 'autre';
 
 type Item = {
@@ -159,7 +157,7 @@ function useDebouncedValue<T>(value: T, delay = 120) {
   return debounced;
 }
 
-export function DevisForm({ phone }: Props) {
+export function DevisForm() {
   const {
     register,
     control,
@@ -177,7 +175,7 @@ export function DevisForm({ phone }: Props) {
       city: '',
       postalCode: '',
       name: '',
-      contact: phone?.trim() ? phone.trim() : '',
+      contact: '',
     },
   });
 
@@ -368,7 +366,7 @@ export function DevisForm({ phone }: Props) {
           city: '',
           postalCode: '',
           name: '',
-          contact: phone?.trim() ? phone.trim() : '',
+          contact: '',
         });
       }
     } catch {

@@ -198,7 +198,7 @@ export default function DevisPage() {
             <h2 className="text-2xl font-bold">Devis en 2 minutes</h2>
             <p className="mt-2 text-xs text-muted-foreground">Plus les infos sont précises, plus le devis est fiable (matière, dimensions, taches).</p>
 
-            <DevisForm phone={PHONE} />
+            <DevisForm />
           </div>
 
           <div className="mt-6 rounded-2xl border border-border bg-muted/40 p-6">
