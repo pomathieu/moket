@@ -79,12 +79,15 @@ export async function POST(req: Request) {
       service: String(form.get("service") ?? ""),
       city: String(form.get("city") ?? ""),
       postalCode: String(form.get("postalCode") ?? ""),
+            address: String(form.get("address") ?? ""),
+
       dimensions: String(form.get("dimensions") ?? ""),
       details: String(form.get("details") ?? ""),
       name: String(form.get("name") ?? ""),
       email: String(form.get("email") ?? ""),
       phone: String(form.get("phone") ?? ""),
       items_json: String(form.get("items_json") ?? ""),
+
     };
 
     const files = (form.getAll("photos").filter(Boolean) as File[]).slice(
@@ -220,12 +223,15 @@ export async function POST(req: Request) {
     )} (${esc(payload.postalCode)})
         </p>
 
-        <table style="width:100%;border-collapse:collapse">
-          <tr><td style="padding:8px;border-top:1px solid #e2e8f0"><strong>Nom</strong></td><td style="padding:8px;border-top:1px solid #e2e8f0">${esc(payload.name)}</td></tr>
-          <tr><td style="padding:8px;border-top:1px solid #e2e8f0"><strong>Email</strong></td><td style="padding:8px;border-top:1px solid #e2e8f0">${esc(payload.email || "-")}</td></tr>
-          <tr><td style="padding:8px;border-top:1px solid #e2e8f0"><strong>Téléphone</strong></td><td style="padding:8px;border-top:1px solid #e2e8f0">${esc(payload.phone || "-")}</td></tr>
-          <tr><td style="padding:8px;border-top:1px solid #e2e8f0"><strong>Photos</strong></td><td style="padding:8px;border-top:1px solid #e2e8f0">${files.length}</td></tr>
-        </table>
+      <table style="width:100%;border-collapse:collapse">
+        <tr><td style="padding:8px;border-top:1px solid #e2e8f0"><strong>Nom</strong></td><td style="padding:8px;border-top:1px solid #e2e8f0">${esc(payload.name)}</td></tr>
+        <tr><td style="padding:8px;border-top:1px solid #e2e8f0"><strong>Email</strong></td><td style="padding:8px;border-top:1px solid #e2e8f0">${esc(payload.email || "-")}</td></tr>
+        <tr><td style="padding:8px;border-top:1px solid #e2e8f0"><strong>Téléphone</strong></td><td style="padding:8px;border-top:1px solid #e2e8f0">${esc(payload.phone || "-")}</td></tr>
+
+        <tr><td style="padding:8px;border-top:1px solid #e2e8f0"><strong>Adresse</strong></td><td style="padding:8px;border-top:1px solid #e2e8f0">${esc(payload.address?.trim() || "-")}</td></tr>
+
+        <tr><td style="padding:8px;border-top:1px solid #e2e8f0"><strong>Photos</strong></td><td style="padding:8px;border-top:1px solid #e2e8f0">${files.length}</td></tr>
+      </table>
 
         ${prestationsHtml}
 
@@ -243,6 +249,42 @@ export async function POST(req: Request) {
       html: ownerHtml,
       attachments,
     });
+
+    
+    const prestationsClientHtml =
+  items && items.length > 0
+    ? `
+      <div style="margin:14px 0 0">
+        <h3 style="margin:0 0 10px;font-size:14px">Prestations demandées</h3>
+        <div style="border:1px solid #e2e8f0;border-radius:12px;background:#ffffff;overflow:hidden">
+          ${items
+            .map((it, i) => {
+              const type = serviceLabel(String(it.service ?? "autre"));
+              const dim = (it.dimensions ?? "").trim();
+              const det = (it.details ?? "").trim();
+
+              const parts = [
+                dim ? `Dimensions : ${esc(dim)}` : "",
+                det ? `Détails : ${esc(det)}` : "",
+              ].filter(Boolean);
+
+              return `
+                <div style="padding:10px 12px;${i > 0 ? "border-top:1px solid #e2e8f0" : ""}">
+                  <div style="font-weight:600;color:#0f172a">${esc(type)}</div>
+                  ${
+                    parts.length
+                      ? `<div style="margin-top:6px;color:#334155;font-size:13px">${parts.join("<br/>")}</div>`
+                      : `<div style="margin-top:6px;color:#64748b;font-size:13px">Aucun détail supplémentaire.</div>`
+                  }
+                </div>
+              `;
+            })
+            .join("")}
+        </div>
+      </div>
+    `
+    : "";
+
 
     if (ownerSend.error) {
       console.error("RESEND ownerSend.error:", ownerSend.error);
@@ -263,21 +305,35 @@ export async function POST(req: Request) {
         to: payload.email.trim(),
         subject: "Demande de devis reçue — MOKET",
         replyTo: RESEND_TO_OWNER,
-        html: `
-          <div style="font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Arial;line-height:1.6">
-            <h2 style="margin:0 0 10px">Merci ${esc(payload.name)} 👋</h2>
-            <p style="margin:0 0 14px;color:#334155">
-              Nous avons bien reçu votre demande de devis.
-            </p>
-            <div style="padding:12px;border:1px solid #e2e8f0;border-radius:12px;background:#f8fafc">
-              <p style="margin:0"><strong>Lieu :</strong> ${esc(payload.city)} (${esc(payload.postalCode)})</p>
-              <p style="margin:6px 0 0"><strong>Photos :</strong> ${files.length}</p>
-            </div>
-            <p style="margin:14px 0;color:#334155">
-              On revient vers vous rapidement avec un <strong>prix clair</strong> et une <strong>proposition de créneau</strong>.
-            </p>
-          </div>
-        `,
+html: `
+  <div style="font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Arial;line-height:1.6">
+    <h2 style="margin:0 0 10px">Merci ${esc(payload.name)} 👋</h2>
+    <p style="margin:0 0 14px;color:#334155">
+      Nous avons bien reçu votre demande de devis.
+    </p>
+
+    <div style="padding:12px;border:1px solid #e2e8f0;border-radius:12px;background:#f8fafc">
+      <h3 style="margin:0 0 10px;font-size:14px">Récapitulatif</h3>
+
+      <p style="margin:0 0 8px">
+        <strong>Lieu :</strong> ${esc(payload.address?.trim() || `${payload.city} (${payload.postalCode})`)}
+      </p>
+      <p style="margin:0 0 8px">
+        <strong>Photos :</strong> ${files.length}
+      </p>
+      <p style="margin:0">
+        <strong>Prestation principale :</strong> ${esc(serviceLabel(payload.service))}
+      </p>
+    </div>
+
+    ${prestationsClientHtml}
+
+    <p style="margin:14px 0;color:#334155">
+      On revient vers vous rapidement avec un <strong>prix clair</strong> et une <strong>proposition de créneau</strong>.
+    </p>
+  </div>
+`,
+
       });
 
       if (clientSend.error) {

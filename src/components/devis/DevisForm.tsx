@@ -26,7 +26,9 @@ type FormValues = {
   city: string;
   postalCode: string;
   name: string;
-  contact: string; // email OU téléphone
+  contact: string;
+  // optionnel si tu préfères le gérer dans RHF
+  address?: string;
 };
 
 const MAX_FILES = 6;
@@ -233,7 +235,6 @@ export function DevisForm() {
   async function goNext() {
     if (step === 0) {
       setStep(1);
-      scrollToStep();
       return;
     }
     if (step === 1) {
@@ -245,20 +246,17 @@ export function DevisForm() {
       setActiveIndex(-1);
 
       setStep(2);
-      scrollToStep();
       return;
     }
     if (step === 2) {
       if (fileError) return;
       setStep(3);
-      scrollToStep();
       return;
     }
   }
 
   function goPrev() {
     setStep((s) => (s > 0 ? ((s - 1) as Step) : s));
-    scrollToStep();
   }
 
   async function onPickFiles(e: React.ChangeEvent<HTMLInputElement>) {
@@ -309,13 +307,11 @@ export function DevisForm() {
     if ((values.name?.trim()?.length ?? 0) < 2) {
       setError('name', { type: 'manual', message: 'Nom requis' });
       setStep(3);
-      scrollToStep();
       return;
     }
     if (!validateContact(values.contact)) {
       setError('contact', { type: 'manual', message: 'Renseigne un email ou un téléphone valide.' });
       setStep(3);
-      scrollToStep();
       return;
     }
 
@@ -332,6 +328,7 @@ export function DevisForm() {
       form.append('name', values.name.trim());
       form.append('email', email);
       form.append('phone', phoneParsed);
+      form.append('address', addressQuery.trim());
 
       form.append('items_json', JSON.stringify(values.items));
       files.forEach((f) => form.append('photos', f));
@@ -352,6 +349,7 @@ export function DevisForm() {
           items_count: values.items?.length ?? 1,
           has_contact: Boolean(values.contact?.trim()),
           photos_count: files.length,
+          address: addressQuery?.trim(),
         });
 
         clearErrors();
@@ -367,6 +365,7 @@ export function DevisForm() {
           postalCode: '',
           name: '',
           contact: '',
+          address: '',
         });
       }
     } catch {
@@ -821,7 +820,6 @@ export function DevisForm() {
                   }}
                 />
                 {errors.contact && showInlineErrors && <p className="text-xs text-rose-600">{errors.contact.message as string}</p>}
-                {!errors.contact && (wContact?.trim()?.length ?? 0) > 0 && <p className="text-xs text-muted-foreground">Détecté : {isLikelyEmail((wContact ?? '').trim()) ? 'email' : 'téléphone'}</p>}
               </div>
             </div>
 
