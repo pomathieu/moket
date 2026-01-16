@@ -327,7 +327,8 @@ export default function Home() {
         {/* SERVICES */}
         <section className="py-16 md:py-28 p-4 lg:px-8">
           <div className="mx-auto max-w-7xl px-4">
-            <h2 className="text-3xl font-bold">Services de nettoyage canapé, matelas, tapis et moquette</h2>
+            <h2 className="text-3xl font-bold">Nos Services de nettoyage canapé, matelas, tapis et moquette</h2>
+            <h3 className="mt-1 text-xl font-semibold text-foreground">Des services destinés à des particuliers et professionnels</h3>
             <p className="mt-3 text-muted-foreground max-w-3xl">Chocolat sur le tapis ? Accident sur la moquette ? Jean qui déteint sur le canapé ? On adapte le protocole selon la situation.</p>
 
             <div className="grid gap-10 mt-10 lg:grid-cols-2 lg:items-center">
@@ -380,7 +381,7 @@ export default function Home() {
         </section>
         <section className="py-16 bg-muted md:py-28 p-4 lg:px-8">
           <div className="mx-auto max-w-7xl px-4">
-            <h2 className="text-3xl font-bold pb-4">Calculateur en ligne</h2>
+            <h2 className="text-3xl font-bold pb-4">Calculateur de prestation en ligne</h2>
             <PriceCalculator phone="+33635090095" />
           </div>
         </section>

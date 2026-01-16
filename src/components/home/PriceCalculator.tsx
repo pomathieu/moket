@@ -204,19 +204,8 @@ export function PriceCalculator({ phone = '+33635090095', className = '', onCTAC
   const primaryCTA = computed.allOk ? 'Recevoir un devis précis (photos)' : 'Compléter les surfaces';
 
   return (
-    <section className={['rounded-2xl border border-border bg-card p-4 sm:p-6', className].join(' ')}>
+    <section className={['rounded-2xl bg-card/50 ', className].join(' ')}>
       {/* Header */}
-      <div className="flex items-start justify-between gap-4">
-        <div>
-          <p className="text-sm font-semibold inline-flex items-center gap-2">
-            <Calculator className="h-4 w-4 text-primary" />
-            Calculateur de prix
-          </p>
-          <p className="mt-1 text-xs text-muted-foreground">Ajoutez plusieurs éléments (ex : canapé + tapis). Pour un prix exact : 2–3 photos sur la page Devis.</p>
-        </div>
-      </div>
-
-      <Separator className="my-4" />
 
       {/* Progress
       <div className="rounded-2xl border border-border bg-background p-4">
@@ -235,7 +224,7 @@ export function PriceCalculator({ phone = '+33635090095', className = '', onCTAC
         </div>
       </div> */}
 
-      <div className="mt-4 rounded-2xl bg-background p-3 sm:p-5">
+      <div className="mt-4 rounded-2xl  p-3 sm:p-5">
         {/* STEP 0: Items */}
         {step === 0 && (
           <div className="space-y-4">
