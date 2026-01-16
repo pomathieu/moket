@@ -1,5 +1,7 @@
 import { NextResponse } from "next/server";
 import { Resend } from "resend";
+import { supabaseAdmin } from "@/lib/supabase/admin";
+import { randomUUID } from "crypto";
 
 export const runtime = "nodejs";
 
@@ -7,6 +9,8 @@ const resend = new Resend(process.env.RESEND_API_KEY);
 
 const MAX_TOTAL_BYTES = 25 * 1024 * 1024;
 const MAX_FILES = 6;
+
+const STORAGE_BUCKET = "quotes-photos";
 
 function esc(s: string) {
   return s
@@ -33,21 +37,24 @@ function serviceLabel(v: string) {
 }
 
 function isLikelyEmail(v: string) {
-  // simple et suffisant (pas besoin RFC complète)
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v.trim());
 }
 
 function normalizePhone(v: string) {
-  // garde chiffres + +
-  const s = v.trim().replace(/[^\d+]/g, "");
-  return s;
+  return v.trim().replace(/[^\d+]/g, "");
 }
 
 function isLikelyPhone(v: string) {
   const p = normalizePhone(v);
-  // FR typique: 10 chiffres, ou +33xxxxxxxxx
   const digits = p.replace(/\D/g, "");
-  return digits.length >= 8; // règle "pragmatique" alignée avec ton front
+  return digits.length >= 8;
+}
+
+function safeExt(filename: string) {
+  const raw = (filename.split(".").pop() || "").toLowerCase().trim();
+  if (!raw) return "jpg";
+  if (!/^[a-z0-9]{1,8}$/.test(raw)) return "jpg";
+  return raw;
 }
 
 type Item = {
@@ -73,13 +80,24 @@ export async function POST(req: Request) {
       );
     }
 
+    if (!process.env.SUPABASE_URL || !process.env.SUPABASE_SERVICE_ROLE_KEY) {
+      return NextResponse.json(
+        {
+          ok: false,
+          message:
+            "Config Supabase manquante. Vérifie SUPABASE_URL et SUPABASE_SERVICE_ROLE_KEY.",
+        },
+        { status: 500 }
+      );
+    }
+
     const form = await req.formData();
 
     const payload = {
       service: String(form.get("service") ?? ""),
       city: String(form.get("city") ?? ""),
       postalCode: String(form.get("postalCode") ?? ""),
-            address: String(form.get("address") ?? ""),
+      address: String(form.get("address") ?? ""),
 
       dimensions: String(form.get("dimensions") ?? ""),
       details: String(form.get("details") ?? ""),
@@ -87,7 +105,6 @@ export async function POST(req: Request) {
       email: String(form.get("email") ?? ""),
       phone: String(form.get("phone") ?? ""),
       items_json: String(form.get("items_json") ?? ""),
-
     };
 
     const files = (form.getAll("photos").filter(Boolean) as File[]).slice(
@@ -97,16 +114,10 @@ export async function POST(req: Request) {
 
     // --- Validation de base
     if (!payload.name || payload.name.trim().length < 2) {
-      return NextResponse.json(
-        { ok: false, message: "Nom requis." },
-        { status: 400 }
-      );
+      return NextResponse.json({ ok: false, message: "Nom requis." }, { status: 400 });
     }
     if (!payload.city || payload.city.trim().length < 2) {
-      return NextResponse.json(
-        { ok: false, message: "Ville requise." },
-        { status: 400 }
-      );
+      return NextResponse.json({ ok: false, message: "Ville requise." }, { status: 400 });
     }
     if (!payload.postalCode || payload.postalCode.trim().length < 4) {
       return NextResponse.json(
@@ -126,10 +137,7 @@ export async function POST(req: Request) {
       );
     }
     if (hasEmail && !isLikelyEmail(payload.email)) {
-      return NextResponse.json(
-        { ok: false, message: "Email invalide." },
-        { status: 400 }
-      );
+      return NextResponse.json({ ok: false, message: "Email invalide." }, { status: 400 });
     }
     if (hasPhone && !isLikelyPhone(payload.phone)) {
       return NextResponse.json(
@@ -138,22 +146,12 @@ export async function POST(req: Request) {
       );
     }
 
-    {/*}
-    if (files.length < 1) {
-      return NextResponse.json(
-        { ok: false, message: "Ajoute au moins 1 photo (idéalement 2–3)." },
-        { status: 400 }
-      );
-    }
-    */}
-
     const totalBytes = files.reduce((acc, f) => acc + (f.size ?? 0), 0);
     if (totalBytes > MAX_TOTAL_BYTES) {
       return NextResponse.json(
         {
           ok: false,
-          message:
-            "Photos trop lourdes. Merci de réduire (max ~25MB au total).",
+          message: "Photos trop lourdes. Merci de réduire (max ~25MB au total).",
         },
         { status: 413 }
       );
@@ -166,10 +164,102 @@ export async function POST(req: Request) {
         const parsed = JSON.parse(payload.items_json);
         if (Array.isArray(parsed)) items = parsed;
       } catch {
-        // ignore (on n’échoue pas)
+        // ignore
       }
     }
 
+    // =========================
+    // 1) INSERT DB (quote)
+    // =========================
+    const { data: quote, error: quoteErr } = await supabaseAdmin
+      .from("quotes")
+      .insert({
+        service: payload.service,
+        city: payload.city,
+        postal_code: payload.postalCode,
+        address: payload.address?.trim() || null,
+
+        name: payload.name.trim(),
+        email: hasEmail ? payload.email.trim() : null,
+        phone: hasPhone ? normalizePhone(payload.phone) : null,
+
+        items: items ?? null,
+        details: payload.details?.trim() || null,
+        dimensions: payload.dimensions?.trim() || null,
+
+        photos: null,
+        meta: {
+          source: "web",
+          userAgent: req.headers.get("user-agent") ?? null,
+        },
+      })
+      .select("id, created_at")
+      .single();
+
+    if (quoteErr || !quote?.id) {
+      console.error("SUPABASE insert quote error:", quoteErr);
+      return NextResponse.json(
+        { ok: false, message: "Erreur enregistrement devis." },
+        { status: 500 }
+      );
+    }
+
+    const quoteId = quote.id as string;
+
+    // =========================
+    // 2) UPLOAD Storage
+    // =========================
+    const uploaded: Array<{
+      path: string;
+      publicUrl: string | null;
+      filename: string | null;
+      contentType: string | null;
+      size: number | null;
+    }> = [];
+
+    for (const file of files) {
+      const ext = safeExt(file.name || "photo.jpg");
+      const path = `${quoteId}/${randomUUID()}.${ext}`;
+      const buffer = Buffer.from(await file.arrayBuffer());
+
+      const { error: upErr } = await supabaseAdmin.storage
+        .from(STORAGE_BUCKET)
+        .upload(path, buffer, {
+          contentType: file.type || "application/octet-stream",
+          upsert: false,
+        });
+
+      if (upErr) {
+        console.error("SUPABASE storage upload error:", upErr);
+        continue;
+      }
+
+      // Public URL (si bucket public)
+      const { data: pub } = supabaseAdmin.storage.from(STORAGE_BUCKET).getPublicUrl(path);
+
+      uploaded.push({
+        path,
+        publicUrl: pub?.publicUrl ?? null,
+        filename: file.name || null,
+        contentType: file.type || null,
+        size: typeof file.size === "number" ? file.size : null,
+      });
+    }
+
+    // Update row avec photos (même si 0 upload -> [] c’est OK)
+    const { error: updErr } = await supabaseAdmin
+      .from("quotes")
+      .update({ photos: uploaded })
+      .eq("id", quoteId);
+
+    if (updErr) {
+      console.error("SUPABASE update photos error:", updErr);
+      // on ne bloque pas le flow email
+    }
+
+    // =========================
+    // 3) HTML emails
+    // =========================
     const prestationsHtml =
       items && items.length > 0
         ? `
@@ -202,7 +292,7 @@ export async function POST(req: Request) {
         `
         : "";
 
-    // PJ
+    // PJ pour l’email owner (tu gardes tes pièces jointes)
     const attachments = await Promise.all(
       files.map(async (file) => ({
         filename: file.name || "photo.jpg",
@@ -210,28 +300,34 @@ export async function POST(req: Request) {
       }))
     );
 
-    const subjectOwner = `Nouveau devis — ${serviceLabel(
+    const subjectOwner = `Nouveau devis #${quoteId} — ${serviceLabel(
       payload.service
     )} — ${payload.city} (${payload.postalCode})`;
 
     const ownerHtml = `
       <div style="font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Arial;line-height:1.5">
         <h2 style="margin:0 0 12px">Nouvelle demande de devis</h2>
+        <p style="margin:0 0 8px;color:#334155"><strong>ID :</strong> ${esc(quoteId)}</p>
         <p style="margin:0 0 16px;color:#334155">
-          <strong>${esc(serviceLabel(payload.service))}</strong> — ${esc(
-      payload.city
-    )} (${esc(payload.postalCode)})
+          <strong>${esc(serviceLabel(payload.service))}</strong> — ${esc(payload.city)} (${esc(payload.postalCode)})
         </p>
 
-      <table style="width:100%;border-collapse:collapse">
-        <tr><td style="padding:8px;border-top:1px solid #e2e8f0"><strong>Nom</strong></td><td style="padding:8px;border-top:1px solid #e2e8f0">${esc(payload.name)}</td></tr>
-        <tr><td style="padding:8px;border-top:1px solid #e2e8f0"><strong>Email</strong></td><td style="padding:8px;border-top:1px solid #e2e8f0">${esc(payload.email || "-")}</td></tr>
-        <tr><td style="padding:8px;border-top:1px solid #e2e8f0"><strong>Téléphone</strong></td><td style="padding:8px;border-top:1px solid #e2e8f0">${esc(payload.phone || "-")}</td></tr>
+        <table style="width:100%;border-collapse:collapse">
+          <tr><td style="padding:8px;border-top:1px solid #e2e8f0"><strong>Nom</strong></td><td style="padding:8px;border-top:1px solid #e2e8f0">${esc(payload.name)}</td></tr>
+          <tr><td style="padding:8px;border-top:1px solid #e2e8f0"><strong>Email</strong></td><td style="padding:8px;border-top:1px solid #e2e8f0">${esc(payload.email || "-")}</td></tr>
+          <tr><td style="padding:8px;border-top:1px solid #e2e8f0"><strong>Téléphone</strong></td><td style="padding:8px;border-top:1px solid #e2e8f0">${esc(payload.phone || "-")}</td></tr>
+          <tr><td style="padding:8px;border-top:1px solid #e2e8f0"><strong>Adresse</strong></td><td style="padding:8px;border-top:1px solid #e2e8f0">${esc(payload.address?.trim() || "-")}</td></tr>
+          <tr><td style="padding:8px;border-top:1px solid #e2e8f0"><strong>Photos</strong></td><td style="padding:8px;border-top:1px solid #e2e8f0">${files.length}</td></tr>
+          <tr><td style="padding:8px;border-top:1px solid #e2e8f0"><strong>Photos uploadées</strong></td><td style="padding:8px;border-top:1px solid #e2e8f0">${uploaded.length}</td></tr>
+        </table>
 
-        <tr><td style="padding:8px;border-top:1px solid #e2e8f0"><strong>Adresse</strong></td><td style="padding:8px;border-top:1px solid #e2e8f0">${esc(payload.address?.trim() || "-")}</td></tr>
-
-        <tr><td style="padding:8px;border-top:1px solid #e2e8f0"><strong>Photos</strong></td><td style="padding:8px;border-top:1px solid #e2e8f0">${files.length}</td></tr>
-      </table>
+        ${
+          uploaded.length > 0
+            ? `<p style="margin:14px 0 0"><strong>Liens Storage :</strong><br/>${uploaded
+                .map((p) => (p.publicUrl ? `<a href="${esc(p.publicUrl)}">${esc(p.publicUrl)}</a>` : esc(p.path)))
+                .join("<br/>")}</p>`
+            : ""
+        }
 
         ${prestationsHtml}
 
@@ -250,10 +346,9 @@ export async function POST(req: Request) {
       attachments,
     });
 
-    
     const prestationsClientHtml =
-  items && items.length > 0
-    ? `
+      items && items.length > 0
+        ? `
       <div style="margin:14px 0 0">
         <h3 style="margin:0 0 10px;font-size:14px">Prestations demandées</h3>
         <div style="border:1px solid #e2e8f0;border-radius:12px;background:#ffffff;overflow:hidden">
@@ -283,16 +378,15 @@ export async function POST(req: Request) {
         </div>
       </div>
     `
-    : "";
+        : "";
 
-
-    if (ownerSend.error) {
-      console.error("RESEND ownerSend.error:", ownerSend.error);
+    if ((ownerSend as any).error) {
+      console.error("RESEND ownerSend.error:", (ownerSend as any).error);
       return NextResponse.json(
         {
           ok: false,
           message: "Erreur envoi email interne (owner).",
-          debug: ownerSend.error,
+          debug: (ownerSend as any).error,
         },
         { status: 502 }
       );
@@ -305,7 +399,7 @@ export async function POST(req: Request) {
         to: payload.email.trim(),
         subject: "Demande de devis reçue — MOKET",
         replyTo: RESEND_TO_OWNER,
-html: `
+        html: `
   <div style="font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Arial;line-height:1.6">
     <h2 style="margin:0 0 10px">Merci ${esc(payload.name)} 👋</h2>
     <p style="margin:0 0 14px;color:#334155">
@@ -331,19 +425,24 @@ html: `
     <p style="margin:14px 0;color:#334155">
       On revient vers vous rapidement avec un <strong>prix clair</strong> et une <strong>proposition de créneau</strong>.
     </p>
+
+    <p style="margin:10px 0 0;color:#94a3b8;font-size:12px">
+      Référence interne : ${esc(quoteId)}
+    </p>
   </div>
 `,
-
       });
 
-      if (clientSend.error) {
-        console.error("RESEND clientSend.error:", clientSend.error);
+      if ((clientSend as any).error) {
+        console.error("RESEND clientSend.error:", (clientSend as any).error);
       }
     }
 
     return NextResponse.json({
       ok: true,
-      message: "Demande envoyée. On revient vers vous rapidement avec un devis clair.",
+      quoteId,
+      message:
+        "Demande envoyée. On revient vers vous rapidement avec un devis clair.",
     });
   } catch (err) {
     console.error("API /devis error:", err);
