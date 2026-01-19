@@ -1,10 +1,11 @@
 import Link from 'next/link';
 import { supabaseAdmin } from '@/lib/supabase/admin';
-import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from '@/components/ui/select';
+
+import { QuotesFilters } from './QuotesFilters';
+
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Separator } from '@/components/ui/separator';
 
@@ -56,26 +57,28 @@ type SearchParams = {
   page?: string;
 };
 
-export default async function page({ searchParams }: { searchParams: Promise<SearchParams> }) {
+export default async function Page({ searchParams }: { searchParams: Promise<SearchParams> }) {
   const sp = await searchParams;
+
   const q = (sp.q ?? '').trim();
-  const status = (sp.status ?? '').trim();
+  const status = (sp.status ?? '').trim(); // "" ou "new" etc.
   const pageNum = Math.max(1, Number(sp.page ?? '1') || 1);
+
   const pageSize = 20;
   const from = (pageNum - 1) * pageSize;
   const to = from + pageSize - 1;
 
-  // Base query
+  // PERF: on évite count exact quand il y a une recherche texte (souvent coûteux)
+  const wantCount = !q;
+
   let query = supabaseAdmin
     .from('quotes')
-    .select('id, created_at, updated_at, status, status_updated_at, service, city, postal_code, address, name, email, phone, photos', { count: 'exact' })
+    .select('id, created_at, updated_at, status, status_updated_at, service, city, postal_code, address, name, email, phone, photos', wantCount ? { count: 'estimated' } : {})
     .order('created_at', { ascending: false });
 
   if (status) query = query.eq('status', status);
 
   if (q) {
-    // Recherche simple sur quelques champs (OR)
-    // NB: `ilike` OK sur text, attention à l’indexation si gros volume.
     const like = `%${q}%`;
     query = query.or([`name.ilike.${like}`, `email.ilike.${like}`, `phone.ilike.${like}`, `city.ilike.${like}`, `postal_code.ilike.${like}`, `address.ilike.${like}`].join(','));
   }
@@ -93,8 +96,8 @@ export default async function page({ searchParams }: { searchParams: Promise<Sea
     );
   }
 
-  const total = count ?? 0;
-  const totalPages = Math.max(1, Math.ceil(total / pageSize));
+  const total = wantCount ? (count ?? 0) : (data?.length ?? 0);
+  const totalPages = wantCount ? Math.max(1, Math.ceil(total / pageSize)) : pageNum; // si pas de count, on ne peut pas calculer proprement
 
   const baseParams = new URLSearchParams();
   if (q) baseParams.set('q', q);
@@ -113,48 +116,24 @@ export default async function page({ searchParams }: { searchParams: Promise<Sea
           <h1 className="text-xl font-semibold">Devis</h1>
           <p className="text-sm text-zinc-500">
             Inbox & suivi — {total} résultat{total > 1 ? 's' : ''}
+            {!wantCount && <span className="ml-2 text-xs">(count désactivé pendant la recherche)</span>}
           </p>
         </div>
 
-        <div className="flex w-full flex-col gap-2 md:w-auto md:flex-row">
-          <form
-            action="/admin/quotes"
-            className="flex w-full gap-2 md:w-130">
-            <Input
-              name="q"
-              defaultValue={q}
-              placeholder="Rechercher (nom, email, tel, ville, CP, adresse)…"
-              className="h-10"
-            />
-            <select
-              name="status"
-              defaultValue={status}
-              className="h-10 rounded-md border border-input bg-background px-3 text-sm focus:outline-none focus:ring-2 focus:ring-ring">
-              <option value="">Tous les statuts</option>
-              <option value="new">Nouveau</option>
-              <option value="contacted">Contacté</option>
-              <option value="scheduled">Planifié</option>
-              <option value="quoted">Devisé</option>
-              <option value="won">Gagné</option>
-              <option value="lost">Perdu</option>
-              <option value="archived">Archivé</option>
-            </select>
-
-            <Button
-              type="submit"
-              variant="accent"
-              className="h-10">
-              Filtrer
-            </Button>
-          </form>
-        </div>
+        {/* ✅ shadcn Select + URL-driven filters */}
+        <QuotesFilters
+          defaultQ={q}
+          defaultStatus={status}
+        />
       </div>
 
       <Card className="overflow-hidden">
         <CardHeader className="py-4">
           <CardTitle className="text-base">Derniers devis</CardTitle>
         </CardHeader>
+
         <Separator />
+
         <CardContent className="p-0">
           <Table>
             <TableHeader>
@@ -230,8 +209,10 @@ export default async function page({ searchParams }: { searchParams: Promise<Sea
 
           <div className="flex items-center justify-between p-4">
             <div className="text-xs text-zinc-500">
-              Page {pageNum} / {totalPages}
+              Page {pageNum}
+              {wantCount ? ` / ${totalPages}` : ''}
             </div>
+
             <div className="flex gap-2">
               <Button
                 asChild
@@ -240,10 +221,12 @@ export default async function page({ searchParams }: { searchParams: Promise<Sea
                 className="h-9">
                 <Link href={pageLink(pageNum - 1)}>Précédent</Link>
               </Button>
+
               <Button
                 asChild
                 variant="outline"
-                disabled={pageNum >= totalPages}
+                // si pas de count, on ne sait pas si on est à la dernière page => on laisse actif
+                disabled={wantCount ? pageNum >= totalPages : false}
                 className="h-9">
                 <Link href={pageLink(pageNum + 1)}>Suivant</Link>
               </Button>
