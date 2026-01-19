@@ -1,107 +1,75 @@
 'use client';
 
-import { useEffect, useMemo, useState, useTransition } from 'react';
+import * as React from 'react';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 
-import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from '@/components/ui/select';
+// Remplace par ton Select shadcn si tu l'as déjà
+// import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 
-type Props = {
-  defaultQ: string;
-  defaultStatus: string; // "" ou un status ("new"...)
-};
-
-function normalizeStatus(v: string) {
-  // côté UI on utilise "all" (Radix n'aime pas value="")
-  return v && v !== 'all' ? v : '';
-}
-
-export function QuotesFilters({ defaultQ, defaultStatus }: Props) {
+export function QuotesFilters({ defaultQ, defaultStatus }: { defaultQ: string; defaultStatus: string }) {
   const router = useRouter();
   const pathname = usePathname();
-  const sp = useSearchParams();
-  const [isPending, startTransition] = useTransition();
+  const searchParams = useSearchParams();
 
-  const [q, setQ] = useState(defaultQ);
-  const [statusUI, setStatusUI] = useState(defaultStatus || 'all');
+  const [isPending, startTransition] = React.useTransition();
 
-  // Si l'utilisateur navigue (back/forward), on resynchronise l'état local
-  useEffect(() => {
-    setQ(defaultQ);
-    setStatusUI(defaultStatus || 'all');
-  }, [defaultQ, defaultStatus]);
+  const [q, setQ] = React.useState(defaultQ);
+  const [status, setStatus] = React.useState(defaultStatus);
 
-  const baseParams = useMemo(() => new URLSearchParams(sp.toString()), [sp]);
+  // Si navigation via back/forward, on resync
+  React.useEffect(() => setQ(defaultQ), [defaultQ]);
+  React.useEffect(() => setStatus(defaultStatus), [defaultStatus]);
 
-  function apply(nextQ: string, nextStatusUI: string) {
-    const p = new URLSearchParams(baseParams);
+  function apply(next: { q: string; status: string }) {
+    const p = new URLSearchParams(searchParams?.toString());
 
-    const qq = nextQ.trim();
-    const st = normalizeStatus(nextStatusUI);
-
-    if (qq) p.set('q', qq);
+    if (next.q) p.set('q', next.q);
     else p.delete('q');
 
-    if (st) p.set('status', st);
+    if (next.status) p.set('status', next.status);
     else p.delete('status');
 
-    // reset pagination quand filtre change
+    // reset page dès qu'on change les filtres
     p.delete('page');
 
-    const url = p.toString() ? `${pathname}?${p.toString()}` : pathname;
-
     startTransition(() => {
-      router.replace(url, { scroll: false });
+      router.replace(`${pathname}?${p.toString()}`, { scroll: false });
     });
   }
 
-  // debounce sur q
-  useEffect(() => {
-    const t = setTimeout(() => apply(q, statusUI), 250);
-    return () => clearTimeout(t);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [q]);
-
   return (
-    <div className="flex w-full flex-col gap-2 md:w-auto md:flex-row">
-      <Input
-        value={q}
-        onChange={(e) => setQ(e.target.value)}
-        placeholder="Rechercher (nom, email, tel, ville, CP, adresse)…"
-        className="h-10 md:w-105"
-      />
+    <div className="flex flex-col gap-2 md:flex-row md:items-center">
+      <div className="flex gap-2">
+        <input
+          value={q}
+          onChange={(e) => setQ(e.target.value)}
+          placeholder="Rechercher…"
+          className="h-10 w-64 rounded-md border border-zinc-200 bg-white px-3 text-sm outline-none focus:ring-2 focus:ring-zinc-200"
+        />
 
-      <Select
-        value={statusUI}
-        onValueChange={(v) => {
-          setStatusUI(v);
-          apply(q, v);
-        }}>
-        <SelectTrigger className="h-10 w-50">
-          <SelectValue placeholder="Tous les statuts" />
-        </SelectTrigger>
+        <select
+          value={status}
+          onChange={(e) => setStatus(e.target.value)}
+          className="h-10 rounded-md border border-zinc-200 bg-white px-3 text-sm outline-none focus:ring-2 focus:ring-zinc-200">
+          <option value="">Tous</option>
+          <option value="new">Nouveau</option>
+          <option value="contacted">Contacté</option>
+          <option value="scheduled">Planifié</option>
+          <option value="quoted">Devisé</option>
+          <option value="won">Gagné</option>
+          <option value="lost">Perdu</option>
+          <option value="archived">Archivé</option>
+        </select>
 
-        <SelectContent>
-          <SelectItem value="all">Tous les statuts</SelectItem>
-          <SelectItem value="new">Nouveau</SelectItem>
-          <SelectItem value="contacted">Contacté</SelectItem>
-          <SelectItem value="scheduled">Planifié</SelectItem>
-          <SelectItem value="quoted">Devisé</SelectItem>
-          <SelectItem value="won">Gagné</SelectItem>
-          <SelectItem value="lost">Perdu</SelectItem>
-          <SelectItem value="archived">Archivé</SelectItem>
-        </SelectContent>
-      </Select>
-
-      <Button
-        type="button"
-        variant="accent"
-        className="h-10 w-20"
-        disabled={isPending}
-        onClick={() => apply(q, statusUI)}>
-        {isPending ? '…' : 'Filtrer'}
-      </Button>
+        <Button
+          variant="secondary"
+          className="h-10"
+          disabled={isPending}
+          onClick={() => apply({ q: q.trim(), status })}>
+          {isPending ? '…' : 'Filtrer'}
+        </Button>
+      </div>
     </div>
   );
 }
