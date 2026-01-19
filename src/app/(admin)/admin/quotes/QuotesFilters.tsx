@@ -97,7 +97,7 @@ export function QuotesFilters({ defaultQ, defaultStatus }: Props) {
       <Button
         type="button"
         variant="accent"
-        className="h-10"
+        className="h-10 w-20"
         disabled={isPending}
         onClick={() => apply(q, statusUI)}>
         {isPending ? '…' : 'Filtrer'}
