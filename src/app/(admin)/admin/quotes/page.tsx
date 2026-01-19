@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Separator } from '@/components/ui/separator';
+import { Select } from '@/components/ui/select';
 
 function serviceLabel(v: string) {
   switch (v) {
@@ -126,14 +127,22 @@ export default async function page({ searchParams }: { searchParams: Promise<Sea
               placeholder="Rechercher (nom, email, tel, ville, CP, adresse)…"
               className="h-10"
             />
-            <Input
+            <Select
               name="status"
-              defaultValue={status}
-              placeholder="status (new, contacted, …)"
-              className="h-10 w-42.5"
-            />
+              defaultValue={status}>
+              <option value="">Tous les statuts</option>
+              <option value="new">Nouveau</option>
+              <option value="contacted">Contacté</option>
+              <option value="scheduled">Planifié</option>
+              <option value="quoted">Devisé</option>
+              <option value="won">Gagné</option>
+              <option value="lost">Perdu</option>
+              <option value="archived">Archivé</option>
+            </Select>
+
             <Button
               type="submit"
+              variant="accent"
               className="h-10">
               Filtrer
             </Button>
