@@ -1,17 +1,12 @@
 import Link from 'next/link';
-import { Suspense } from 'react';
-import { revalidateTag } from 'next/cache';
-
+import { revalidatePath } from 'next/cache';
 import { supabaseAdmin } from '@/lib/supabase/admin';
-import { unstable_cache } from 'next/cache';
 
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-
-/* -------------------- helpers -------------------- */
 
 function fmt(dt: string | null | undefined) {
   if (!dt) return '—';
@@ -73,142 +68,32 @@ function humanEventType(t: string) {
 type Item = { service?: string; dimensions?: string; details?: string };
 type Photo = { path?: string; publicUrl?: string; filename?: string; contentType?: string; size?: number };
 
-const tags = {
-  quote: (id: string) => `quote:${id}`,
-  events: (id: string) => `quote:${id}:events`,
-  list: () => `quotes:list`,
-};
+export default async function page({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params;
 
-/* -------------------- cached queries -------------------- */
-
-const getQuote = (id: string) =>
-  unstable_cache(
-    async () => {
-      const { data, error } = await supabaseAdmin.from('quotes').select('*').eq('id', id).single();
-      return { quote: data ?? null, error: error ?? null };
-    },
-    ['quote', id],
-    { tags: [tags.quote(id)], revalidate: 30 }, // 0/5/30/60 selon ton besoin
-  )();
-
-const getEvents = (id: string) =>
-  unstable_cache(
-    async () => {
-      const { data, error } = await supabaseAdmin
-        .from('quote_events')
-        .select('id, created_at, event_type, actor_type, source, request_id, diff')
-        .eq('quote_id', id)
-        .order('created_at', { ascending: false });
-
-      return { events: data ?? [], error: error ?? null };
-    },
-    ['quote_events', id],
-    { tags: [tags.events(id)], revalidate: 30 },
-  )();
-
-/* -------------------- streaming component (events) -------------------- */
-
-async function Events({ id }: { id: string }) {
-  const { events } = await getEvents(id);
-
-  return (
-    <Card>
-      <CardHeader className="py-4">
-        <CardTitle className="text-base">Historique</CardTitle>
-      </CardHeader>
-      <Separator />
-      <CardContent className="p-4 md:p-6">
-        <div className="space-y-3">
-          {(events ?? []).map((e) => (
-            <div
-              key={e.id}
-              className="rounded-2xl border border-zinc-200 bg-white p-3">
-              <div className="flex items-start justify-between gap-3">
-                <div>
-                  <div className="text-sm font-medium">{humanEventType(e.event_type)}</div>
-                  <div className="text-xs text-zinc-500">
-                    {fmt(e.created_at)} • {e.actor_type || 'system'} {e.source ? `• ${e.source}` : ''}
-                  </div>
-                </div>
-                <Badge
-                  variant="outline"
-                  className="text-[11px]">
-                  {e.event_type}
-                </Badge>
-              </div>
-
-              {e.diff && Object.keys(e.diff).length > 0 && <pre className="mt-2 overflow-auto rounded-xl bg-zinc-950 p-3 text-[11px] text-zinc-100">{JSON.stringify(e.diff, null, 2)}</pre>}
-            </div>
-          ))}
-
-          {(!events || events.length === 0) && <div className="text-sm text-zinc-500">Aucun event.</div>}
-        </div>
-      </CardContent>
-    </Card>
-  );
-}
-
-function EventsSkeleton() {
-  return (
-    <Card>
-      <CardHeader className="py-4">
-        <CardTitle className="text-base">Historique</CardTitle>
-      </CardHeader>
-      <Separator />
-      <CardContent className="p-4 md:p-6 space-y-3">
-        {Array.from({ length: 6 }).map((_, i) => (
-          <div
-            key={i}
-            className="h-16 rounded-2xl bg-zinc-200"
-          />
-        ))}
-      </CardContent>
-    </Card>
-  );
-}
-
-/* -------------------- page -------------------- */
-
-export default async function Page({ params }: { params: { id: string } }) {
-  const { id } = params;
-
-  // Server action: update status (robuste)
+  // Server action: update status
   async function setStatus(formData: FormData) {
     'use server';
-
     const nextStatus = String(formData.get('status') ?? '').trim();
-    const expectedUpdatedAt = String(formData.get('expectedUpdatedAt') ?? '').trim();
+    if (!nextStatus) return;
 
+    // Optionnel : valider une liste de statuts
     const allowed = new Set(['new', 'contacted', 'scheduled', 'quoted', 'won', 'lost', 'archived']);
     if (!allowed.has(nextStatus)) return;
-    if (!expectedUpdatedAt) return;
 
-    const now = new Date().toISOString();
-
-    const { data, error } = await supabaseAdmin
-      .from('quotes')
-      .update({
-        status: nextStatus,
-        status_updated_at: now,
-        updated_at: now, // garde si tu gères updated_at côté app (sinon retire)
-      })
-      .eq('id', id)
-      .eq('updated_at', expectedUpdatedAt) // ✅ garde-fou concurrence
-      .select('id')
-      .maybeSingle();
+    const { error } = await supabaseAdmin.from('quotes').update({ status: nextStatus }).eq('id', id);
 
     if (error) {
+      // en prod: log/monitoring
       console.error('setStatus error:', error);
       return;
     }
 
-    // Invalidation cache (Next)
-    revalidateTag(tags.quote(id), '');
-    revalidateTag(tags.events(id), '');
-    revalidateTag(tags.list(), '');
+    revalidatePath(`/admin/quotes/${id}`);
+    revalidatePath(`/admin/quotes`);
   }
 
-  const { quote, error: quoteErr } = await getQuote(id);
+  const { data: quote, error: quoteErr } = await supabaseAdmin.from('quotes').select('*').eq('id', id).single();
 
   if (quoteErr || !quote) {
     return (
@@ -230,12 +115,17 @@ export default async function Page({ params }: { params: { id: string } }) {
     );
   }
 
+  const { data: events } = await supabaseAdmin
+    .from('quote_events')
+    .select('id, created_at, event_type, actor_type, source, request_id, diff')
+    .eq('quote_id', id)
+    .order('created_at', { ascending: false });
+
   const items: Item[] = Array.isArray(quote.items) ? quote.items : [];
   const photos: Photo[] = Array.isArray(quote.photos) ? quote.photos : [];
 
   return (
     <div className="space-y-4">
-      {/* Header */}
       <div className="flex flex-col gap-2 md:flex-row md:items-center md:justify-between">
         <div>
           <div className="flex items-center gap-2">
@@ -248,46 +138,77 @@ export default async function Page({ params }: { params: { id: string } }) {
           </p>
         </div>
 
-        <div className="flex gap-2 flex-wrap">
+        <div className="flex gap-2">
           <Button
             asChild
             variant="outline">
             <Link href="/admin/quotes">Retour</Link>
           </Button>
 
-          {/* Buttons */}
-          {[
-            { label: 'Contacté', status: 'contacted', variant: 'secondary' as const },
-            { label: 'Devisé', status: 'quoted', variant: 'secondary' as const },
-            { label: 'Gagné', status: 'won', variant: 'outline' as const },
-            { label: 'Perdu', status: 'lost', variant: 'destructive' as const },
-          ].map((b) => (
-            <form
-              key={b.status}
-              action={setStatus}
-              className="flex gap-2">
-              <input
-                type="hidden"
-                name="status"
-                value={b.status}
-              />
-              <input
-                type="hidden"
-                name="expectedUpdatedAt"
-                value={quote.updated_at ?? ''}
-              />
-              <Button
-                type="submit"
-                variant={b.variant}>
-                {b.label}
-              </Button>
-            </form>
-          ))}
+          <form
+            action={setStatus}
+            className="flex gap-2">
+            <input
+              type="hidden"
+              name="status"
+              value="contacted"
+            />
+            <Button
+              type="submit"
+              variant="secondary">
+              Contacté
+            </Button>
+          </form>
+
+          <form
+            action={setStatus}
+            className="flex gap-2">
+            <input
+              type="hidden"
+              name="status"
+              value="quoted"
+            />
+            <Button
+              type="submit"
+              variant="secondary">
+              Devisé
+            </Button>
+          </form>
+
+          <form
+            action={setStatus}
+            className="flex gap-2">
+            <input
+              type="hidden"
+              name="status"
+              value="won"
+            />
+            <Button
+              type="submit"
+              variant="outline">
+              Gagné
+            </Button>
+          </form>
+
+          <form
+            action={setStatus}
+            className="flex gap-2">
+            <input
+              type="hidden"
+              name="status"
+              value="lost"
+            />
+            <Button
+              type="submit"
+              variant="destructive">
+              Perdu
+            </Button>
+          </form>
         </div>
       </div>
 
       <div className="grid gap-4 lg:grid-cols-3">
-        {/* Col gauche */}
+        {/* Col gauche : infos */}
         <div className="lg:col-span-2 space-y-4">
           <Card>
             <CardHeader className="py-4">
@@ -403,11 +324,41 @@ export default async function Page({ params }: { params: { id: string } }) {
           </Card>
         </div>
 
-        {/* Col droite : timeline streamée */}
+        {/* Col droite : timeline */}
         <div className="space-y-4">
-          <Suspense fallback={<EventsSkeleton />}>
-            <Events id={id} />
-          </Suspense>
+          <Card>
+            <CardHeader className="py-4">
+              <CardTitle className="text-base">Historique</CardTitle>
+            </CardHeader>
+            <Separator />
+            <CardContent className="p-4 md:p-6">
+              <div className="space-y-3">
+                {(events ?? []).map((e) => (
+                  <div
+                    key={e.id}
+                    className="rounded-2xl border border-zinc-200 bg-white p-3">
+                    <div className="flex items-start justify-between gap-3">
+                      <div>
+                        <div className="text-sm font-medium">{humanEventType(e.event_type)}</div>
+                        <div className="text-xs text-zinc-500">
+                          {fmt(e.created_at)} • {e.actor_type || 'system'} {e.source ? `• ${e.source}` : ''}
+                        </div>
+                      </div>
+                      <Badge
+                        variant="outline"
+                        className="text-[11px]">
+                        {e.event_type}
+                      </Badge>
+                    </div>
+
+                    {e.diff && Object.keys(e.diff).length > 0 && <pre className="mt-2 overflow-auto rounded-xl bg-zinc-950 p-3 text-[11px] text-zinc-100">{JSON.stringify(e.diff, null, 2)}</pre>}
+                  </div>
+                ))}
+
+                {(!events || events.length === 0) && <div className="text-sm text-zinc-500">Aucun event.</div>}
+              </div>
+            </CardContent>
+          </Card>
 
           <Card>
             <CardHeader className="py-4">
