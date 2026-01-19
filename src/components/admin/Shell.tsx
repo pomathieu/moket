@@ -24,7 +24,7 @@ export default function AdminShell({ children }: { children: React.ReactNode }) 
       { href: '/admin/quotes', label: 'Devis', desc: 'Inbox & suivi' },
       { href: '/admin/settings', label: 'Réglages', desc: 'Accès & config' },
     ],
-    []
+    [],
   );
 
   async function signOut() {
@@ -47,7 +47,7 @@ export default function AdminShell({ children }: { children: React.ReactNode }) 
               key={item.href}
               href={item.href}
               onClick={() => setOpen(false)}
-              className={cn('group rounded-xl px-3 py-2 transition', active ? 'bg-zinc-900 text-white' : 'text-zinc-700 hover:bg-zinc-100 hover:text-zinc-900')}>
+              className={cn('group rounded-xl px-3 py-2 transition', active ? 'bg-accent text-white' : 'text-zinc-700 hover:bg-zinc-100 hover:text-zinc-900')}>
               <div className="flex items-center justify-between">
                 <span className="text-sm font-medium">{item.label}</span>
                 {active ? <span className="text-[11px] rounded-full bg-white/15 px-2 py-0.5">actif</span> : null}
