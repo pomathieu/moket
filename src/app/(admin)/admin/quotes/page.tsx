@@ -32,7 +32,6 @@ export default async function Page({ searchParams }: { searchParams: Promise<Sea
         />
       </div>
 
-      {/* ✅ Streaming : le cadre s'affiche tout de suite, la table arrive ensuite */}
       <Suspense
         key={`${q}|${status}|${pageNum}`}
         fallback={<QuotesTableSkeleton />}>
