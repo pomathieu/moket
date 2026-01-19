@@ -33,7 +33,7 @@ export async function updateSession(request: NextRequest) {
     return NextResponse.redirect(url);
   }
 
-  const userId = (claims as any).sub; // en général c'est ça
+  const userId = (claims as any).sub;
   if (!userId) {
     const url = request.nextUrl.clone();
     url.pathname = "/auth/login";
