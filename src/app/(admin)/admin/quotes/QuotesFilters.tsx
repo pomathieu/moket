@@ -64,7 +64,7 @@ export function QuotesFilters({ defaultQ, defaultStatus }: { defaultQ: string; d
 
         <Button
           variant="secondary"
-          className="h-10"
+          className="h-10 w-20"
           disabled={isPending}
           onClick={() => apply({ q: q.trim(), status })}>
           {isPending ? '…' : 'Filtrer'}
