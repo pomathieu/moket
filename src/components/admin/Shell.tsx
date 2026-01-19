@@ -187,7 +187,7 @@ export default function AdminShell({ children }: { children: React.ReactNode }) 
               </div>
             </div>
 
-            <div className="rounded-2xl border border-zinc-200 bg-white shadow-sm">
+            <div className="">
               <div className="p-4 md:p-6">{children}</div>
             </div>
           </div>
