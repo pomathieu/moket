@@ -1,13 +1,12 @@
 import Link from 'next/link';
 import { supabaseAdmin } from '@/lib/supabase/admin';
-
+import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from '@/components/ui/select';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Separator } from '@/components/ui/separator';
-import { Select } from '@/components/ui/select';
 
 function serviceLabel(v: string) {
   switch (v) {
@@ -127,9 +126,10 @@ export default async function page({ searchParams }: { searchParams: Promise<Sea
               placeholder="Rechercher (nom, email, tel, ville, CP, adresse)…"
               className="h-10"
             />
-            <Select
+            <select
               name="status"
-              defaultValue={status}>
+              defaultValue={status}
+              className="h-10 rounded-md border border-input bg-background px-3 text-sm focus:outline-none focus:ring-2 focus:ring-ring">
               <option value="">Tous les statuts</option>
               <option value="new">Nouveau</option>
               <option value="contacted">Contacté</option>
@@ -138,7 +138,7 @@ export default async function page({ searchParams }: { searchParams: Promise<Sea
               <option value="won">Gagné</option>
               <option value="lost">Perdu</option>
               <option value="archived">Archivé</option>
-            </Select>
+            </select>
 
             <Button
               type="submit"
