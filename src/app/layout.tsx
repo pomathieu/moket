@@ -63,19 +63,19 @@ const jsonLd = {
         name: 'Prestations MOKET',
         itemListElement: [
           { '@type': 'Offer', name: 'Nettoyage de matelas à domicile', priceCurrency: 'EUR', price: 90, url: `${base}/services/matelas` },
-          { '@type': 'Offer', name: 'Nettoyage de canapé en tissu à domicile', priceCurrency: 'EUR', price: 120, url: `${base}/services/canape-tissu` },
+          { '@type': 'Offer', name: 'Nettoyage de canapé en tissu à domicile', priceCurrency: 'EUR', price: 140, url: `${base}/services/canape-tissu` },
           {
             '@type': 'Offer',
             name: 'Nettoyage de tapis à domicile',
             priceCurrency: 'EUR',
-            priceSpecification: { '@type': 'UnitPriceSpecification', price: 30, priceCurrency: 'EUR', unitText: 'm²' },
+            priceSpecification: { '@type': 'UnitPriceSpecification', price: 35, priceCurrency: 'EUR', unitText: 'm²' },
             url: `${base}/services/tapis`,
           },
           {
             '@type': 'Offer',
             name: 'Nettoyage de moquette à domicile',
             priceCurrency: 'EUR',
-            priceSpecification: { '@type': 'UnitPriceSpecification', price: 9, priceCurrency: 'EUR', unitText: 'm²' },
+            priceSpecification: { '@type': 'UnitPriceSpecification', price: 12, priceCurrency: 'EUR', unitText: 'm²' },
             url: `${base}/services/moquette`,
           },
         ],

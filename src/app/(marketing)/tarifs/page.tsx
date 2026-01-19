@@ -5,12 +5,25 @@ import { Button } from '@/components/ui/button';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import { Check, Clock, CreditCard, Dot, Phone, Shield, Sparkles } from 'lucide-react';
 import { ZONES } from '@/lib/zones';
-// import { SERVICES } from '@/lib/services'; // (non utilisé ici)
 
 const SITE_URL = 'https://moket.fr';
 const BRAND = 'MOKET';
 const PHONE = '+33635090095';
 const PHONE_DISPLAY = '06 35 09 00 95';
+
+// Cadre tarifaire (IDF + Normandie) : protège ta marge et évite les cas "hors standard" au même prix.
+const PRICING_RULES = {
+  minIntervention: {
+    tapis: { idf: 150, normandie: 120 },
+    moquette: { idf: 150, normandie: 150 },
+  },
+  surcharges: [
+    { label: 'Poils d’animaux (important)', value: '+20 €' },
+    { label: 'Odeurs fortes (tabac/urine/humidité)', value: '+20 €' },
+    { label: 'Encrassement important / taches multiples', value: '+20 à +40 €' },
+  ],
+  note: 'Tarifs valables pour un état “standard”. En cas d’encrassement important, poils d’animaux, taches multiples, odeurs fortes, textile très fragile, très grand format ou accès difficile, un ajustement peut être proposé — toujours annoncé avant intervention.',
+};
 
 const PRICES = [
   {
@@ -20,35 +33,43 @@ const PRICES = [
       { label: '1 place', price: '90 €' },
       { label: '2 places', price: '120 €' },
     ],
+    badges: [],
     href: '/services/matelas',
+    seo: { pricingKind: 'fixed' as const },
   },
   {
     title: 'Nettoyage de canapé en tissu',
     desc: 'Traces d’usage, zones grasses, odeurs : nettoyage en profondeur.',
     items: [
-      { label: '2–3 places', price: '120 €' },
-      { label: '4–5 places', price: '160 €' },
+      { label: '2–3 places', price: '140 €' },
+      { label: '4–5 places', price: '190 €' },
     ],
+    badges: [],
     href: '/services/canape-tissu',
+    seo: { pricingKind: 'fixed' as const },
   },
   {
     title: 'Nettoyage de tapis',
     desc: 'Nettoyage des fibres + finition uniforme.',
-    items: [{ label: 'Prix au m²', price: '30 €/m²' }],
+    items: [{ label: 'Prix au m²', price: '35 €/m²' }],
+    badges: [`Minimum IDF : ${PRICING_RULES.minIntervention.tapis.idf} €`, `Minimum Normandie : ${PRICING_RULES.minIntervention.tapis.normandie} €`],
     href: '/services/tapis',
+    seo: { pricingKind: 'per_sqm' as const },
   },
   {
     title: 'Nettoyage de moquette',
     desc: 'Surfaces, pièces, bureaux — devis au m².',
-    items: [{ label: 'Prix au m²', price: '9 €/m²' }],
+    items: [{ label: 'Prix au m²', price: '12 €/m²' }],
+    badges: [`Minimum IDF : ${PRICING_RULES.minIntervention.moquette.idf} €`, `Minimum Normandie : ${PRICING_RULES.minIntervention.moquette.normandie} €`],
     href: '/services/moquette',
+    seo: { pricingKind: 'per_sqm' as const },
   },
-];
+] as const;
 
 const FAQS = [
   {
     q: 'Les tarifs sont-ils vraiment fixes ?',
-    a: 'Oui pour les prestations standard listées (matelas, canapés, tapis, moquettes). Le tarif peut évoluer à la marge si la configuration est atypique (très grand format, accès difficile, textile très fragile, contamination particulière). Dans tous les cas, on annonce un prix clair avant intervention.',
+    a: `Oui pour les prestations standard listées (matelas, canapés, tapis, moquettes). ${PRICING_RULES.note} Dans tous les cas, on annonce un prix clair avant intervention.`,
   },
   {
     q: 'Qu’est-ce qui influence le prix final ?',
@@ -93,7 +114,7 @@ export default function TarifsPage() {
     const n = Number(
       String(s)
         .replace(/[^\d,]/g, '')
-        .replace(',', '.')
+        .replace(',', '.'),
     );
     return Number.isFinite(n) ? n : undefined;
   };
@@ -134,37 +155,49 @@ export default function TarifsPage() {
         '@id': `${pageUrl}#offercatalog`,
         name: 'Tarifs MOKET',
         url: pageUrl,
-        itemListElement: PRICES.map((p, idx) => ({
-          '@type': 'Offer',
-          position: idx + 1,
-          url: `${SITE_URL}${p.href}`,
-          priceCurrency: 'EUR',
-          // Si plusieurs variantes (2 places / 4 places / prix au m²), on met une plage indicative
-          // et on détaille les variantes dans additionalProperty.
-          price: p.items.length === 1 ? toNumber(p.items[0].price) : undefined,
-          priceSpecification:
-            p.items.length > 1
-              ? {
-                  '@type': 'PriceSpecification',
-                  priceCurrency: 'EUR',
-                  minPrice: Math.min(...p.items.map((it) => toNumber(it.price)).filter((x): x is number => typeof x === 'number')),
-                  maxPrice: Math.max(...p.items.map((it) => toNumber(it.price)).filter((x): x is number => typeof x === 'number')),
-                }
-              : undefined,
-          itemOffered: {
-            '@type': 'Service',
-            name: p.title,
-            description: p.desc,
-            provider: { '@id': `${SITE_URL}/#localbusiness` },
-            areaServed: ['Île-de-France', 'Normandie'],
+        itemListElement: PRICES.map((p, idx) => {
+          const numericPrices = p.items.map((it) => toNumber(it.price)).filter((x): x is number => typeof x === 'number');
+
+          const isPerSqm = p.seo?.pricingKind === 'per_sqm';
+
+          return {
+            '@type': 'Offer',
+            position: idx + 1,
             url: `${SITE_URL}${p.href}`,
-            additionalProperty: p.items.map((it) => ({
-              '@type': 'PropertyValue',
-              name: it.label,
-              value: it.price,
-            })),
-          },
-        })),
+            priceCurrency: 'EUR',
+            // Pour les prix au m² : éviter de mettre un "price" trompeur.
+            price: !isPerSqm && p.items.length === 1 ? numericPrices[0] : undefined,
+            priceSpecification:
+              !isPerSqm && numericPrices.length > 1
+                ? {
+                    '@type': 'PriceSpecification',
+                    priceCurrency: 'EUR',
+                    minPrice: Math.min(...numericPrices),
+                    maxPrice: Math.max(...numericPrices),
+                  }
+                : undefined,
+            itemOffered: {
+              '@type': 'Service',
+              name: p.title,
+              description: p.desc,
+              provider: { '@id': `${SITE_URL}/#localbusiness` },
+              areaServed: ['Île-de-France', 'Normandie'],
+              url: `${SITE_URL}${p.href}`,
+              additionalProperty: [
+                ...p.items.map((it) => ({
+                  '@type': 'PropertyValue',
+                  name: it.label,
+                  value: it.price,
+                })),
+                ...(p.badges?.map((b) => ({
+                  '@type': 'PropertyValue',
+                  name: 'Conditions',
+                  value: b,
+                })) ?? []),
+              ],
+            },
+          };
+        }),
       },
 
       {
@@ -241,6 +274,23 @@ export default function TarifsPage() {
         <h2 className="text-2xl md:text-3xl font-bold">Grille tarifaire</h2>
         <p className="mt-2 text-muted-foreground max-w-3xl">Pour un chiffrage précis (matière, surface, taches), envoie 2–3 photos : vue d’ensemble + zone(s) concernée(s).</p>
 
+        <div className="mt-4 rounded-2xl border border-border bg-muted/40 p-5">
+          <p className="text-sm text-muted-foreground">
+            <strong>Cadre :</strong> {PRICING_RULES.note}
+          </p>
+          <div className="mt-3 grid gap-2 md:grid-cols-3">
+            {PRICING_RULES.surcharges.map((s) => (
+              <div
+                key={s.label}
+                className="rounded-xl border border-border/60 bg-white px-4 py-3 text-sm flex items-center justify-between">
+                <span className="text-muted-foreground">{s.label}</span>
+                <span className="font-semibold">{s.value}</span>
+              </div>
+            ))}
+          </div>
+          <p className="mt-3 text-xs text-muted-foreground">* Les minimums d’intervention s’appliquent surtout aux tapis/moquettes (déplacement + mise en place + protection).</p>
+        </div>
+
         <div className="mt-8 grid grid-cols-1 md:grid-cols-2 gap-6">
           {PRICES.map((p) => (
             <div
@@ -250,7 +300,20 @@ export default function TarifsPage() {
                 <div>
                   <h3 className="text-lg font-semibold">{p.title}</h3>
                   <p className="mt-1 text-sm text-muted-foreground">{p.desc}</p>
+
+                  {p.badges?.length ? (
+                    <div className="mt-3 flex flex-wrap gap-2">
+                      {p.badges.map((b) => (
+                        <span
+                          key={b}
+                          className="inline-flex items-center rounded-full border border-border/60 bg-muted/40 px-3 py-1 text-xs text-muted-foreground">
+                          {b}
+                        </span>
+                      ))}
+                    </div>
+                  ) : null}
                 </div>
+
                 <Button
                   asChild
                   variant="outline"

@@ -68,8 +68,9 @@ function QuickAnswers() {
       <p className="font-semibold">Réponses rapides</p>
       <ul className="mt-2 space-y-1 text-muted-foreground">
         <li>
-          <strong>Tarifs :</strong> Matelas dès 90€, canapé tissu dès 120€, tapis 30€/m², moquette 9€/m².
+          <strong>Tarifs :</strong> Matelas dès 90€, canapé tissu dès 140€, tapis 35€/m² (min. 120–150€), moquette 12€/m² (min. 150€).
         </li>
+
         <li>
           <strong>Durée :</strong> généralement 45–90 min (selon taille/état).
         </li>
@@ -173,9 +174,9 @@ export default function Home() {
               <p className="inline-flex items-center gap-2 text-xs font-medium text-muted-foreground">Île-de-France • Normandie • Intervention à domicile</p>
 
               <h1 className="mt-3 text-4xl md:text-5xl font-extrabold -tracking-normal text-foreground">Nettoyage de canapés, matelas et moquettes à domicile</h1>
-
               <p className="mt-3 text-sm text-muted-foreground">
-                <strong>Tarifs :</strong> Matelas dès <strong>90€</strong> • Canapé tissu dès <strong>120€</strong> • Tapis <strong>30€/m²</strong> • Moquette <strong>9€/m²</strong>
+                <strong>Tarifs :</strong> Matelas dès <strong>90€</strong> • Canapé tissu dès <strong>140€</strong> • Tapis <strong>35€/m²</strong>{' '}
+                <span className="text-muted-foreground">(min. 120–150€)</span> • Moquette <strong>12€/m²</strong> <span className="text-muted-foreground">(min. 150€)</span>
               </p>
 
               <p className="mt-8 lg:mt-4 text-sm text-muted-foreground">
@@ -443,17 +444,22 @@ export default function Home() {
         <section className="py-16 bg-muted md:py-24 p-4 lg:px-8">
           <div className="mx-auto max-w-7xl px-4">
             <h2 className="text-3xl font-bold">Tarifs indicatifs</h2>
-            <p className="mt-3 text-muted-foreground max-w-3xl">Tarifs fixes. Pour un chiffrage précis, envoyez 2–3 photos : on répond rapidement avec un devis clair.</p>
-
+            <p className="mt-3 text-muted-foreground max-w-3xl">
+              Tarifs indicatifs. Prix annoncé avant intervention. Pour un chiffrage précis, envoyez 2–3 photos : on répond rapidement avec un devis clair.
+            </p>
             <div className="mt-8 grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="rounded-2xl border border-border bg-card p-6">
                 <p className="font-semibold text-slate-900">Tarifs fixes</p>
                 <ul className="mt-3 space-y-2 text-sm text-slate-700">
                   <li>• Matelas : 90 € (1 place) / 120 € (2 places)</li>
-                  <li>• Canapé tissu : 120 € (2–3 places) / 160 € (4–5 places)</li>
-                  <li>• Tapis : 30 € / m²</li>
-                  <li>• Moquette : 9 € / m²</li>
+                  <li>• Canapé tissu : 140 € (2–3 places) / 190 € (4–5 places)</li>
+                  <li>• Tapis : 35 € / m²</li>
+                  <li>• Moquette : 12 € / m²</li>
                 </ul>
+                <p className="mt-3 text-xs text-muted-foreground">
+                  <strong>Cadre :</strong> tarifs valables pour un état standard. En cas d’encrassement important, poils d’animaux, taches multiples ou odeurs fortes, un ajustement peut être proposé —
+                  toujours annoncé avant intervention.
+                </p>
                 <p className="mt-3 text-xs text-muted-foreground">
                   Brûlures et décolorations ne disparaissent pas complètement. En revanche, l’encrassement et les taches courantes sont généralement éliminés.
                 </p>

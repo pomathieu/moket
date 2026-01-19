@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { useFieldArray, useForm, useWatch } from 'react-hook-form';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
-import { ChevronLeft, ChevronRight, Info, Calculator, PhoneCall, FileText, Plus, Minus, Clock, Trash2 } from 'lucide-react';
+import { ChevronLeft, ChevronRight, PhoneCall, FileText, Plus, Clock, Trash2 } from 'lucide-react';
 
 declare global {
   interface Window {
@@ -34,16 +34,25 @@ type Step = 0 | 1 | 2;
 /**
  * Tarifs
  * - Matelas : 90€ (1 place) / 120€ (2 places)
- * - Canapé tissu : 120€ (2-3 places) / 160€ (4-5 places)
- * - Tapis : 30€/m²
- * - Moquette : 9€/m²
+ * - Canapé tissu : 140€ (2–3 places) / 190€ (4–5 places)
+ * - Tapis : 35€/m² (minimum 120€ Normandie / 150€ IDF)
+ * - Moquette : 12€/m² (minimum 150€)
  */
 const PRICES = {
   matelas: { small: 90, large: 120 },
-  canape: { small: 120, large: 160 },
-  tapis: { perM2: 30 },
-  moquette: { perM2: 9 },
+  canape: { small: 140, large: 190 },
+  tapis: { perM2: 35 },
+  moquette: { perM2: 12 },
 } as const;
+
+// Minimums d’intervention (tapis/moquette)
+const MINIMUMS_EUR = {
+  tapis: { idf: 150, normandie: 120 },
+  moquette: { idf: 150, normandie: 150 },
+} as const;
+
+// Si tu n'as pas la zone ici, on applique un minimum "safe" (IDF).
+const DEFAULT_ZONE: 'idf' | 'normandie' = 'idf';
 
 const WEEKEND_SURCHARGE_EUR = 20;
 
@@ -121,13 +130,17 @@ function buildItemPrice(item: Item) {
 
   const m2 = parseM2(item.areaM2);
   const safeM2 = m2 === null ? 0 : clamp(m2, 0, 999);
-  const base = Math.round(safeM2 * PRICES[service].perM2);
+  const computed = Math.round(safeM2 * PRICES[service].perM2);
+
+  const min = service === 'tapis' ? MINIMUMS_EUR.tapis[DEFAULT_ZONE] : service === 'moquette' ? MINIMUMS_EUR.moquette[DEFAULT_ZONE] : 0;
+
   const ok = safeM2 > 0;
+  const base = ok ? Math.max(computed, min) : 0;
 
   return {
     ok,
     base,
-    details: `${serviceLabel(service)} • ${ok ? `${safeM2} m²` : 'surface à préciser'} • ${PRICES[service].perM2}€/m²`,
+    details: `${serviceLabel(service)} • ${ok ? `${safeM2} m²` : 'surface à préciser'} • ${PRICES[service].perM2}€/m²${min ? ` (min. ${min}€)` : ''}`,
   };
 }
 
@@ -160,10 +173,12 @@ export function PriceCalculator({ phone = '+33635090095', className = '', onCTAC
 
   const computed = React.useMemo(() => {
     const items = (values.items ?? []).filter((it): it is Item => typeof it.service === 'string').map((it) => buildItemPrice(it));
+
     const base = items.reduce((acc, x) => acc + x.base, 0);
     const weekend = values.urgency === 'weekend' ? WEEKEND_SURCHARGE_EUR : 0;
     const total = base + weekend;
     const allOk = items.every((x) => x.ok);
+
     return { items, base, weekend, total, allOk };
   }, [values.items, values.urgency]);
 
@@ -173,12 +188,11 @@ export function PriceCalculator({ phone = '+33635090095', className = '', onCTAC
       return;
     }
     if (step === 1) {
-      // Valide toutes les surfaces si tapis/moquette
-      const ok = await trigger((values.items ?? []).flatMap((it, idx) => (typeof it.service === 'string' && itemNeedsArea(it.service as Service) ? [`items.${idx}.areaM2` as const] : [])));
+      const ok = await trigger((values.items ?? []).flatMap((it, idx) => (typeof it.service === 'string' && itemNeedsArea(it.service as Service) ? ([`items.${idx}.areaM2`] as const) : [])));
       if (!ok) return;
+
       setStep(2);
       pushAnalytics('calc_view_result', { items_count: values.items?.length ?? 1 });
-      return;
     }
   }
 
@@ -205,26 +219,7 @@ export function PriceCalculator({ phone = '+33635090095', className = '', onCTAC
 
   return (
     <section className={['rounded-2xl bg-card/50 ', className].join(' ')}>
-      {/* Header */}
-
-      {/* Progress
-      <div className="rounded-2xl border border-border bg-background p-4">
-        <div className="flex items-center justify-between gap-3">
-          <div>
-            <p className="text-sm font-semibold">Étape {step + 1}/3</p>
-            <p className="text-xs text-muted-foreground">Articles → options → estimation</p>
-          </div>
-          <div className="text-xs text-muted-foreground tabular-nums">{Math.round(((step + 1) / 3) * 100)}%</div>
-        </div>
-        <div className="mt-3 h-2 w-full rounded-full bg-muted">
-          <div
-            className="h-2 rounded-full bg-primary transition-all"
-            style={{ width: `${Math.round(((step + 1) / 3) * 100)}%` }}
-          />
-        </div>
-      </div> */}
-
-      <div className="mt-4 rounded-2xl  p-3 sm:p-5">
+      <div className="mt-4 rounded-2xl p-3 sm:p-5">
         {/* STEP 0: Items */}
         {step === 0 && (
           <div className="space-y-4">
@@ -251,6 +246,8 @@ export function PriceCalculator({ phone = '+33635090095', className = '', onCTAC
                 const areaName = `items.${idx}.areaM2` as const;
 
                 const service = (values.items?.[idx]?.service ?? f.service) as Service;
+                const currentItem = (values.items?.[idx] ?? { service: 'canape', sizePreset: 'small', areaM2: '' }) as Item;
+                const preview = buildItemPrice(currentItem);
 
                 return (
                   <div
@@ -345,37 +342,13 @@ export function PriceCalculator({ phone = '+33635090095', className = '', onCTAC
 
                     {/* mini estim item */}
                     <div className="mt-3 rounded-2xl border border-border bg-muted/20 p-3 text-xs text-muted-foreground">
-                      <span className="font-medium text-foreground">Estimation article :</span>{' '}
-                      {formatEUR(buildItemPrice(values.items?.[idx] && values.items?.[idx].service ? (values.items[idx] as Item) : { service: 'canape', sizePreset: 'small' }).base)}
-                      <span className="ml-2">•</span>{' '}
-                      {buildItemPrice(values.items?.[idx] && values.items?.[idx].service ? (values.items[idx] as Item) : { service: 'canape', sizePreset: 'small' }).details}
+                      <span className="font-medium text-foreground">Estimation article :</span> {formatEUR(preview.base)}
+                      <span className="ml-2">•</span> {preview.details}
                     </div>
                   </div>
                 );
               })}
             </div>
-            {/*
-            <div className="rounded-2xl border border-border bg-muted/30 p-4 text-sm">
-              <p className="font-semibold inline-flex items-center gap-2">
-                <Info className="h-4 w-4" />
-                Rappel tarifs
-              </p>
-              <ul className="mt-2 space-y-1 text-muted-foreground text-xs">
-                <li>
-                  <strong>Matelas :</strong> 90€ (1 place) / 120€ (2 places)
-                </li>
-                <li>
-                  <strong>Canapé tissu :</strong> 120€ (2–3 places) / 160€ (4–5 places)
-                </li>
-                <li>
-                  <strong>Tapis :</strong> 30€/m²
-                </li>
-                <li>
-                  <strong>Moquette :</strong> 9€/m²
-                </li>
-              </ul>
-                      </div>
-                       */}
           </div>
         )}
 
@@ -450,6 +423,7 @@ export function PriceCalculator({ phone = '+33635090095', className = '', onCTAC
                     <span className="tabular-nums text-foreground">{formatEUR(it.base)}</span>
                   </li>
                 ))}
+
                 {values.urgency === 'weekend' && WEEKEND_SURCHARGE_EUR > 0 && (
                   <li className="flex items-start justify-between gap-3">
                     <span>• Option week-end</span>
@@ -464,7 +438,7 @@ export function PriceCalculator({ phone = '+33635090095', className = '', onCTAC
                 <div>
                   <p className="text-xs text-muted-foreground">Total estimé</p>
                   <p className="text-2xl font-extrabold">{formatEUR(computed.total)}</p>
-                  <p className="mt-1 text-[11px] text-muted-foreground">Hors brûlures/décolorations. Les taches anciennes peuvent être limitées.</p>
+                  <p className="mt-1 text-[11px] text-muted-foreground">Hors brûlures/décolorations. Les taches anciennes peuvent être limitées. Tapis/moquette : minimum d’intervention appliqué.</p>
                 </div>
 
                 <div className="hidden sm:flex flex-col items-end gap-2">
@@ -538,7 +512,7 @@ export function PriceCalculator({ phone = '+33635090095', className = '', onCTAC
       </div>
 
       {/* Footer controls */}
-      <div className="mt-4 rounded-2xl   px-3 py-3 sm:px-4">
+      <div className="mt-4 rounded-2xl px-3 py-3 sm:px-4">
         <div className="flex items-center justify-between gap-3">
           <Button
             type="button"

@@ -359,16 +359,6 @@ export default async function page({ params }: { params: Promise<{ id: string }>
               </div>
             </CardContent>
           </Card>
-
-          <Card>
-            <CardHeader className="py-4">
-              <CardTitle className="text-base">Meta</CardTitle>
-            </CardHeader>
-            <Separator />
-            <CardContent className="p-4 md:p-6">
-              <pre className="overflow-auto rounded-xl bg-zinc-950 p-3 text-[11px] text-zinc-100">{JSON.stringify(quote.meta ?? {}, null, 2)}</pre>
-            </CardContent>
-          </Card>
         </div>
       </div>
     </div>
