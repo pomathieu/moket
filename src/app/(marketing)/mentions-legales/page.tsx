@@ -14,7 +14,7 @@ const LEGAL_ENTITY = {
   siret: '94859755400021',
   vatNumber: 'FR78948597554',
   address: '26 rue charles baudelaire, 75012 Paris France',
-  email: 'pomathieu75@gmail.com',
+  email: 'devis@moket.fr',
   phone: '+33635090095',
   publicationDirector: 'Mathieu Pierre-Olivier',
 };

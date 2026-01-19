@@ -7,7 +7,7 @@ const SITE_URL = 'https://moket.fr';
 const LEGAL_ENTITY = {
   name: 'The Trade Copilot',
   address: '26 rue charles baudelaire, 75012 Paris France',
-  email: 'pomathieu75@gmail.com',
+  email: 'devis@moket.fr',
   phone: '+33635090095',
 };
 
