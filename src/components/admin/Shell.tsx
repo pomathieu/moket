@@ -22,7 +22,6 @@ export default function AdminShell({ children }: { children: React.ReactNode }) 
     () => [
       { href: '/admin', label: 'Dashboard', desc: 'Vue d’ensemble' },
       { href: '/admin/quotes', label: 'Devis', desc: 'Inbox & suivi' },
-      { href: '/admin/settings', label: 'Réglages', desc: 'Accès & config' },
     ],
     [],
   );
