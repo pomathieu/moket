@@ -1,6 +1,7 @@
 export type Zone = {
   slug: string;
   title: string;
+  postalCode?: string;
   seo: {
     h1: string;
     title: string;
@@ -22,6 +23,7 @@ export const ZONES: Zone[] = [
     slug: 'paris',
     title: 'Paris',
     regionLabel: 'Île-de-France',
+    postalCode: '75001 à 75020',
     seo: {
       h1: 'Nettoyage textile à Paris',
       title: 'Nettoyage matelas, canapé, tapis & moquette à Paris | MOKET',
@@ -61,6 +63,7 @@ export const ZONES: Zone[] = [
   {
     slug: 'hauts-de-seine',
     title: 'Hauts-de-Seine',
+    postalCode: '92',
     regionLabel: 'Île-de-France',
     seo: {
       h1: 'Nettoyage textile dans les Hauts-de-Seine',
@@ -80,6 +83,7 @@ export const ZONES: Zone[] = [
   {
     slug: 'val-de-marne',
     title: 'Val-de-Marne',
+    postalCode: '94',
     regionLabel: 'Île-de-France',
     seo: {
       h1: 'Nettoyage textile dans le Val-de-Marne',
@@ -98,6 +102,7 @@ export const ZONES: Zone[] = [
 
   {
     slug: 'yvelines',
+    postalCode: '78',
     title: 'Yvelines',
     regionLabel: 'Île-de-France',
     seo: {
@@ -117,6 +122,7 @@ export const ZONES: Zone[] = [
   {
     slug: 'seine-saint-denis',
     title: 'Seine-Saint-Denis',
+    postalCode: '93',
     regionLabel: 'Île-de-France',
     seo: {
       h1: 'Nettoyage textile en Seine-Saint-Denis',
@@ -134,6 +140,7 @@ export const ZONES: Zone[] = [
 
   {
     slug: 'seine-maritime',
+    postalCode: '76',
     title: 'Seine-Maritime',
     regionLabel: 'Normandie',
     seo: {
@@ -152,6 +159,7 @@ export const ZONES: Zone[] = [
 
   {
     slug: 'calvados',
+    postalCode: '14',
     title: 'Calvados',
     regionLabel: 'Normandie',
     seo: {

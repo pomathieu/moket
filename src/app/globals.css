@@ -51,42 +51,50 @@
 }
 
 /* -----------------------------
-   Theme: Light (Option A)
-   "Clinique premium" for MOKET
+   Theme: Light
+   "Fresh & Clean" for MOKET
+   Navy + Emerald palette
 ------------------------------ */
 :root {
   --radius: 0.75rem;
 
   /* Core */
-  --background: oklch(0.988 0.004 80); /* ~ #F7F7F5 */
-  --foreground: oklch(0.2 0 0); /* ~ #111111 */
+  --background: oklch(0.985 0.002 100); /* Warm off-white #FAFAF9 */
+  --foreground: oklch(0.145 0.02 260); /* Deep slate #0F172A */
 
   /* Surfaces */
-  --card: oklch(1 0 0);
+  --card: oklch(1 0 0); /* Pure white */
   --card-foreground: var(--foreground);
   --popover: var(--card);
   --popover-foreground: var(--foreground);
 
   /* Muted */
-  --muted: oklch(0.965 0.004 80);
-  --muted-foreground: oklch(0.48 0.01 260);
+  --muted: oklch(0.968 0.003 100); /* Soft gray-warm #F5F5F4 */
+  --muted-foreground: oklch(0.45 0.015 260); /* Slate-500 */
 
   /* Borders / Inputs / Rings */
-  --border: oklch(0.91 0 0 / 70%);
+  --border: oklch(0.92 0.004 100 / 80%); /* Subtle warm border */
   --input: oklch(0.97 0 0);
-  --ring: oklch(0.55 0.05 210);
+  --ring: oklch(0.6 0.15 160); /* Emerald ring */
 
-  /* Primary (Deep Navy) */
-  --primary: oklch(0.23 0.06 255); /* close to #0B1F3B */
+  /* Primary (Deep Navy/Slate) */
+  --primary: oklch(0.205 0.03 265); /* #0F172A slate-900 */
   --primary-foreground: oklch(0.99 0 0);
 
   /* Secondary (soft neutral) */
-  --secondary: oklch(0.96 0.004 80);
-  --secondary-foreground: oklch(0.23 0 0);
+  --secondary: oklch(0.96 0.003 100);
+  --secondary-foreground: oklch(0.205 0.03 265);
 
-  /* Accent (Teal) */
-  --accent: oklch(0.7 0.12 190); /* close to #0EA5A4 */
-  --accent-foreground: oklch(0.12 0 0);
+  /* Accent (Emerald - Fresh green) */
+  --accent: oklch(0.596 0.145 163); /* #059669 emerald-600 */
+  --accent-foreground: oklch(0.99 0 0);
+
+  /* Accent variants for gradients */
+  --accent-light: oklch(0.65 0.15 163); /* Lighter emerald */
+  --accent-dark: oklch(0.52 0.14 163); /* Darker emerald */
+
+  /* Teal for gradient mix */
+  --teal: oklch(0.6 0.13 180); /* #0D9488 teal-600 */
 
   /* Destructive */
   --destructive: oklch(0.62 0.2 25);
@@ -94,10 +102,13 @@
 
   /* Optional extras */
   --dotcolor: oklch(0.55 0 0);
-  --muted-background: oklch(0.97 0.004 80);
+  --muted-background: oklch(0.97 0.003 100);
 
-  /* Subtle brand gradient (navy -> teal) */
-  --gradient-brand: linear-gradient(135deg, #0b1f3b 0%, #0ea5a4 100%);
+  /* Brand gradient (emerald -> teal) */
+  --gradient-brand: linear-gradient(135deg, #059669 0%, #0d9488 100%);
+
+  /* Alternative: Navy to Emerald */
+  --gradient-brand-alt: linear-gradient(135deg, #0f172a 0%, #059669 100%);
 
   /* Layout helpers */
   --nav-height: 84px;
@@ -108,34 +119,38 @@
    Not used by default
 ------------------------------ */
 .dark {
-  --background: oklch(0.14 0 0);
+  --background: oklch(0.13 0.015 265);
   --foreground: oklch(0.98 0 0);
 
-  --card: oklch(0.2 0 0);
+  --card: oklch(0.18 0.01 265);
   --card-foreground: var(--foreground);
   --popover: var(--card);
   --popover-foreground: var(--foreground);
 
-  --muted: oklch(0.22 0 0);
+  --muted: oklch(0.22 0.01 265);
   --muted-foreground: oklch(0.72 0 0);
 
-  --border: oklch(1 0 0 / 12%);
-  --input: oklch(1 0 0 / 16%);
-  --ring: oklch(0.55 0 0);
+  --border: oklch(1 0 0 / 10%);
+  --input: oklch(1 0 0 / 12%);
+  --ring: oklch(0.65 0.15 163);
 
-  --primary: oklch(0.92 0 0);
-  --primary-foreground: oklch(0.18 0 0);
+  --primary: oklch(0.98 0 0);
+  --primary-foreground: oklch(0.18 0.02 265);
 
-  --secondary: oklch(0.25 0 0);
+  --secondary: oklch(0.25 0.01 265);
   --secondary-foreground: oklch(0.98 0 0);
 
-  --accent: oklch(0.72 0.12 190);
-  --accent-foreground: oklch(0.14 0 0);
+  --accent: oklch(0.65 0.15 163); /* Brighter emerald for dark mode */
+  --accent-foreground: oklch(0.13 0.015 265);
+
+  --accent-light: oklch(0.72 0.14 163);
+  --accent-dark: oklch(0.58 0.15 163);
+  --teal: oklch(0.65 0.13 180);
 
   --destructive: oklch(0.7 0.19 22);
   --destructive-foreground: oklch(0.98 0 0);
 
-  --gradient-brand: linear-gradient(135deg, #0b1f3b 0%, #0ea5a4 100%);
+  --gradient-brand: linear-gradient(135deg, #10b981 0%, #14b8a6 100%);
 }
 
 /* -----------------------------
@@ -189,14 +204,42 @@
   overflow: hidden;
 }
 
-/* Optional: keep hardware-acceleration helper */
+/* Hardware-acceleration helper */
 .feature-slider-item {
   transform: translateZ(0);
 }
 
+/* Gradient text utility */
+.text-gradient {
+  @apply text-transparent bg-clip-text;
+  background-image: var(--gradient-brand);
+}
+
+.text-gradient-alt {
+  @apply text-transparent bg-clip-text;
+  background-image: var(--gradient-brand-alt);
+}
+
+/* Gradient background utilities */
+.bg-gradient-brand {
+  background-image: var(--gradient-brand);
+}
+
+.bg-gradient-brand-alt {
+  background-image: var(--gradient-brand-alt);
+}
+
+/* Accent glow for buttons/cards */
+.shadow-accent-glow {
+  box-shadow: 0 10px 40px -10px oklch(0.596 0.145 163 / 30%);
+}
+
+.shadow-accent-glow-lg {
+  box-shadow: 0 20px 60px -15px oklch(0.596 0.145 163 / 40%);
+}
+
 /* -----------------------------
-   Optional: Reduced motion tuning
-   (If you use Radix Navigation Menu)
+   Reduced motion tuning
 ------------------------------ */
 @media (prefers-reduced-motion: no-preference) {
   [data-radix-navigation-menu] {
@@ -211,22 +254,161 @@
   }
 }
 
-/* -----------------------------
-   Remove legacy marquee styles
-   If you don't need them for MOKET,
-   delete this entire block.
------------------------------- */
-/*
-.marquee { display: block; overflow: hidden; }
-.marquee-track { position: absolute; display: flex; width: max-content; gap: 3.5rem; white-space: nowrap; }
-.marquee-track--top { top: 18%; animation: marquee 18s linear infinite; }
-.marquee-track--bottom { bottom: 18%; animation: marquee-reverse 18s linear infinite; }
-.marquee-item { display: flex; flex-direction: column; align-items: center; gap: 0.65rem; min-width: 12rem; text-align: center; letter-spacing: 0.3em; }
-.marquee-item span:first-child { font-size: 0.78rem; }
-.marquee-item-dot { width: 2px; height: 1.5rem; background: rgba(255, 255, 255, 0.16); }
-.marquee-fade { position: absolute; top: 0; bottom: 0; width: 6rem; pointer-events: none; }
-.marquee-fade--left { left: 0; background: linear-gradient(90deg, rgba(0, 0, 0, 0.55), rgba(0, 0, 0, 0)); }
-.marquee-fade--right { right: 0; background: linear-gradient(270deg, rgba(0, 0, 0, 0.55), rgba(0, 0, 0, 0)); }
-@keyframes marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
-@keyframes marquee-reverse { 0% { transform: translateX(0); } 100% { transform: translateX(50%); } }
-*/
+/* ===========================================
+   Animation Keyframes
+   =========================================== */
+@keyframes fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes scale-in {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes floatInLeft {
+  from {
+    opacity: 0;
+    transform: translate(-20px, 20px);
+  }
+  to {
+    opacity: 1;
+    transform: translate(0, 0);
+  }
+}
+
+@keyframes floatInRight {
+  from {
+    opacity: 0;
+    transform: translate(20px, -20px);
+  }
+  to {
+    opacity: 1;
+    transform: translate(0, 0);
+  }
+}
+
+@keyframes scaleX {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+/* ===========================================
+   Animation Classes - FIX CLIGNOTEMENT
+   
+   Le problème : les éléments sont visibles avant que 
+   l'animation démarre (pendant le delay), puis deviennent 
+   invisibles au début de l'animation (opacity: 0 dans from),
+   puis réapparaissent.
+   
+   La solution : utiliser `both` dans animation-fill-mode
+   - `backwards` : applique les styles du keyframe `from` AVANT le début
+   - `forwards` : conserve les styles du keyframe `to` APRÈS la fin
+   - `both` : combine les deux
+   =========================================== */
+
+.animate-fade-in-up {
+  opacity: 0; /* État initial pour éviter le flash */
+  animation: fade-in-up 0.6s ease-out both;
+}
+
+.animate-fade-in {
+  opacity: 0;
+  animation: fade-in 0.4s ease-out both;
+}
+
+.animate-scale-in {
+  opacity: 0;
+  animation: scale-in 0.5s ease-out both;
+}
+
+/* ===========================================
+   Animation Delays
+   =========================================== */
+.delay-100 {
+  animation-delay: 100ms;
+}
+.delay-200 {
+  animation-delay: 200ms;
+}
+.delay-300 {
+  animation-delay: 300ms;
+}
+.delay-400 {
+  animation-delay: 400ms;
+}
+.delay-500 {
+  animation-delay: 500ms;
+}
+.delay-600 {
+  animation-delay: 600ms;
+}
+.delay-700 {
+  animation-delay: 700ms;
+}
+
+/* ===========================================
+   Reduced Motion Support
+   =========================================== */
+@media (prefers-reduced-motion: reduce) {
+  .animate-fade-in-up,
+  .animate-fade-in,
+  .animate-scale-in {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+
+  /* Désactive toutes les animations arbitraires aussi */
+  [class*='animate-['] {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}

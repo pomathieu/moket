@@ -271,7 +271,7 @@ export function PriceCalculator({ phone = '+33635090095', className = '', onCTAC
                       )}
                     </div>
 
-                    <div className="mt-3 grid gap-3 sm:grid-cols-2">
+                    <div className="mt-3 grid gap-3 ">
                       {/* Service */}
                       <div className="grid gap-2">
                         <label className="text-sm font-medium">Type</label>

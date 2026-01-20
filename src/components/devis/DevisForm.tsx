@@ -2,10 +2,10 @@
 
 import * as React from 'react';
 import { useFieldArray, useForm, useWatch } from 'react-hook-form';
-import { Separator } from '@/components/ui/separator';
 import { Button } from '@/components/ui/button';
 import { toast } from 'sonner';
-import { FileImage, Trash2, Plus, Minus, ChevronLeft, ChevronRight, Loader2, MapPin } from 'lucide-react';
+import { FileImage, Trash2, Plus, Loader2, MapPin, User, Mail, Phone, Sofa, BedDouble, RectangleHorizontal, Grid3X3, HelpCircle, Check, Camera, X, ChevronRight, ChevronLeft } from 'lucide-react';
+import { cn } from '@/lib/utils';
 
 declare global {
   interface Window {
@@ -17,7 +17,8 @@ type Service = 'matelas' | 'canape' | 'tapis' | 'moquette' | 'autre';
 
 type Item = {
   service: Service;
-  dimensions?: string;
+  size?: string; // For matelas/canape: specific size option
+  surface?: string; // For tapis/moquette: m² value
   details?: string;
 };
 
@@ -27,13 +28,34 @@ type FormValues = {
   postalCode: string;
   name: string;
   contact: string;
-  // optionnel si tu préfères le gérer dans RHF
   address?: string;
 };
 
 const MAX_FILES = 6;
-const MAX_BYTES_PER_FILE = 8 * 1024 * 1024; // 8MB/photo
-const MAX_TOTAL_BYTES = 25 * 1024 * 1024; // 25MB total
+const MAX_BYTES_PER_FILE = 8 * 1024 * 1024;
+const MAX_TOTAL_BYTES = 25 * 1024 * 1024;
+
+const SERVICE_OPTIONS = [
+  { value: 'canape', label: 'Canapé', icon: Sofa, color: 'emerald' },
+  { value: 'matelas', label: 'Matelas', icon: BedDouble, color: 'teal' },
+  { value: 'tapis', label: 'Tapis', icon: RectangleHorizontal, color: 'cyan' },
+  { value: 'moquette', label: 'Moquette', icon: Grid3X3, color: 'sky' },
+  { value: 'autre', label: 'Autre', icon: HelpCircle, color: 'slate' },
+] as const;
+
+// Size options aligned with pricing
+const SIZE_OPTIONS = {
+  matelas: [
+    { value: '1-place', label: '1 place', price: '90 €' },
+    { value: '2-places', label: '2 places', price: '120 €' },
+  ],
+  canape: [
+    { value: '2-3-places', label: '2–3 places', price: '140 €' },
+    { value: '4-5-places', label: '4–5 places', price: '190 €' },
+  ],
+  tapis: [{ value: 'per-sqm', label: 'Prix au m²', price: '30 €/m²', note: 'Minimum 150€ (IDF) / 120€ (Normandie)' }],
+  moquette: [{ value: 'per-sqm', label: 'Prix au m²', price: '12 €/m²', note: 'Minimum 150€' }],
+} as const;
 
 function humanFileSize(bytes: number) {
   const units = ['B', 'KB', 'MB', 'GB'];
@@ -48,26 +70,6 @@ function humanFileSize(bytes: number) {
 
 function totalSize(list: File[]) {
   return list.reduce((acc, f) => acc + (f?.size ?? 0), 0);
-}
-
-function inputBase(hasError?: boolean) {
-  return [
-    'h-10 rounded-2xl border bg-background px-3 placeholder:text-xs text-base outline-none',
-    'focus:ring-2 focus:ring-ring/20',
-    hasError ? 'border-rose-400 focus:ring-rose-200' : 'border-border',
-  ].join(' ');
-}
-
-function textareaBase(hasError?: boolean) {
-  return [
-    'min-h-16 rounded-2xl border placeholder:text-xs bg-background px-3 py-2 text-base outline-none',
-    'focus:ring-2 focus:ring-ring/20',
-    hasError ? 'border-rose-400 focus:ring-rose-200' : 'border-border',
-  ].join(' ');
-}
-
-function selectBase(hasError?: boolean) {
-  return ['h-10 rounded-2xl border bg-background px-3 text-base outline-none', 'focus:ring-2 focus:ring-ring/20', hasError ? 'border-rose-400 focus:ring-rose-200' : 'border-border'].join(' ');
 }
 
 function normalizePhone(raw: string) {
@@ -89,32 +91,24 @@ function validateContact(v: string) {
   return digits.length >= 9;
 }
 
-// Compression client SANS dépendance (Canvas).
 async function compressImageFile(file: File, maxDim = 1600, quality = 0.78): Promise<File> {
   try {
     if (!file.type.startsWith('image/')) return file;
-
     const bitmap = await createImageBitmap(file);
     const { width, height } = bitmap;
     const scale = Math.min(1, maxDim / Math.max(width, height));
     const targetW = Math.max(1, Math.round(width * scale));
     const targetH = Math.max(1, Math.round(height * scale));
-
     const canvas = document.createElement('canvas');
     canvas.width = targetW;
     canvas.height = targetH;
-
     const ctx = canvas.getContext('2d');
     if (!ctx) return file;
-
     ctx.drawImage(bitmap, 0, 0, targetW, targetH);
-
     const blob: Blob | null = await new Promise((resolve) => {
       canvas.toBlob((b) => resolve(b), 'image/webp', quality);
     });
-
     if (!blob) return file;
-
     const newName = file.name.replace(/\.(png|jpg|jpeg|heic|heif|webp)$/i, '.webp');
     return new File([blob], newName, { type: blob.type || 'image/webp' });
   } catch {
@@ -159,6 +153,66 @@ function useDebouncedValue<T>(value: T, delay = 120) {
   return debounced;
 }
 
+// Step indicator component
+function StepIndicator({ currentStep, totalSteps }: { currentStep: number; totalSteps: number }) {
+  const steps = ['Service', 'Localisation', 'Photos', 'Contact'];
+
+  return (
+    <div className="flex items-center justify-between mb-8">
+      {steps.map((label, idx) => {
+        const isActive = idx === currentStep;
+        const isCompleted = idx < currentStep;
+
+        return (
+          <React.Fragment key={label}>
+            <div className="flex flex-col items-center">
+              <div
+                className={cn(
+                  'w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold transition-all duration-300',
+                  isActive && 'bg-gradient-to-br from-emerald-500 to-teal-600 text-white shadow-lg shadow-emerald-500/30 scale-110',
+                  isCompleted && 'bg-emerald-100 text-emerald-700',
+                  !isActive && !isCompleted && 'bg-slate-100 text-slate-400',
+                )}>
+                {isCompleted ? <Check className="h-5 w-5" /> : idx + 1}
+              </div>
+              <span className={cn('mt-2 text-xs font-medium hidden sm:block', isActive && 'text-emerald-700', isCompleted && 'text-emerald-600', !isActive && !isCompleted && 'text-slate-400')}>
+                {label}
+              </span>
+            </div>
+            {idx < steps.length - 1 && <div className={cn('flex-1 h-1 mx-2 rounded-full transition-all duration-300', idx < currentStep ? 'bg-emerald-400' : 'bg-slate-200')} />}
+          </React.Fragment>
+        );
+      })}
+    </div>
+  );
+}
+
+// Service card component
+function ServiceCard({ service, isSelected, onClick }: { service: (typeof SERVICE_OPTIONS)[number]; isSelected: boolean; onClick: () => void }) {
+  const Icon = service.icon;
+
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      className={cn(
+        'relative p-4 rounded-2xl border-2 transition-all duration-200 text-left w-full',
+        'hover:shadow-lg hover:-translate-y-0.5',
+        isSelected ? 'border-emerald-500 bg-emerald-50 shadow-lg shadow-emerald-500/20' : 'border-slate-200 bg-white hover:border-slate-300',
+      )}>
+      {isSelected && (
+        <div className="absolute top-2 right-2 w-6 h-6 rounded-full bg-emerald-500 flex items-center justify-center">
+          <Check className="h-4 w-4 text-white" />
+        </div>
+      )}
+      <div className={cn('w-12 h-12 rounded-xl flex items-center justify-center mb-3 transition-colors', isSelected ? 'bg-emerald-500 text-white' : 'bg-slate-100 text-slate-600')}>
+        <Icon className="h-6 w-6" />
+      </div>
+      <span className={cn('font-semibold', isSelected ? 'text-emerald-700' : 'text-foreground')}>{service.label}</span>
+    </button>
+  );
+}
+
 export function DevisForm() {
   const {
     register,
@@ -170,10 +224,11 @@ export function DevisForm() {
     formState: { errors, isSubmitting, submitCount },
     reset,
     setValue,
+    watch,
   } = useForm<FormValues>({
     mode: 'onChange',
     defaultValues: {
-      items: [{ service: 'canape', dimensions: '', details: '' }],
+      items: [{ service: 'canape', size: '', surface: '', details: '' }],
       city: '',
       postalCode: '',
       name: '',
@@ -189,18 +244,8 @@ export function DevisForm() {
   const wContact = useWatch({ control, name: 'contact' });
 
   const [step, setStep] = React.useState<Step>(0);
-
-  // Step container for smooth scroll (no page jump)
   const stepRef = React.useRef<HTMLDivElement | null>(null);
-  function scrollToStep() {
-    const el = stepRef.current;
-    if (!el) return;
-    const rect = el.getBoundingClientRect();
-    if (rect.top >= 0 && rect.top < 140) return;
-    el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-  }
 
-  // files hors RHF
   const [files, setFiles] = React.useState<File[]>([]);
   const [previews, setPreviews] = React.useState<string[]>([]);
   const [fileError, setFileError] = React.useState<string | null>(null);
@@ -214,37 +259,33 @@ export function DevisForm() {
 
   const contactOk = validateContact(wContact ?? '');
 
-  const missingByStep = React.useMemo(() => {
-    const m0: string[] = [];
-    const m1: string[] = [];
-    const m2: string[] = [];
-    const m3: string[] = [];
-
-    if ((wCity?.trim()?.length ?? 0) < 2) m1.push('Ville');
-    if ((wPostal?.trim()?.length ?? 0) < 4) m1.push('Code postal');
-
-    if ((wName?.trim()?.length ?? 0) < 2) m3.push('Nom');
-    if (!contactOk) m3.push('Email ou téléphone');
-
-    return [m0, m1, m2, m3] as const;
-  }, [wCity, wPostal, wName, contactOk]);
-
   const showInlineErrors = submitCount > 0;
-  const stepsCount = 4;
 
   async function goNext() {
     if (step === 0) {
+      // Validate size/surface is selected for relevant services
+      const service = firstItemService;
+      const size = watch('items.0.size');
+      const surface = watch('items.0.surface');
+
+      if ((service === 'matelas' || service === 'canape') && !size) {
+        toast.error('Veuillez sélectionner une taille');
+        return;
+      }
+      if ((service === 'tapis' || service === 'moquette') && !surface) {
+        toast.error('Veuillez indiquer la surface en m²');
+        return;
+      }
+
       setStep(1);
       return;
     }
     if (step === 1) {
       const ok = await trigger(['city', 'postalCode']);
       if (!ok) return;
-      // close suggestions when leaving step 1
       setOpenSug(false);
       setSuggestions([]);
       setActiveIndex(-1);
-
       setStep(2);
       return;
     }
@@ -261,17 +302,12 @@ export function DevisForm() {
 
   async function onPickFiles(e: React.ChangeEvent<HTMLInputElement>) {
     setFileError(null);
-
     const picked = Array.from(e.target.files ?? []);
     e.target.value = '';
     if (picked.length === 0) return;
 
     const onlyImages = picked.filter((f) => f.type?.startsWith('image/'));
-    const rejectedType = picked.length - onlyImages.length;
-
     const withinSize = onlyImages.filter((f) => f.size <= MAX_BYTES_PER_FILE);
-    const rejectedSize = onlyImages.length - withinSize.length;
-
     let merged = [...files, ...withinSize].slice(0, MAX_FILES);
 
     while (totalSize(merged) > MAX_TOTAL_BYTES && merged.length > 0) {
@@ -281,16 +317,7 @@ export function DevisForm() {
     setCompressing(true);
     const compressed = await compressFiles(merged);
     setCompressing(false);
-
     setFiles(compressed);
-
-    const msgs: string[] = [];
-    if (rejectedType > 0) msgs.push(`${rejectedType} fichier(s) ignoré(s) (format non image).`);
-    if (rejectedSize > 0) msgs.push(`${rejectedSize} photo(s) ignorée(s) (max ${humanFileSize(MAX_BYTES_PER_FILE)}).`);
-    if ([...files, ...withinSize].length > MAX_FILES) msgs.push(`Max ${MAX_FILES} photos.`);
-    if (totalSize(merged) >= MAX_TOTAL_BYTES) msgs.push(`Taille totale max ~${humanFileSize(MAX_TOTAL_BYTES)}.`);
-
-    if (msgs.length) setFileError(msgs.join(' '));
   }
 
   function removeFile(idx: number) {
@@ -323,20 +350,20 @@ export function DevisForm() {
       form.append('service', primary.service);
       form.append('city', values.city.trim());
       form.append('postalCode', values.postalCode.trim());
-      form.append('dimensions', primary.dimensions?.trim() ?? '');
+      form.append('size', primary.size ?? '');
+      form.append('surface', primary.surface ?? '');
       form.append('details', primary.details?.trim() ?? '');
       form.append('name', values.name.trim());
       form.append('email', email);
       form.append('phone', phoneParsed);
       form.append('address', addressQuery.trim());
-
       form.append('items_json', JSON.stringify(values.items));
       files.forEach((f) => form.append('photos', f));
 
       const res = await fetch('/api/devis', { method: 'POST', body: form });
       const data = (await res.json()) as { ok: boolean; message?: string };
-
       const ok = res.ok && data.ok;
+
       toast(ok ? 'Devis envoyé ! Nous vous recontactons rapidement.' : 'Erreur serveur. Réessaie plus tard.');
 
       if (ok) {
@@ -360,7 +387,7 @@ export function DevisForm() {
         setSuggestions([]);
         setOpenSug(false);
         reset({
-          items: [{ service: 'canape', dimensions: '', details: '' }],
+          items: [{ service: 'canape', size: '', surface: '', details: '' }],
           city: '',
           postalCode: '',
           name: '',
@@ -373,18 +400,7 @@ export function DevisForm() {
     }
   }
 
-  const ctaLabel = React.useMemo(() => {
-    if (step === 0) return 'Continuer';
-    if (step === 1) return missingByStep[1].length ? `Compléter : ${missingByStep[1][0]}` : 'Continuer';
-    if (step === 2) return 'Continuer';
-    return isSubmitting ? 'Envoi...' : 'Envoyer ma demande';
-  }, [step, missingByStep, isSubmitting]);
-
-  const progressPct = Math.round(((step + 1) / stepsCount) * 100);
-
-  // -----------------------------
-  // Autocomplete via API routes (clé Google non publique)
-  // -----------------------------
+  // Autocomplete
   const [addressQuery, setAddressQuery] = React.useState('');
   const [suggestions, setSuggestions] = React.useState<PlaceSuggestion[]>([]);
   const [openSug, setOpenSug] = React.useState(false);
@@ -393,13 +409,10 @@ export function DevisForm() {
 
   const cacheRef = React.useRef(new Map<string, PlaceSuggestion[]>());
   const reqIdRef = React.useRef(0);
-
   const debouncedQuery = useDebouncedValue(addressQuery, 120);
 
-  // Fetch predictions (only on step 1)
   React.useEffect(() => {
     if (step !== 1) return;
-
     const q = debouncedQuery.trim();
     if (q.length < 3) {
       setSuggestions([]);
@@ -423,16 +436,14 @@ export function DevisForm() {
     fetch(`/api/places/predict?q=${encodeURIComponent(q)}`, { method: 'GET' })
       .then((r) => r.json() as Promise<PlacesApiResponse>)
       .then((data) => {
-        if (myReqId !== reqIdRef.current) return; // ignore stale
+        if (myReqId !== reqIdRef.current) return;
         setLoadingSug(false);
-
         if (!data.ok || !data.predictions?.length) {
           setSuggestions([]);
           setOpenSug(false);
           setActiveIndex(-1);
           return;
         }
-
         cacheRef.current.set(q, data.predictions);
         setSuggestions(data.predictions);
         setOpenSug(true);
@@ -456,12 +467,9 @@ export function DevisForm() {
     try {
       const r = await fetch(`/api/places/details?placeId=${encodeURIComponent(placeId)}`);
       const data = (await r.json()) as PlaceDetailsResponse;
-
       if (!data.ok) return;
-
       if (data.city) setValue('city', data.city, { shouldValidate: true, shouldDirty: true });
       if (data.postalCode) setValue('postalCode', data.postalCode, { shouldValidate: true, shouldDirty: true });
-
       await trigger(['city', 'postalCode']);
     } catch {
       // ignore
@@ -470,7 +478,6 @@ export function DevisForm() {
 
   function onAddressKeyDown(e: React.KeyboardEvent<HTMLInputElement>) {
     if (!openSug || suggestions.length === 0) return;
-
     if (e.key === 'ArrowDown') {
       e.preventDefault();
       setActiveIndex((i) => Math.min(i + 1, suggestions.length - 1));
@@ -488,7 +495,6 @@ export function DevisForm() {
     }
   }
 
-  // Close suggestions on outside click
   const sugWrapRef = React.useRef<HTMLDivElement | null>(null);
   React.useEffect(() => {
     function onDoc(e: MouseEvent) {
@@ -499,188 +505,271 @@ export function DevisForm() {
     return () => document.removeEventListener('mousedown', onDoc);
   }, []);
 
+  // Watch first item service for card selection
+  const firstItemService = watch('items.0.service');
+
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className="mt-4 space-y-4">
-      {/* Progress */}
-      <div className="rounded-2xl border border-border bg-card p-4">
-        <div className="flex items-center justify-between gap-3">
-          <div>
-            <p className="text-sm font-semibold">Demande de devis</p>
-            <p className="text-xs text-muted-foreground">
-              Étape {step + 1}/{stepsCount}
-            </p>
-          </div>
-          <div className="text-xs text-muted-foreground tabular-nums">{progressPct}%</div>
-        </div>
+      className="space-y-6">
+      {/* Step Indicator */}
+      <StepIndicator
+        currentStep={step}
+        totalSteps={4}
+      />
 
-        <div className="mt-3 h-2 w-full rounded-full bg-muted">
-          <div
-            className="h-2 rounded-full bg-primary transition-all"
-            style={{ width: `${progressPct}%` }}
-          />
-        </div>
-      </div>
-
-      {/* STEP CONTENT */}
+      {/* Step Content */}
       <div
         ref={stepRef}
-        className="rounded-2xl bg-card p-2 sm:p-5">
-        {/* Step 0: Prestations */}
+        className="min-h-80">
+        {/* STEP 0: Service Selection */}
         {step === 0 && (
-          <div className="space-y-4">
-            <div className="flex items-start justify-between gap-3">
-              <p className="font-semibold">Que faut-il nettoyer ?</p>
+          <div className="space-y-6 animate-fade-in">
+            <div>
+              <h3 className="text-lg font-bold text-foreground">Que faut-il nettoyer ?</h3>
+              <p className="text-sm text-muted-foreground mt-1">Sélectionnez le type de textile à traiter</p>
+            </div>
+
+            {/* Service Cards Grid */}
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
+              {SERVICE_OPTIONS.map((service) => (
+                <ServiceCard
+                  key={service.value}
+                  service={service}
+                  isSelected={firstItemService === service.value}
+                  onClick={() => {
+                    setValue('items.0.service', service.value as Service);
+                    setValue('items.0.size', '');
+                    setValue('items.0.surface', '');
+                  }}
+                />
+              ))}
+            </div>
+
+            {/* Size/Surface Selection based on service type */}
+            {(firstItemService === 'matelas' || firstItemService === 'canape') && (
+              <div className="space-y-3 pt-4 border-t border-border">
+                <label className="text-sm font-medium text-foreground">
+                  Taille <span className="text-rose-500">*</span>
+                </label>
+                <div className="grid grid-cols-2 gap-3">
+                  {SIZE_OPTIONS[firstItemService].map((option) => {
+                    const isSelected = watch('items.0.size') === option.value;
+                    return (
+                      <button
+                        key={option.value}
+                        type="button"
+                        onClick={() => setValue('items.0.size', option.value)}
+                        className={cn(
+                          'relative p-4 rounded-xl border-2 transition-all duration-200 text-left',
+                          'hover:shadow-md hover:-translate-y-0.5',
+                          isSelected ? 'border-emerald-500 bg-emerald-50 shadow-md shadow-emerald-500/20' : 'border-slate-200 bg-white hover:border-slate-300',
+                        )}>
+                        {isSelected && (
+                          <div className="absolute top-2 right-2 w-5 h-5 rounded-full bg-emerald-500 flex items-center justify-center">
+                            <Check className="h-3 w-3 text-white" />
+                          </div>
+                        )}
+                        <span className={cn('font-semibold', isSelected ? 'text-emerald-700' : 'text-foreground')}>{option.label}</span>
+                        <span className={cn('block text-lg font-bold mt-1', isSelected ? 'text-emerald-600' : 'text-slate-600')}>{option.price}</span>
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
+
+            {(firstItemService === 'tapis' || firstItemService === 'moquette') && (
+              <div className="space-y-3 pt-4 border-t border-border">
+                <div className="flex items-center justify-between">
+                  <label className="text-sm font-medium text-foreground">
+                    Surface estimée <span className="text-rose-500">*</span>
+                  </label>
+                  <span className="text-sm font-bold text-emerald-600">{firstItemService === 'tapis' ? '30 €/m²' : '12 €/m²'}</span>
+                </div>
+                <div className="relative">
+                  <input
+                    {...register('items.0.surface')}
+                    type="number"
+                    min="1"
+                    placeholder="Ex : 15"
+                    className="w-full h-12 rounded-xl border border-border bg-background pl-4 pr-12 text-lg font-semibold outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition-all"
+                  />
+                  <span className="absolute right-4 top-1/2 -translate-y-1/2 text-muted-foreground font-medium">m²</span>
+                </div>
+                <div className="flex items-center gap-2 text-xs text-muted-foreground bg-slate-50 rounded-lg px-3 py-2">
+                  <span className="font-medium text-slate-600">Minimum :</span>
+                  {firstItemService === 'tapis' ? <span>150€ (IDF) / 120€ (Normandie)</span> : <span>150€</span>}
+                </div>
+              </div>
+            )}
+
+            {/* Details (optional) */}
+            <div className="space-y-4 pt-4 border-t border-border">
+              <div>
+                <label className="text-sm font-medium text-foreground">
+                  Détails supplémentaires <span className="text-muted-foreground">(optionnel)</span>
+                </label>
+                <textarea
+                  {...register('items.0.details')}
+                  placeholder="Ex : tache de vin sur l'assise, odeur d'animaux, textile fragile..."
+                  rows={3}
+                  className="mt-2 w-full rounded-xl border border-border bg-background px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition-all resize-none"
+                />
+              </div>
+
+              {/* Add more items */}
+              {fields.length > 1 && (
+                <div className="space-y-3">
+                  <p className="text-sm font-medium text-foreground">Éléments supplémentaires</p>
+                  {fields.slice(1).map((field, idx) => {
+                    const itemService = watch(`items.${idx + 1}.service`);
+                    return (
+                      <div
+                        key={field.id}
+                        className="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-3">
+                        <div className="flex items-center gap-3">
+                          <select
+                            {...register(`items.${idx + 1}.service`)}
+                            onChange={(e) => {
+                              setValue(`items.${idx + 1}.service`, e.target.value as Service);
+                              setValue(`items.${idx + 1}.size`, '');
+                              setValue(`items.${idx + 1}.surface`, '');
+                            }}
+                            className="flex-1 h-10 rounded-lg border border-border bg-background px-3 text-sm">
+                            {SERVICE_OPTIONS.map((s) => (
+                              <option
+                                key={s.value}
+                                value={s.value}>
+                                {s.label}
+                              </option>
+                            ))}
+                          </select>
+                          <Button
+                            type="button"
+                            variant="ghost"
+                            size="sm"
+                            onClick={() => remove(idx + 1)}
+                            className="text-rose-500 hover:text-rose-600 hover:bg-rose-50">
+                            <X className="h-4 w-4" />
+                          </Button>
+                        </div>
+
+                        {/* Size/Surface for additional items */}
+                        {(itemService === 'matelas' || itemService === 'canape') && (
+                          <select
+                            {...register(`items.${idx + 1}.size`)}
+                            className="w-full h-10 rounded-lg border border-border bg-background px-3 text-sm">
+                            <option value="">Sélectionner la taille</option>
+                            {SIZE_OPTIONS[itemService]?.map((opt) => (
+                              <option
+                                key={opt.value}
+                                value={opt.value}>
+                                {opt.label} — {opt.price}
+                              </option>
+                            ))}
+                          </select>
+                        )}
+
+                        {(itemService === 'tapis' || itemService === 'moquette') && (
+                          <div className="relative">
+                            <input
+                              {...register(`items.${idx + 1}.surface`)}
+                              type="number"
+                              min="1"
+                              placeholder="Surface en m²"
+                              className="w-full h-10 rounded-lg border border-border bg-background pl-3 pr-10 text-sm"
+                            />
+                            <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-muted-foreground">m²</span>
+                          </div>
+                        )}
+                      </div>
+                    );
+                  })}
+                </div>
+              )}
 
               <Button
                 type="button"
                 variant="outline"
                 className="rounded-full"
-                onClick={() => append({ service: 'canape', dimensions: '', details: '' })}>
+                onClick={() => append({ service: 'canape', size: '', surface: '', details: '' })}>
                 <Plus className="h-4 w-4 mr-2" />
-                Ajouter
+                Ajouter un élément
               </Button>
             </div>
-
-            <p className="mt-1 text-xs text-muted-foreground">Ajoute plusieurs éléments si besoin (ex : canapé + tapis).</p>
-
-            <div className="space-y-4">
-              {fields.map((field, idx) => {
-                const serviceName = `items.${idx}.service` as const;
-                const dimName = `items.${idx}.dimensions` as const;
-                const detName = `items.${idx}.details` as const;
-
-                return (
-                  <div
-                    key={field.id}
-                    className="rounded-2xl bg-accent/50 text- p-3">
-                    <div className="flex items-start justify-between gap-3">
-                      <div className="grid gap-2 w-full">
-                        <p className="font-semibold text-sm">Article {idx + 1}</p>
-
-                        <label className="text-sm font-medium">Type</label>
-                        <select
-                          {...register(serviceName, { required: true })}
-                          className={selectBase(false)}>
-                          <option value="canape">Nettoyage canapé en tissu</option>
-                          <option value="matelas">Nettoyage matelas</option>
-                          <option value="tapis">Nettoyage tapis</option>
-                          <option value="moquette">Nettoyage moquette</option>
-                          <option value="autre">Autre / je ne sais pas</option>
-                        </select>
-                      </div>
-
-                      {fields.length > 1 && (
-                        <Button
-                          type="button"
-                          variant="outline"
-                          className="rounded-full mt-6"
-                          onClick={() => remove(idx)}
-                          aria-label="Supprimer">
-                          <Minus className="h-4 w-4" />
-                        </Button>
-                      )}
-                    </div>
-
-                    <div className="mt-4 grid lg:grid-cols-2 gap-4">
-                      <div className="grid gap-2">
-                        <label className="text-sm font-medium">
-                          Dimensions / surface <span className="text-muted-foreground">(optionnel)</span>
-                        </label>
-                        <input
-                          {...register(dimName)}
-                          placeholder="Ex : canapé 3 places / tapis 2m x 3m / moquette 18 m²"
-                          className={inputBase(false)}
-                        />
-                      </div>
-
-                      <div className="grid gap-2">
-                        <label className="text-sm font-medium">
-                          Détails <span className="text-muted-foreground">(optionnel)</span>
-                        </label>
-                        <textarea
-                          {...register(detName)}
-                          placeholder="Ex : tache, odeur, auréole, textile fragile…"
-                          className={textareaBase(false)}
-                        />
-                      </div>
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-
-            <Separator />
           </div>
         )}
 
-        {/* Step 1: Zone (Autocomplete via API route) */}
+        {/* STEP 1: Location */}
         {step === 1 && (
-          <div className="space-y-4">
+          <div className="space-y-6 animate-fade-in">
             <div>
-              <p className="font-semibold">Où intervient-on ?</p>
-              <p className="mt-1 text-xs text-muted-foreground">
-                Tape une adresse : on remplit automatiquement <strong>Ville</strong> + <strong>Code postal</strong>.
-              </p>
+              <h3 className="text-lg font-bold text-foreground">Où intervient-on ?</h3>
+              <p className="text-sm text-muted-foreground mt-1">Entrez votre adresse pour un devis précis</p>
             </div>
 
+            {/* Address autocomplete */}
             <div
               ref={sugWrapRef}
               className="relative">
-              <label className="text-sm font-medium">Adresse (recommandé)</label>
-              <div className="mt-2 flex items-center gap-2">
-                <div className="relative w-full">
-                  <MapPin className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                  <input
-                    value={addressQuery}
-                    onChange={(e) => {
-                      setAddressQuery(e.target.value);
-                      setOpenSug(true);
-                    }}
-                    onFocus={() => {
-                      if (suggestions.length > 0) setOpenSug(true);
-                    }}
-                    onKeyDown={onAddressKeyDown}
-                    placeholder="Ex : 12 rue Charles Baudelaire, 75012 Paris"
-                    className={[inputBase(false), 'w-full pl-10'].join(' ')}
-                  />
-                  {loadingSug && <Loader2 className="absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 animate-spin text-muted-foreground" />}
-                </div>
+              <label className="text-sm font-medium text-foreground">
+                Adresse <span className="text-emerald-600">(recommandé)</span>
+              </label>
+              <div className="relative mt-2">
+                <MapPin className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
+                <input
+                  value={addressQuery}
+                  onChange={(e) => {
+                    setAddressQuery(e.target.value);
+                    setOpenSug(true);
+                  }}
+                  onFocus={() => {
+                    if (suggestions.length > 0) setOpenSug(true);
+                  }}
+                  onKeyDown={onAddressKeyDown}
+                  placeholder="Ex : 12 rue Charles Baudelaire, 75012 Paris"
+                  className="w-full h-12 rounded-xl border border-border bg-background pl-12 pr-4 text-sm outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition-all"
+                />
+                {loadingSug && <Loader2 className="absolute right-4 top-1/2 -translate-y-1/2 h-5 w-5 animate-spin text-muted-foreground" />}
               </div>
 
+              {/* Suggestions dropdown */}
               {openSug && suggestions.length > 0 && (
-                <div className="absolute z-50 mt-2 w-full overflow-hidden rounded-2xl border border-border bg-background shadow-lg">
+                <div className="absolute z-50 mt-2 w-full overflow-hidden rounded-xl border border-border bg-background shadow-xl">
                   {suggestions.map((s, i) => (
                     <button
                       key={s.place_id}
                       type="button"
                       onMouseEnter={() => setActiveIndex(i)}
                       onClick={() => applyPlace(s.place_id, s.description)}
-                      className={['w-full text-left px-2 py-2 text-sm transition', i === activeIndex ? 'bg-muted' : 'bg-background hover:bg-muted/60'].join(' ')}>
-                      <div className="font-medium">{s.main_text ?? s.description}</div>
-                      {s.secondary_text && <div className="text-xs text-muted-foreground">{s.secondary_text}</div>}
+                      className={cn('w-full text-left px-4 py-3 text-sm transition-colors', i === activeIndex ? 'bg-emerald-50' : 'bg-background hover:bg-slate-50')}>
+                      <div className="font-medium text-foreground">{s.main_text ?? s.description}</div>
+                      {s.secondary_text && <div className="text-xs text-muted-foreground mt-0.5">{s.secondary_text}</div>}
                     </button>
                   ))}
                 </div>
               )}
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <div className="grid gap-2">
-                <label className="text-sm font-medium">
+            {/* City & Postal Code */}
+            <div className="grid sm:grid-cols-2 gap-4">
+              <div>
+                <label className="text-sm font-medium text-foreground">
                   Ville <span className="text-rose-500">*</span>
                 </label>
                 <input
                   {...register('city', { required: 'Ville requise', minLength: 2 })}
                   placeholder="Ex : Paris"
-                  className={inputBase(Boolean(errors.city && showInlineErrors))}
+                  className={cn(
+                    'mt-2 w-full h-11 rounded-xl border bg-background px-4 text-sm outline-none focus:ring-2 transition-all',
+                    errors.city && showInlineErrors ? 'border-rose-400 focus:ring-rose-200' : 'border-border focus:ring-emerald-500/20 focus:border-emerald-500',
+                  )}
                 />
-                {errors.city && showInlineErrors && <p className="text-xs text-rose-600">{errors.city.message as string}</p>}
+                {errors.city && showInlineErrors && <p className="text-xs text-rose-600 mt-1">{errors.city.message as string}</p>}
               </div>
-
-              <div className="grid gap-2">
-                <label className="text-sm font-medium">
+              <div>
+                <label className="text-sm font-medium text-foreground">
                   Code postal <span className="text-rose-500">*</span>
                 </label>
                 <input
@@ -690,195 +779,230 @@ export function DevisForm() {
                   })}
                   placeholder="Ex : 75012"
                   inputMode="numeric"
-                  className={inputBase(Boolean(errors.postalCode && showInlineErrors))}
+                  className={cn(
+                    'mt-2 w-full h-11 rounded-xl border bg-background px-4 text-sm outline-none focus:ring-2 transition-all',
+                    errors.postalCode && showInlineErrors ? 'border-rose-400 focus:ring-rose-200' : 'border-border focus:ring-emerald-500/20 focus:border-emerald-500',
+                  )}
                 />
-                {errors.postalCode && showInlineErrors && <p className="text-xs text-rose-600">{errors.postalCode.message as string}</p>}
+                {errors.postalCode && showInlineErrors && <p className="text-xs text-rose-600 mt-1">{errors.postalCode.message as string}</p>}
               </div>
             </div>
-
-            {showInlineErrors && missingByStep[1].length > 0 && (
-              <div className="rounded-2xl border border-rose-200 bg-rose-50 px-4 py-3 text-sm text-rose-900">
-                <p className="font-semibold">À compléter</p>
-                <p className="mt-1">Il manque : {missingByStep[1].join(', ')}.</p>
-              </div>
-            )}
           </div>
         )}
 
-        {/* Step 2: Photos */}
+        {/* STEP 2: Photos */}
         {step === 2 && (
-          <div className="space-y-4">
-            <div className="flex items-start justify-between gap-4">
-              <div>
-                <p className="font-semibold flex items-center gap-2">
-                  <FileImage className="h-4 w-4 text-primary" />
-                  Photos <span className="text-muted-foreground">(recommandé)</span>
-                </p>
-                <p className="mt-1 text-xs text-muted-foreground">Idéal 2–3 • Max {MAX_FILES}</p>
-              </div>
-
-              <label className="cursor-pointer">
-                <input
-                  type="file"
-                  accept="image/*"
-                  multiple
-                  onChange={onPickFiles}
-                  className="hidden"
-                />
-                <span className="inline-flex items-center justify-center rounded-full border border-border bg-background px-4 h-10 text-sm hover:bg-muted transition">Ajouter</span>
-              </label>
+          <div className="space-y-6 animate-fade-in">
+            <div>
+              <h3 className="text-lg font-bold text-foreground flex items-center gap-2">
+                <Camera className="h-5 w-5 text-emerald-600" />
+                Ajoutez vos photos
+              </h3>
+              <p className="text-sm text-muted-foreground mt-1">2–3 photos pour un devis plus précis (optionnel mais recommandé)</p>
             </div>
 
+            {/* Upload zone */}
+            <label className="block cursor-pointer">
+              <input
+                type="file"
+                accept="image/*"
+                multiple
+                onChange={onPickFiles}
+                className="hidden"
+              />
+              <div
+                className={cn(
+                  'border-2 border-dashed rounded-2xl p-8 text-center transition-all',
+                  'hover:border-emerald-400 hover:bg-emerald-50/50',
+                  files.length > 0 ? 'border-emerald-300 bg-emerald-50/30' : 'border-slate-300',
+                )}>
+                <div className="w-16 h-16 mx-auto rounded-2xl bg-emerald-100 flex items-center justify-center mb-4">
+                  <FileImage className="h-8 w-8 text-emerald-600" />
+                </div>
+                <p className="font-semibold text-foreground">{files.length > 0 ? "Ajouter d'autres photos" : 'Cliquez pour ajouter des photos'}</p>
+                <p className="text-sm text-muted-foreground mt-1">ou glissez-déposez vos images ici</p>
+                <p className="text-xs text-muted-foreground mt-2">
+                  Max {MAX_FILES} photos • {humanFileSize(MAX_BYTES_PER_FILE)} par photo
+                </p>
+              </div>
+            </label>
+
             {compressing && (
-              <div className="rounded-2xl border border-border bg-muted/30 px-3 py-2 text-xs text-muted-foreground flex items-center gap-2">
+              <div className="flex items-center gap-2 text-sm text-muted-foreground">
                 <Loader2 className="h-4 w-4 animate-spin" />
-                Optimisation des photos…
+                Optimisation des photos...
               </div>
             )}
 
-            {fileError && <p className="text-xs rounded-2xl border border-amber-200 bg-amber-50 text-amber-900 px-3 py-2">{fileError}</p>}
+            {fileError && <p className="text-sm text-amber-700 bg-amber-50 border border-amber-200 rounded-xl px-4 py-3">{fileError}</p>}
 
+            {/* Preview grid */}
             {files.length > 0 && (
-              <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+              <div className="grid grid-cols-3 sm:grid-cols-4 gap-3">
                 {files.map((f, idx) => (
                   <div
                     key={`${f.name}-${idx}`}
-                    className="rounded-2xl border border-border bg-background p-2">
-                    <div className="aspect-square overflow-hidden rounded-xl border border-border/60">
-                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                    className="relative group">
+                    <div className="aspect-square overflow-hidden rounded-xl border border-border">
                       <img
                         src={previews[idx]}
                         alt={`Photo ${idx + 1}`}
                         className="h-full w-full object-cover"
                       />
                     </div>
-
-                    <div className="mt-2 flex items-start justify-between gap-2">
-                      <div className="min-w-0">
-                        <p className="text-xs font-medium truncate">{f.name}</p>
-                        <p className="text-[11px] text-muted-foreground">{humanFileSize(f.size)}</p>
-                      </div>
-                      <button
-                        type="button"
-                        onClick={() => removeFile(idx)}
-                        className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-border hover:bg-muted transition"
-                        aria-label="Supprimer">
-                        <Trash2 className="h-4 w-4" />
-                      </button>
-                    </div>
+                    <button
+                      type="button"
+                      onClick={() => removeFile(idx)}
+                      className="absolute -top-2 -right-2 w-7 h-7 rounded-full bg-rose-500 text-white flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity shadow-lg">
+                      <X className="h-4 w-4" />
+                    </button>
+                    <p className="text-[10px] text-muted-foreground mt-1 truncate">{f.name}</p>
                   </div>
                 ))}
               </div>
             )}
-
-            {files.length === 0 && (
-              <div className="rounded-2xl border border-dashed border-border bg-muted/20 p-4 text-sm text-muted-foreground">Ajoute 1–2 photos (vue d’ensemble + zone) pour un devis plus précis.</div>
-            )}
           </div>
         )}
 
-        {/* Step 3: Contact */}
+        {/* STEP 3: Contact */}
         {step === 3 && (
-          <div className="space-y-4">
+          <div className="space-y-6 animate-fade-in">
             <div>
-              <p className="font-semibold">On te recontacte où ?</p>
-              <p className="mt-1 text-xs text-muted-foreground">
-                Un seul champ : email <strong>ou</strong> téléphone.
-              </p>
+              <h3 className="text-lg font-bold text-foreground">Vos coordonnées</h3>
+              <p className="text-sm text-muted-foreground mt-1">Pour vous envoyer le devis et vous recontacter</p>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <div className="grid gap-2">
-                <label className="text-sm font-medium">
-                  Nom <span className="text-rose-500">*</span>
+            <div className="grid sm:grid-cols-2 gap-4">
+              <div>
+                <label className="text-sm font-medium text-foreground">
+                  Votre nom <span className="text-rose-500">*</span>
                 </label>
-                <input
-                  {...register('name', {
-                    required: 'Nom requis',
-                    minLength: { value: 2, message: 'Nom trop court' },
-                  })}
-                  placeholder="Ex : Pierre"
-                  className={inputBase(Boolean(errors.name && showInlineErrors))}
-                />
-                {errors.name && showInlineErrors && <p className="text-xs text-rose-600">{errors.name.message as string}</p>}
+                <div className="relative mt-2">
+                  <User className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
+                  <input
+                    {...register('name', {
+                      required: 'Nom requis',
+                      minLength: { value: 2, message: 'Nom trop court' },
+                    })}
+                    placeholder="Ex : Pierre Dupont"
+                    className={cn(
+                      'w-full h-12 rounded-xl border bg-background pl-12 pr-4 text-sm outline-none focus:ring-2 transition-all',
+                      errors.name && showInlineErrors ? 'border-rose-400 focus:ring-rose-200' : 'border-border focus:ring-emerald-500/20 focus:border-emerald-500',
+                    )}
+                  />
+                </div>
+                {errors.name && showInlineErrors && <p className="text-xs text-rose-600 mt-1">{errors.name.message as string}</p>}
               </div>
 
-              <div className="grid gap-2">
-                <label className="text-sm font-medium">
+              <div>
+                <label className="text-sm font-medium text-foreground">
                   Email ou téléphone <span className="text-rose-500">*</span>
                 </label>
-                <input
-                  {...register('contact', {
-                    validate: (v) => validateContact(v) || 'Renseigne un email ou un téléphone valide.',
-                  })}
-                  placeholder="Ex : vous@domaine.fr ou 06…"
-                  inputMode="email"
-                  className={inputBase(Boolean((!contactOk && showInlineErrors) || errors.contact))}
-                  onBlur={(e) => {
-                    const v = e.target.value ?? '';
-                    if (!isLikelyEmail(v)) setValue('contact', normalizePhone(v), { shouldValidate: true });
-                  }}
-                />
-                {errors.contact && showInlineErrors && <p className="text-xs text-rose-600">{errors.contact.message as string}</p>}
+                <div className="relative mt-2">
+                  <Mail className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
+                  <input
+                    {...register('contact', {
+                      validate: (v) => validateContact(v) || 'Email ou téléphone invalide',
+                    })}
+                    placeholder="Ex : vous@email.fr ou 06..."
+                    className={cn(
+                      'w-full h-12 rounded-xl border bg-background pl-12 pr-4 text-sm outline-none focus:ring-2 transition-all',
+                      errors.contact && showInlineErrors ? 'border-rose-400 focus:ring-rose-200' : 'border-border focus:ring-emerald-500/20 focus:border-emerald-500',
+                    )}
+                    onBlur={(e) => {
+                      const v = e.target.value ?? '';
+                      if (!isLikelyEmail(v)) setValue('contact', normalizePhone(v), { shouldValidate: true });
+                    }}
+                  />
+                </div>
+                {errors.contact && showInlineErrors && <p className="text-xs text-rose-600 mt-1">{errors.contact.message as string}</p>}
               </div>
             </div>
 
-            <div className="rounded-2xl bg-muted/30 p-3 text-xs text-muted-foreground">En envoyant, tu acceptes d’être recontacté pour établir le devis et planifier l’intervention.</div>
+            {/* Summary */}
+            <div className="rounded-2xl bg-slate-50 border border-slate-200 p-4">
+              <h4 className="font-semibold text-sm text-foreground mb-3">Récapitulatif</h4>
+              <div className="space-y-2 text-sm">
+                <div className="flex justify-between">
+                  <span className="text-muted-foreground">Service</span>
+                  <span className="font-medium">
+                    {SERVICE_OPTIONS.find((s) => s.value === firstItemService)?.label}
+                    {(firstItemService === 'matelas' || firstItemService === 'canape') && watch('items.0.size') && (
+                      <span className="text-emerald-600 ml-1">({SIZE_OPTIONS[firstItemService]?.find((o) => o.value === watch('items.0.size'))?.label})</span>
+                    )}
+                    {(firstItemService === 'tapis' || firstItemService === 'moquette') && watch('items.0.surface') && <span className="text-emerald-600 ml-1">({watch('items.0.surface')} m²)</span>}
+                    {fields.length > 1 && ` + ${fields.length - 1} autre(s)`}
+                  </span>
+                </div>
+                {(firstItemService === 'matelas' || firstItemService === 'canape') && watch('items.0.size') && (
+                  <div className="flex justify-between">
+                    <span className="text-muted-foreground">Tarif indicatif</span>
+                    <span className="font-bold text-emerald-600">{SIZE_OPTIONS[firstItemService]?.find((o) => o.value === watch('items.0.size'))?.price}</span>
+                  </div>
+                )}
+                {(firstItemService === 'tapis' || firstItemService === 'moquette') && watch('items.0.surface') && (
+                  <div className="flex justify-between">
+                    <span className="text-muted-foreground">Estimation</span>
+                    <span className="font-bold text-emerald-600">~{Number(watch('items.0.surface')) * (firstItemService === 'tapis' ? 30 : 12)} €</span>
+                  </div>
+                )}
+                <div className="flex justify-between">
+                  <span className="text-muted-foreground">Localisation</span>
+                  <span className="font-medium">
+                    {wCity || '—'} {wPostal}
+                  </span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-muted-foreground">Photos</span>
+                  <span className="font-medium">{files.length} photo(s)</span>
+                </div>
+              </div>
+            </div>
+
+            <p className="text-xs text-muted-foreground">En envoyant, vous acceptez d'être recontacté pour établir le devis et planifier l'intervention.</p>
           </div>
         )}
       </div>
 
-      {/* Sticky footer */}
-      <div className="z-50">
-        <div className="rounded-2xl border border-border bg-background/95 backdrop-blur px-3 py-3 sm:px-4">
-          <div className="flex items-center justify-between gap-3">
-            <Button
-              type="button"
-              variant="outline"
-              className="rounded-full cursor-pointer"
-              onClick={goPrev}
-              disabled={step === 0 || isSubmitting}>
-              <ChevronLeft className="h-4 w-4 mr-1" />
-              Retour
-            </Button>
+      {/* Navigation Footer */}
+      <div className="flex items-center justify-between pt-4 border-t border-border">
+        <Button
+          type="button"
+          variant="ghost"
+          onClick={goPrev}
+          disabled={step === 0 || isSubmitting}
+          className="rounded-full">
+          <ChevronLeft className="h-4 w-4 mr-1" />
+          Retour
+        </Button>
 
-            <div className="flex-1" />
-
-            {step < 3 ? (
-              <Button
-                type="button"
-                variant="accent"
-                className="rounded-full cursor-pointer"
-                onClick={goNext}
-                disabled={isSubmitting}>
-                {ctaLabel}
-                <ChevronRight className="h-4 w-4 ml-1" />
-              </Button>
+        {step < 3 ? (
+          <Button
+            type="button"
+            onClick={goNext}
+            disabled={isSubmitting}
+            className="rounded-full px-6 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white shadow-lg shadow-emerald-600/25">
+            Continuer
+            <ChevronRight className="h-4 w-4 ml-1" />
+          </Button>
+        ) : (
+          <Button
+            type="submit"
+            disabled={isSubmitting}
+            className="rounded-full px-8 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white shadow-lg shadow-emerald-600/25">
+            {isSubmitting ? (
+              <>
+                <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                Envoi...
+              </>
             ) : (
-              <Button
-                type="submit"
-                variant="accent"
-                className="rounded-full"
-                disabled={isSubmitting}>
-                {isSubmitting ? (
-                  <>
-                    <Loader2 className="h-4 w-4 mr-2 animate-spin" />
-                    Envoi…
-                  </>
-                ) : (
-                  ctaLabel
-                )}
-              </Button>
+              <>
+                Envoyer ma demande
+                <ChevronRight className="h-4 w-4 ml-1" />
+              </>
             )}
-          </div>
-
-          <div className="mt-1 text-[11px] text-center text-muted-foreground">
-            {step === 0 && 'Tu peux passer vite : les détails sont optionnels.'}
-            {step === 1 && (missingByStep[1].length ? `À compléter : ${missingByStep[1].join(', ')}` : 'Parfait.')}
-            {step === 2 && 'Les photos augmentent la précision du devis (mais restent optionnelles).'}
-            {step === 3 && 'Dernière étape : nom + email ou téléphone.'}
-          </div>
-        </div>
+          </Button>
+        )}
       </div>
     </form>
   );

@@ -3,7 +3,32 @@ import Script from 'next/script';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
-import { BadgeCheck, Check, Shield, Sparkles, Clock, Leaf, Dot, Phone } from 'lucide-react';
+import { Card, CardContent } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
+import {
+  BadgeCheck,
+  Check,
+  Shield,
+  Sparkles,
+  Clock,
+  Leaf,
+  Phone,
+  ArrowRight,
+  PhoneCall,
+  FileText,
+  ChevronRight,
+  X,
+  Heart,
+  Eye,
+  MessageSquare,
+  Handshake,
+  Award,
+  Users,
+  Star,
+  ThumbsUp,
+  Zap,
+} from 'lucide-react';
+import { cn } from '@/lib/utils';
 
 const SITE_URL = 'https://moket.fr';
 const BRAND = 'MOKET';
@@ -24,50 +49,151 @@ export const metadata: Metadata = {
 
 const PITCH = [
   {
-    title: 'Transparence',
-    points: ['Devis clair sur photos', 'On annonce ce qui est faisable (et ce qui restera limité)', 'Pas de surprise'],
-    icon: <BadgeCheck className="h-5 w-5" />,
+    title: 'Transparence totale',
+    points: ['Devis clair sur photos', 'On annonce ce qui est faisable (et ce qui restera limité)', 'Pas de surprise sur le prix'],
+    icon: Eye,
+    color: 'from-blue-500 to-indigo-600',
+    shadowColor: 'shadow-blue-500/30',
   },
   {
     title: 'Qualité du rendu',
-    points: ['Nettoyage en profondeur', 'Rendu homogène', 'Odeurs mieux traitées'],
-    icon: <Sparkles className="h-5 w-5" />,
+    points: ['Nettoyage en profondeur', 'Rendu homogène et soigné', 'Odeurs mieux traitées'],
+    icon: Sparkles,
+    color: 'from-amber-500 to-orange-600',
+    shadowColor: 'shadow-amber-500/30',
   },
   {
     title: 'Respect du textile',
-    points: ['Protocole adapté', 'Test discret si besoin', 'Aucune prise de risque inutile'],
-    icon: <Shield className="h-5 w-5" />,
+    points: ['Protocole adapté à chaque matière', 'Test discret si besoin', 'Aucune prise de risque inutile'],
+    icon: Shield,
+    color: 'from-emerald-500 to-teal-600',
+    shadowColor: 'shadow-emerald-500/30',
   },
   {
     title: 'Efficacité à domicile',
-    points: ['Intervention propre', 'Séchage maîtrisé', 'Conseils simples après passage'],
-    icon: <Clock className="h-5 w-5" />,
+    points: ['Intervention propre et protégée', 'Séchage maîtrisé (2-4h)', 'Conseils simples après passage'],
+    icon: Clock,
+    color: 'from-violet-500 to-purple-600',
+    shadowColor: 'shadow-violet-500/30',
   },
   {
     title: 'Hygiène & confort',
-    points: [
-      'Nettoyage en profondeur : on retire ce qui est dans la fibre',
-      'Odeurs mieux traitées (animaux, tabac, transpiration)',
-      'Aide à réduire poussières, allergènes et acariens selon le textile',
-    ],
-    icon: <Leaf className="h-5 w-5" />,
+    points: ['On retire ce qui est dans la fibre', 'Odeurs traitées (animaux, tabac)', 'Aide à réduire allergènes et acariens'],
+    icon: Leaf,
+    color: 'from-green-500 to-emerald-600',
+    shadowColor: 'shadow-green-500/30',
+  },
+  {
+    title: 'Service humain',
+    points: ['Réponse rapide sous 24h', 'Échange direct par téléphone', 'Suivi personnalisé'],
+    icon: Heart,
+    color: 'from-rose-500 to-pink-600',
+    shadowColor: 'shadow-rose-500/30',
   },
 ];
+
+const PROMESSES = {
+  on: ['Un protocole adapté au textile', 'Un rendu net et homogène', 'Transparence sur le résultat attendu', 'Intervention propre et respectueuse', "Conseils d'entretien personnalisés"],
+  off: ['Le "zéro défaut" sur brûlures ou décolorations', 'Disparition de migrations de teinture anciennes', 'Résultats miracles sur traces très anciennes'],
+};
 
 const FAQS = [
   {
     q: 'Pourquoi vous demandez des photos ?',
-    a: 'Parce que la matière, l’état et la nature des taches changent le protocole (et parfois la durée). Les photos permettent un devis fiable et un résultat plus maîtrisé.',
+    a: "Parce que la matière, l'état et la nature des taches changent le protocole (et parfois la durée). Les photos permettent un devis fiable et un résultat plus maîtrisé.",
   },
   {
-    q: 'Est-ce que vous garantissez “zéro tache” ?',
+    q: 'Est-ce que vous garantissez "zéro tache" ?',
     a: 'On vise le meilleur résultat possible, sans abîmer le textile. Certaines traces anciennes (décoloration, brûlure, migration) peuvent ne pas disparaître totalement.',
   },
   {
     q: 'Intervenez-vous le week-end ?',
     a: 'Oui, selon disponibilités. Indiquez vos créneaux dans le formulaire de devis ou appelez-nous.',
   },
+  {
+    q: 'Comment se passe le paiement ?',
+    a: "Le paiement se fait après l'intervention, une fois que vous avez constaté le résultat. On accepte les espèces, carte bancaire et virement.",
+  },
+  {
+    q: "Combien de temps à l'avance faut-il réserver ?",
+    a: 'En général, on peut intervenir sous 48h à 1 semaine selon la zone et nos disponibilités. Pour les urgences, appelez-nous directement.',
+  },
 ];
+
+const VALEURS = [
+  { icon: Handshake, label: 'Confiance', desc: 'Relation transparente' },
+  { icon: Award, label: 'Qualité', desc: 'Résultat garanti' },
+  { icon: Users, label: 'Proximité', desc: 'Service humain' },
+  { icon: Zap, label: 'Réactivité', desc: 'Réponse sous 24h' },
+];
+
+// Composants réutilisables
+
+function StatItem({ value, label, suffix = '', className }: { value: string; label: string; suffix?: string; className?: string }) {
+  return (
+    <div className={cn('text-center animate-fade-in-up', className)}>
+      <div className="text-4xl md:text-5xl font-black text-emerald-600">
+        {value}
+        <span className="text-teal-500">{suffix}</span>
+      </div>
+      <div className="mt-2 text-muted-foreground font-medium">{label}</div>
+    </div>
+  );
+}
+
+function PitchCard({
+  title,
+  points,
+  icon: Icon,
+  color,
+  shadowColor,
+  className,
+}: {
+  title: string;
+  points: string[];
+  icon: React.ComponentType<{ className?: string }>;
+  color: string;
+  shadowColor: string;
+  className?: string;
+}) {
+  return (
+    <article
+      className={cn(
+        'group relative rounded-3xl bg-card p-6 md:p-8',
+        'border border-border/80 overflow-hidden',
+        'transition-all duration-500',
+        'hover:shadow-2xl hover:shadow-slate-200/50 hover:border-border hover:-translate-y-1',
+        'animate-fade-in-up',
+        className,
+      )}>
+      {/* Gradient overlay on hover */}
+      <div className="absolute inset-0 bg-gradient-to-br from-slate-50/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+
+      <div className="relative z-10">
+        <div
+          className={cn(
+            'mb-5 inline-flex p-3 rounded-2xl text-white shadow-lg transition-transform duration-300 group-hover:scale-110 group-hover:rotate-[5deg]',
+            `bg-gradient-to-br ${color} ${shadowColor}`,
+          )}>
+          <Icon className="h-6 w-6" />
+        </div>
+        <h3 className="text-xl font-bold text-foreground">{title}</h3>
+        <ul className="mt-4 space-y-3">
+          {points.map((point) => (
+            <li
+              key={point}
+              className="flex items-start gap-3 text-muted-foreground">
+              <div className="flex-shrink-0 mt-1">
+                <Check className="h-4 w-4 text-emerald-600" />
+              </div>
+              <span className="leading-relaxed">{point}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </article>
+  );
+}
 
 export default function PourquoiMoketPage() {
   const pageUrl = `${SITE_URL}/pourquoi-moket`;
@@ -75,7 +201,6 @@ export default function PourquoiMoketPage() {
   const jsonLd = {
     '@context': 'https://schema.org',
     '@graph': [
-      // WebPage (la page)
       {
         '@type': 'WebPage',
         '@id': `${pageUrl}#webpage`,
@@ -85,13 +210,9 @@ export default function PourquoiMoketPage() {
         inLanguage: 'fr-FR',
         isPartOf: { '@id': `${SITE_URL}/#website` },
         breadcrumb: { '@id': `${pageUrl}#breadcrumb` },
-        // AEO : la FAQ est l'entité principale de réponse
         mainEntity: { '@id': `${pageUrl}#faq` },
-        // Bonus : rattache à l'entité business déjà déclarée dans le RootLayout
         about: { '@id': `${SITE_URL}/#localbusiness` },
       },
-
-      // Breadcrumbs
       {
         '@type': 'BreadcrumbList',
         '@id': `${pageUrl}#breadcrumb`,
@@ -100,8 +221,6 @@ export default function PourquoiMoketPage() {
           { '@type': 'ListItem', position: 2, name: 'Pourquoi MOKET', item: pageUrl },
         ],
       },
-
-      // FAQPage
       {
         '@type': 'FAQPage',
         '@id': `${pageUrl}#faq`,
@@ -116,189 +235,453 @@ export default function PourquoiMoketPage() {
   };
 
   return (
-    <main className="overflow-x-hidden">
-      <Script
-        id="jsonld-pourquoi-moket"
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-      />
-
-      {/* HERO */}
-      <section className="mx-auto max-w-7xl p-4 lg:px-8 lg:pt-12 pb-16 md:pb-24">
-        <div className="max-w-5xl">
-          <h1 className="mt-3 text-4xl md:text-5xl font-extrabold -tracking-normal text-foreground">Pourquoi choisir MOKET ?</h1>
-
-          <p className="mt-4 text-muted-foreground">
-            Chez vous, on privilégie une approche simple : <strong>un protocole clair</strong>, un résultat concret, et une transparence totale sur ce qu’on peut améliorer (et ce qui restera limité).
-          </p>
-
-          <div className="mt-8 flex flex-col sm:flex-row gap-3">
+    <>
+      {/* Sticky Mobile CTA */}
+      <div className="fixed bottom-0 left-0 right-0 z-50 border-t border-border bg-background/80 backdrop-blur-xl md:hidden animate-[slideUp_0.5s_ease-out_1s_both]">
+        <div className="mx-auto max-w-7xl px-4 py-3">
+          <div className="grid grid-cols-2 gap-3">
             <Button
               asChild
-              size="lg"
-              variant="accent"
-              className="rounded-full w-full sm:w-fit">
-              <Link href="/devis">Demander un devis</Link>
+              className="rounded-full w-full bg-emerald-600 hover:bg-emerald-700 text-white shadow-lg shadow-emerald-600/25">
+              <Link href="/devis">
+                <FileText className="h-4 w-4 mr-2" />
+                Devis gratuit
+              </Link>
             </Button>
             <Button
               asChild
-              size="lg"
               variant="outline"
-              className="rounded-full w-full sm:w-fit">
-              <a
-                href={`tel:${PHONE}`}
-                className="inline-flex items-center gap-2">
-                <Phone className="h-4 w-4" /> Appeler le {PHONE_DISPLAY}
+              className="rounded-full w-full border-2">
+              <a href={`tel:${PHONE}`}>
+                <PhoneCall className="h-4 w-4 mr-2" />
+                Appeler
               </a>
             </Button>
           </div>
-
-          <ul className="mt-10 grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm text-slate-700">
-            <li className="flex items-center gap-2">
-              <Dot className="h-7 w-7" /> Intervention propre & protégée
-            </li>
-            <li className="flex items-center gap-2">
-              <Dot className="h-7 w-7" /> Devis clair, sans surprise
-            </li>
-            <li className="flex items-center gap-2">
-              <Dot className="h-7 w-7" /> Produits adaptés au textile
-            </li>
-            <li className="flex items-center gap-2">
-              <Dot className="h-7 w-7" /> Résultat visible dès la fin
-            </li>
-          </ul>
         </div>
-      </section>
+      </div>
 
-      {/* PITCH */}
-      <section className="bg-muted py-20 md:py-28 p-4 lg:px-8">
-        <div className="mx-auto max-w-7xl">
-          <h2 className="text-3xl font-bold">Notre approche (en 4 points)</h2>
-          <p className="mt-3 text-muted-foreground max-w-3xl">On peut résumer MOKET simplement : faire propre, faire juste, et faire clair.</p>
+      <main
+        className="overflow-x-hidden pb-24 md:pb-0"
+        aria-label="Pourquoi choisir MOKET">
+        <Script
+          id="jsonld-pourquoi-moket"
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+          strategy="afterInteractive"
+        />
 
-          <div className="mt-10 grid grid-cols-1 md:grid-cols-2 gap-6">
-            {PITCH.map((b) => (
-              <div
-                key={b.title}
-                className="rounded-2xl bg-card p-6 border border-border">
-                <div className="mb-3 text-primary">{b.icon}</div>
-                <h3 className="font-semibold">{b.title}</h3>
-                <ul className="mt-3 space-y-2 text-sm text-muted-foreground">
-                  {b.points.map((p) => (
-                    <li
-                      key={p}
-                      className="flex gap-2">
-                      <Check className="h-4 w-4 text-primary mt-0.5" />
-                      {p}
-                    </li>
-                  ))}
-                </ul>
+        {/* HERO */}
+        <section
+          className="relative min-h-[70vh] md:min-h-[60vh] flex items-center overflow-hidden"
+          aria-labelledby="hero-title">
+          {/* Background */}
+          <div className="absolute inset-0 bg-gradient-to-br from-slate-50 via-emerald-50/30 to-teal-50/20" />
+          <div className="absolute top-0 right-0 w-200 h-[50rem] bg-gradient-to-bl from-emerald-100/40 via-transparent to-transparent rounded-full blur-3xl" />
+          <div className="absolute bottom-0 left-0 w-[37.5rem] h-[37.5rem] bg-gradient-to-tr from-teal-100/30 via-transparent to-transparent rounded-full blur-3xl" />
+
+          {/* Pattern */}
+          <div
+            className="absolute inset-0 opacity-[0.015]"
+            style={{
+              backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23000000' fill-opacity='1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
+            }}
+          />
+
+          <div className="relative z-10 mx-auto max-w-7xl px-4 lg:px-8 py-16 md:py-24">
+            <div className="max-w-4xl">
+              {/* Breadcrumb */}
+              <nav className="flex items-center gap-2 text-sm text-muted-foreground mb-6 animate-fade-in">
+                <Link
+                  href="/"
+                  className="hover:text-emerald-600 transition-colors">
+                  Accueil
+                </Link>
+                <ChevronRight className="h-4 w-4" />
+                <span className="text-foreground font-medium">Pourquoi MOKET</span>
+              </nav>
+
+              {/* Badge */}
+              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/90 backdrop-blur-sm border border-slate-200/50 shadow-lg shadow-slate-200/50 text-sm font-medium animate-fade-in">
+                <span className="flex h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
+                <span className="text-slate-700">Notre philosophie</span>
               </div>
-            ))}
-          </div>
 
-          <div className="mt-10 flex flex-col sm:flex-row gap-3">
-            <Button
-              asChild
-              size="lg"
-              variant="accent"
-              className="rounded-full w-full sm:w-fit">
-              <Link href="/devis">Demander un devis</Link>
-            </Button>
-            <Button
-              asChild
-              size="lg"
-              variant="outline"
-              className="rounded-full w-full sm:w-fit">
-              <Link href="/notre-methode">Voir la méthode</Link>
-            </Button>
-          </div>
-        </div>
-      </section>
+              <h1
+                id="hero-title"
+                className="mt-6 text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight text-foreground leading-[1.1] animate-fade-in-up delay-100">
+                Pourquoi choisir{' '}
+                <span className="relative">
+                  <span className="relative z-10 text-transparent bg-clip-text bg-gradient-to-r from-emerald-600 to-teal-600">MOKET</span>
+                  <span className="absolute bottom-2 left-0 right-0 h-3 bg-emerald-200/60 z-0 rounded-full animate-[scaleX_0.6s_ease-out_0.8s_both] origin-left" />
+                </span>{' '}
+                ?
+              </h1>
 
-      {/* RASSURANCE */}
-      <section className="py-20 md:py-28 p-4 lg:px-8">
-        <div className="mx-auto max-w-7xl">
-          <h2 className="text-3xl font-bold">Ce qu’on promet (et ce qu’on ne promet pas)</h2>
-
-          <div className="mt-8 grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div className="rounded-2xl border border-border bg-card p-6">
-              <p className="font-semibold text-slate-900">On promet</p>
-              <ul className="mt-3 space-y-2 text-sm text-slate-700">
-                <li className="flex gap-2">
-                  <Check className="h-4 w-4 text-primary mt-0.5" />
-                  Un protocole adapté au textile
-                </li>
-                <li className="flex gap-2">
-                  <Check className="h-4 w-4 text-primary mt-0.5" />
-                  Un rendu net et homogène (au maximum du possible)
-                </li>
-                <li className="flex gap-2">
-                  <Check className="h-4 w-4 text-primary mt-0.5" />
-                  Transparence sur le résultat attendu
-                </li>
-              </ul>
-            </div>
-
-            <div className="rounded-2xl border border-border bg-muted/40 p-6">
-              <p className="font-semibold text-slate-900">On ne promet pas</p>
-              <p className="mt-3 text-sm text-muted-foreground">
-                Le “zéro défaut” sur des brûlures, décolorations, migrations de teinture ou traces très anciennes. On préfère être clair plutôt que vendre un miracle.
+              <p className="mt-6 text-lg md:text-xl text-muted-foreground leading-relaxed max-w-3xl animate-fade-in-up delay-200">
+                Une approche simple : <strong className="text-foreground">un protocole clair</strong>, un résultat concret, et une <strong className="text-foreground">transparence totale</strong> sur
+                ce qu'on peut améliorer (et ce qui restera limité).
               </p>
-              <div className="mt-6">
-                <p className="text-sm text-muted-foreground inline-flex items-center gap-2">
-                  <Leaf className="h-4 w-4 text-primary" />
-                  Objectif : meilleur résultat possible, sans abîmer.
-                </p>
+
+              {/* Valeurs rapides */}
+              <div className="mt-8 flex flex-wrap gap-4 animate-fade-in-up delay-300">
+                {VALEURS.map((valeur, idx) => (
+                  <div
+                    key={valeur.label}
+                    className="flex items-center gap-3 px-4 py-3 rounded-2xl bg-white/80 backdrop-blur-sm border border-slate-200/50 shadow-sm animate-scale-in"
+                    style={{ animationDelay: `${400 + idx * 100}ms` }}>
+                    <div className="p-2 rounded-xl bg-emerald-100">
+                      <valeur.icon className="h-5 w-5 text-emerald-600" />
+                    </div>
+                    <div>
+                      <p className="font-semibold text-foreground text-sm">{valeur.label}</p>
+                      <p className="text-xs text-muted-foreground">{valeur.desc}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              {/* CTA buttons */}
+              <div className="mt-10 flex flex-col sm:flex-row gap-4 animate-fade-in-up delay-500">
+                <Button
+                  asChild
+                  size="lg"
+                  className="rounded-full px-8 h-14 text-base font-semibold bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white shadow-xl shadow-emerald-600/30 transition-all hover:shadow-2xl hover:shadow-emerald-600/40 hover:-translate-y-0.5">
+                  <Link href="/devis">
+                    Demander un devis gratuit
+                    <ArrowRight className="h-5 w-5 ml-2" />
+                  </Link>
+                </Button>
+                <Button
+                  asChild
+                  size="lg"
+                  variant="outline"
+                  className="rounded-full px-8 h-14 text-base font-semibold border-2 border-slate-300 hover:border-slate-400 hover:bg-slate-50 transition-all">
+                  <a href={`tel:${PHONE}`}>
+                    <Phone className="h-5 w-5 mr-2" />
+                    <span itemProp="telephone">{PHONE_DISPLAY}</span>
+                  </a>
+                </Button>
+              </div>
+
+              {/* Trust indicators */}
+              <div className="mt-10 flex flex-wrap items-center gap-6 text-sm text-muted-foreground animate-fade-in-up delay-[600ms]">
+                {['Intervention propre', 'Devis sans surprise', 'Résultat visible'].map((text) => (
+                  <span
+                    key={text}
+                    className="inline-flex items-center gap-2">
+                    <Check className="h-5 w-5 text-emerald-600" />
+                    {text}
+                  </span>
+                ))}
               </div>
             </div>
           </div>
-        </div>
-      </section>
+        </section>
 
-      {/* FAQ */}
-      <section className="bg-muted py-20 md:py-24 p-4 lg:px-8">
-        <div className="mx-auto max-w-7xl">
-          <div className="max-w-3xl">
-            <h2 className="text-3xl font-bold">FAQ — Pourquoi MOKET</h2>
-            <p className="mt-3 text-muted-foreground">Les questions qu’on nous pose avant de réserver.</p>
+        {/* STATS BAR */}
+        <section
+          className="py-12 md:py-16 border-y border-border/80 bg-card"
+          aria-label="Statistiques">
+          <div className="mx-auto max-w-7xl px-4 lg:px-8">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-12">
+              <StatItem
+                value="150"
+                suffix="+"
+                label="Interventions"
+                className="delay-100"
+              />
+              <StatItem
+                value="98"
+                suffix="%"
+                label="Clients satisfaits"
+                className="delay-200"
+              />
+              <StatItem
+                value="24"
+                suffix="h"
+                label="Réponse rapide"
+                className="delay-300"
+              />
+              <StatItem
+                value="5"
+                suffix="★"
+                label="Note moyenne"
+                className="delay-400"
+              />
+            </div>
           </div>
+        </section>
 
-          <div className="mt-10 max-w-5xl">
-            <Accordion
-              type="single"
-              collapsible
-              className="w-full cursor-pointer">
-              {FAQS.map((f, idx) => (
-                <AccordionItem
-                  key={idx}
-                  value={`p-${idx}`}
-                  className="border-b border-slate-200/70">
-                  <AccordionTrigger className="text-left">{f.q}</AccordionTrigger>
-                  <AccordionContent className="text-sm text-slate-700">{f.a}</AccordionContent>
-                </AccordionItem>
+        {/* NOTRE APPROCHE */}
+        <section
+          className="py-20 md:py-32 bg-gradient-to-b from-background to-muted/50"
+          aria-labelledby="approche-title">
+          <div className="mx-auto max-w-7xl px-4 lg:px-8">
+            <div className="max-w-3xl animate-fade-in-up">
+              <Badge className="bg-emerald-100 text-emerald-700 hover:bg-emerald-100 mb-4">
+                <Sparkles className="h-4 w-4 mr-2" />
+                Notre approche
+              </Badge>
+              <h2
+                id="approche-title"
+                className="text-3xl md:text-4xl font-black text-foreground tracking-tight">
+                Ce qui nous différencie
+              </h2>
+              <p className="mt-4 text-lg text-muted-foreground">On peut résumer MOKET simplement : faire propre, faire juste, et faire clair. Voici ce que ça veut dire concrètement.</p>
+            </div>
+
+            <div className="mt-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {PITCH.map((item, idx) => (
+                <PitchCard
+                  key={item.title}
+                  {...item}
+                  className={`delay-${(idx + 1) * 100}`}
+                />
               ))}
-            </Accordion>
+            </div>
+
+            <div className="mt-12 flex flex-col sm:flex-row gap-4 justify-center animate-fade-in-up delay-[700ms]">
+              <Button
+                asChild
+                size="lg"
+                className="rounded-full px-8 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white shadow-lg shadow-emerald-600/25">
+                <Link href="/devis">
+                  Demander un devis
+                  <ArrowRight className="h-5 w-5 ml-2" />
+                </Link>
+              </Button>
+              <Button
+                asChild
+                size="lg"
+                variant="outline"
+                className="rounded-full px-8 border-2">
+                <Link href="/notre-methode">Voir notre méthode</Link>
+              </Button>
+            </div>
+          </div>
+        </section>
+
+        {/* CE QU'ON PROMET / CE QU'ON NE PROMET PAS */}
+        <section
+          className="py-20 md:py-32 bg-slate-900 text-white overflow-hidden"
+          aria-labelledby="promesses-title">
+          <div className="mx-auto max-w-7xl px-4 lg:px-8">
+            <div className="text-center max-w-2xl mx-auto mb-12 animate-fade-in-up">
+              <Badge className="bg-emerald-500/20 text-emerald-400 hover:bg-emerald-500/20 mb-4">
+                <MessageSquare className="h-4 w-4 mr-2" />
+                Notre engagement
+              </Badge>
+              <h2
+                id="promesses-title"
+                className="text-3xl md:text-4xl font-black tracking-tight">
+                Ce qu'on promet (et ce qu'on ne promet pas)
+              </h2>
+              <p className="mt-4 text-lg text-slate-400">On préfère être clair plutôt que vendre un miracle. Voici nos engagements réels.</p>
+            </div>
+
+            <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+              {/* Ce qu'on promet */}
+              <Card className="bg-gradient-to-br from-emerald-600 to-teal-600 border-emerald-500 animate-fade-in-up delay-100">
+                <CardContent className="p-8">
+                  <div className="flex items-center gap-3 mb-6">
+                    <div className="p-2 rounded-xl bg-white/20">
+                      <ThumbsUp className="h-6 w-6 text-white" />
+                    </div>
+                    <h3 className="text-xl font-bold text-white">Ce qu'on promet</h3>
+                  </div>
+                  <ul className="space-y-4">
+                    {PROMESSES.on.map((item, idx) => (
+                      <li
+                        key={idx}
+                        className="flex items-start gap-3">
+                        <div className="flex-shrink-0 w-6 h-6 rounded-full bg-white/20 flex items-center justify-center mt-0.5">
+                          <Check className="h-4 w-4 text-white" />
+                        </div>
+                        <span className="text-white/90">{item}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </CardContent>
+              </Card>
+
+              {/* Ce qu'on ne promet pas */}
+              <Card className="bg-slate-800/50 border-slate-700 animate-fade-in-up delay-200">
+                <CardContent className="p-8">
+                  <div className="flex items-center gap-3 mb-6">
+                    <div className="p-2 rounded-xl bg-slate-700">
+                      <X className="h-6 w-6 text-slate-400" />
+                    </div>
+                    <h3 className="text-xl font-bold text-slate-300">Ce qu'on ne promet pas</h3>
+                  </div>
+                  <ul className="space-y-4">
+                    {PROMESSES.off.map((item, idx) => (
+                      <li
+                        key={idx}
+                        className="flex items-start gap-3">
+                        <div className="flex-shrink-0 w-6 h-6 rounded-full bg-slate-700 flex items-center justify-center mt-0.5">
+                          <X className="h-4 w-4 text-slate-500" />
+                        </div>
+                        <span className="text-slate-400">{item}</span>
+                      </li>
+                    ))}
+                  </ul>
+                  <div className="mt-6 p-4 rounded-2xl bg-slate-700/50 border border-slate-600">
+                    <p className="text-sm text-slate-300 flex items-start gap-2">
+                      <Leaf className="h-5 w-5 text-emerald-400 flex-shrink-0 mt-0.5" />
+                      <span>
+                        <strong className="text-white">Notre objectif :</strong> le meilleur résultat possible, sans abîmer votre textile.
+                      </span>
+                    </p>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+          </div>
+        </section>
+
+        {/* TÉMOIGNAGE / CONFIANCE */}
+        <section
+          className="py-20 md:py-28 bg-card"
+          aria-labelledby="confiance-title">
+          <div className="mx-auto max-w-7xl px-4 lg:px-8">
+            <div className="text-center max-w-2xl mx-auto mb-12 animate-fade-in-up">
+              <Badge className="bg-emerald-100 text-emerald-700 hover:bg-emerald-100 mb-4">
+                <Star className="h-4 w-4 mr-2" />
+                Ils nous font confiance
+              </Badge>
+              <h2
+                id="confiance-title"
+                className="text-3xl md:text-4xl font-black text-foreground tracking-tight">
+                Ce que disent nos clients
+              </h2>
+            </div>
+
+            <div className="grid md:grid-cols-3 gap-6 max-w-5xl mx-auto">
+              {[
+                {
+                  text: "Canapé comme neuf, je recommande ! L'équipe est professionnelle et le résultat est vraiment visible.",
+                  author: 'Marie',
+                  location: 'Paris 15e',
+                  rating: 5,
+                },
+                {
+                  text: "Très satisfait du nettoyage de mon matelas. L'odeur de transpiration a complètement disparu.",
+                  author: 'Thomas',
+                  location: 'Boulogne',
+                  rating: 5,
+                },
+                {
+                  text: 'Tapis persan nettoyé avec soin. Les couleurs sont ravivées et aucune mauvaise surprise.',
+                  author: 'Sophie',
+                  location: 'Rouen',
+                  rating: 5,
+                },
+              ].map((testimonial, idx) => (
+                <Card
+                  key={idx}
+                  className={cn('animate-fade-in-up border-border/80 hover:shadow-xl hover:shadow-slate-200/30 transition-all duration-300', `delay-${(idx + 1) * 100}`)}>
+                  <CardContent className="p-6">
+                    <div className="flex items-center gap-1 mb-4">
+                      {[...Array(testimonial.rating)].map((_, i) => (
+                        <Star
+                          key={i}
+                          className="h-4 w-4 fill-amber-400 text-amber-400"
+                        />
+                      ))}
+                    </div>
+                    <p className="text-muted-foreground leading-relaxed">"{testimonial.text}"</p>
+                    <div className="mt-4 pt-4 border-t border-border">
+                      <p className="font-semibold text-foreground">{testimonial.author}</p>
+                      <p className="text-sm text-muted-foreground">{testimonial.location}</p>
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* FAQ */}
+        <section
+          className="py-20 md:py-32 bg-muted"
+          aria-labelledby="faq-title">
+          <div className="mx-auto max-w-7xl px-4 lg:px-8">
+            <div className="text-center max-w-2xl mx-auto mb-12 animate-fade-in-up">
+              <Badge className="bg-emerald-100 text-emerald-700 hover:bg-emerald-100 mb-4">FAQ</Badge>
+              <h2
+                id="faq-title"
+                className="text-3xl md:text-4xl font-black text-foreground tracking-tight">
+                Questions fréquentes
+              </h2>
+              <p className="mt-4 text-lg text-muted-foreground">Les questions qu'on nous pose avant de réserver.</p>
+            </div>
+
+            <div className="max-w-3xl mx-auto animate-fade-in-up delay-200">
+              <Accordion
+                type="single"
+                collapsible
+                className="space-y-4">
+                {FAQS.map((f, idx) => (
+                  <AccordionItem
+                    key={idx}
+                    value={`item-${idx}`}
+                    className="bg-card rounded-2xl border border-border px-6 overflow-hidden data-[state=open]:shadow-lg data-[state=open]:shadow-slate-200/50 transition-all">
+                    <AccordionTrigger className="text-left font-semibold text-foreground hover:no-underline py-5">{f.q}</AccordionTrigger>
+                    <AccordionContent className="text-muted-foreground pb-5 leading-relaxed">{f.a}</AccordionContent>
+                  </AccordionItem>
+                ))}
+              </Accordion>
+            </div>
+          </div>
+        </section>
+
+        {/* FINAL CTA */}
+        <section
+          className="py-20 md:py-32 bg-gradient-to-br from-emerald-600 via-emerald-600 to-teal-600 text-white relative overflow-hidden"
+          aria-labelledby="final-cta-title">
+          {/* Background decoration */}
+          <div className="absolute inset-0 opacity-10">
+            <div className="absolute top-0 left-1/4 w-96 h-96 bg-white rounded-full blur-3xl" />
+            <div className="absolute bottom-0 right-1/4 w-64 h-64 bg-white rounded-full blur-3xl" />
           </div>
 
-          <div className="mt-10 flex flex-col sm:flex-row gap-3">
-            <Button
-              asChild
-              size="lg"
-              variant="accent"
-              className="rounded-full">
-              <Link href="/devis">Demander un devis</Link>
-            </Button>
-            <Button
-              asChild
-              size="lg"
-              variant="outline"
-              className="rounded-full">
-              <a href={`tel:${PHONE}`}>Appeler le {PHONE_DISPLAY}</a>
-            </Button>
+          <div className="relative z-10 mx-auto max-w-4xl px-4 lg:px-8 text-center">
+            <h2
+              id="final-cta-title"
+              className="text-3xl md:text-5xl font-black tracking-tight animate-fade-in-up">
+              Prêt à nous faire confiance ?
+            </h2>
+            <p className="mt-6 text-xl text-emerald-100 max-w-2xl mx-auto animate-fade-in-up delay-100">
+              Envoyez-nous quelques photos et recevez un devis clair en moins de 24h. Sans engagement, sans surprise.
+            </p>
+
+            <div className="mt-10 flex flex-col sm:flex-row gap-4 justify-center animate-fade-in-up delay-200">
+              <Button
+                asChild
+                size="lg"
+                className="rounded-full px-10 h-14 text-lg font-semibold bg-white text-emerald-700 hover:bg-emerald-50 shadow-xl shadow-emerald-900/20">
+                <Link href="/devis">
+                  Demander un devis gratuit
+                  <ArrowRight className="h-5 w-5 ml-2" />
+                </Link>
+              </Button>
+              <Button
+                asChild
+                size="lg"
+                variant="outline"
+                className="rounded-full px-10 h-14 text-lg font-semibold border-2 border-white/30 text-white hover:bg-white/10">
+                <a href={`tel:${PHONE}`}>
+                  <PhoneCall className="h-5 w-5 mr-2" />
+                  {PHONE_DISPLAY}
+                </a>
+              </Button>
+            </div>
+
+            <p className="mt-8 text-emerald-200 text-sm animate-fade-in-up delay-300">Réponse sous 24h • Devis sans engagement • Paiement après intervention</p>
           </div>
-        </div>
-      </section>
-    </main>
+        </section>
+      </main>
+    </>
   );
 }

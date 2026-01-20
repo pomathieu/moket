@@ -81,7 +81,7 @@ export function VideoSlider({ videos, autoPlayActive = true, startAfterLcpMs = 1
   const canScrollNext = emblaApi?.canScrollNext() ?? true;
 
   return (
-    <div className="relative rounded-2xl">
+    <div className="relative bg-transparent rounded-2xl">
       <div
         ref={emblaRef}
         className="overflow-hidden rounded-2xl">

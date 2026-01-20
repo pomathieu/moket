@@ -2,23 +2,22 @@ import type { Metadata } from 'next';
 import Script from 'next/script';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
-import { Camera, Check, Clock, MapPin, MessageSquare, Phone, Shield } from 'lucide-react';
+import { Camera, Check, Clock, MessageSquare, Phone, Shield, Sparkles, ArrowRight, MapPin, Star, FileText, ChevronRight } from 'lucide-react';
 import { DevisForm } from '@/components/devis/DevisForm';
 
 const SITE_URL = 'https://moket.fr';
-const BRAND = 'MOKET';
 const PHONE = '+33635090095';
 const PHONE_DISPLAY = '06 35 09 00 95';
 
-// WhatsApp
-const WHATSAPP_NUMBER_INTL = '33635090095'; // sans +, sans espaces
+const WHATSAPP_NUMBER_INTL = '33635090095';
 const WHATSAPP_TEXT = 'Bonjour, je souhaite un devis.\n\n- Service : \n- Ville / CP : \n- Dimensions (si possible) : \n- Détails (taches/odeurs) : \n\nJe vous envoie les photos juste après.';
 const WHATSAPP_LINK = `https://wa.me/${WHATSAPP_NUMBER_INTL}?text=${encodeURIComponent(WHATSAPP_TEXT)}`;
 
 export const metadata: Metadata = {
   title: 'Demander un devis | Nettoyage canapé, matelas, tapis & moquette | MOKET',
-  description: 'Demandez un devis rapide : envoyez 2–3 photos (vue d’ensemble + tache), choisissez votre service et votre zone. Intervention à domicile en Île-de-France et Normandie.',
+  description: "Demandez un devis rapide : envoyez 2–3 photos (vue d'ensemble + tache), choisissez votre service et votre zone. Intervention à domicile en Île-de-France et Normandie.",
   alternates: { canonical: `${SITE_URL}/devis` },
   openGraph: {
     title: 'Devis rapide nettoyage textile à domicile | MOKET',
@@ -31,11 +30,11 @@ export const metadata: Metadata = {
 const FAQS = [
   {
     q: 'Quelles photos faut-il envoyer ?',
-    a: 'Idéalement 2 à 3 photos : (1) une vue d’ensemble, (2) un plan rapproché de la tache, (3) une photo de l’étiquette si elle est accessible (matière/entretien).',
+    a: "Idéalement 2 à 3 photos : (1) une vue d'ensemble, (2) un plan rapproché de la tache, (3) une photo de l'étiquette si elle est accessible (matière/entretien).",
   },
   {
     q: 'En combien de temps ai-je une réponse ?',
-    a: 'En général, on répond rapidement après réception (selon affluence). Si c’est urgent, appelez-nous ou envoyez un message WhatsApp.',
+    a: "En général, on répond rapidement après réception (selon affluence). Si c'est urgent, appelez-nous ou envoyez un message WhatsApp.",
   },
   {
     q: 'Vous intervenez où ?',
@@ -45,6 +44,34 @@ const FAQS = [
     q: 'Est-ce que toutes les taches partent ?',
     a: 'On récupère la grande majorité des taches du quotidien, surtout si elles sont récentes. Certaines traces anciennes (décoloration, brûlure, migration de teinture) peuvent rester partiellement visibles.',
   },
+];
+
+const STEPS = [
+  {
+    icon: Camera,
+    title: 'Envoyez vos photos',
+    desc: "2–3 photos : vue d'ensemble + zone à traiter",
+  },
+  {
+    icon: MessageSquare,
+    title: 'Décrivez votre besoin',
+    desc: 'Service, dimensions, taches ou odeurs',
+  },
+  {
+    icon: Clock,
+    title: 'Recevez votre devis',
+    desc: 'Prix clair + créneau sous 24h',
+  },
+];
+
+const ZONES = [
+  { name: 'Paris', href: '/zones/paris' },
+  { name: 'Hauts-de-Seine', href: '/zones/hauts-de-seine' },
+  { name: 'Val-de-Marne', href: '/zones/val-de-marne' },
+  { name: 'Yvelines', href: '/zones/yvelines' },
+  { name: 'Seine-Saint-Denis', href: '/zones/seine-saint-denis' },
+  { name: 'Seine-Maritime', href: '/zones/seine-maritime' },
+  { name: 'Calvados', href: '/zones/calvados' },
 ];
 
 export default function DevisPage() {
@@ -58,31 +85,18 @@ export default function DevisPage() {
         '@id': `${pageUrl}#webpage`,
         url: pageUrl,
         name: 'Demander un devis',
-        description: 'Demandez un devis rapide : envoyez 2–3 photos (vue d’ensemble + tache), choisissez votre service et votre zone. Intervention à domicile en Île-de-France et Normandie.',
+        description: "Demandez un devis rapide : envoyez 2–3 photos (vue d'ensemble + tache), choisissez votre service et votre zone. Intervention à domicile en Île-de-France et Normandie.",
         inLanguage: 'fr-FR',
         isPartOf: { '@id': `${SITE_URL}/#website` },
         about: { '@id': `${SITE_URL}/#localbusiness` },
         breadcrumb: { '@id': `${pageUrl}#breadcrumb` },
         mainEntity: { '@id': `${pageUrl}#faq` },
         potentialAction: [
-          {
-            '@type': 'CommunicateAction',
-            name: 'Appeler pour un devis',
-            target: `tel:${PHONE}`,
-          },
-          {
-            '@type': 'CommunicateAction',
-            name: 'Envoyer un message WhatsApp pour un devis',
-            target: WHATSAPP_LINK,
-          },
-          {
-            '@type': 'Action',
-            name: 'Demander un devis via le formulaire',
-            target: `${pageUrl}#form`,
-          },
+          { '@type': 'CommunicateAction', name: 'Appeler pour un devis', target: `tel:${PHONE}` },
+          { '@type': 'CommunicateAction', name: 'Envoyer un message WhatsApp pour un devis', target: WHATSAPP_LINK },
+          { '@type': 'Action', name: 'Demander un devis via le formulaire', target: `${pageUrl}#form` },
         ],
       },
-
       {
         '@type': 'ContactPage',
         '@id': `${pageUrl}#contactpage`,
@@ -91,7 +105,6 @@ export default function DevisPage() {
         isPartOf: { '@id': `${pageUrl}#webpage` },
         about: { '@id': `${SITE_URL}/#localbusiness` },
       },
-
       {
         '@type': 'BreadcrumbList',
         '@id': `${pageUrl}#breadcrumb`,
@@ -100,7 +113,6 @@ export default function DevisPage() {
           { '@type': 'ListItem', position: 2, name: 'Devis', item: pageUrl },
         ],
       },
-
       {
         '@type': 'FAQPage',
         '@id': `${pageUrl}#faq`,
@@ -115,258 +127,32 @@ export default function DevisPage() {
   };
 
   return (
-    <main className="mx-auto max-w-7xl p-4 lg:px-8 lg:pt-12 pb-16 md:pb-24">
-      <Script
-        id="jsonld-devis"
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-      />
-
-      {/* HERO */}
-      <section className="md:grid gap-6 md:gap-8">
-        <div className="flex flex-col gap-3">
-          <h1 className="text-3xl md:text-5xl font-extrabold -tracking-normal">Demander un devis (rapide)</h1>
-
-          <p className="text-muted-foreground max-w-3xl">
-            Le plus simple : envoyez <strong>2–3 photos</strong> (vue d’ensemble + tache) et quelques infos. On vous répond avec un <strong>tarif clair</strong> et une{' '}
-            <strong>proposition de créneau</strong>.
-          </p>
-        </div>
-
-        <div className="lg:flex flex-col hidden items-center md:flex-row gap-3">
-          <Button
-            asChild
-            size="lg"
-            variant="accent"
-            className="rounded-full w-58">
-            <a href="#form">Remplir le formulaire</a>
-          </Button>
-
-          <Button
-            asChild
-            size="lg"
-            variant="outline"
-            className="rounded-full w-58">
-            <a
-              href={`tel:${PHONE}`}
-              className="inline-flex items-center gap-2">
-              <Phone className="h-4 w-4" /> Appeler le {PHONE_DISPLAY}
-            </a>
-          </Button>
-
-          <Button
-            asChild
-            size="lg"
-            variant="outline"
-            className="rounded-full w-58">
-            <a
-              href={WHATSAPP_LINK}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2">
-              WhatsApp
-            </a>
-          </Button>
-        </div>
-
-        <div className="hidden lg:grid grid-cols-1 md:grid-cols-3 gap-3 ">
-          <MiniCard
-            icon={<Camera className="h-4 w-4" />}
-            title="1) Photos"
-            text="2–3 photos : vue d’ensemble + zone à traiter."
-          />
-          <MiniCard
-            icon={<MessageSquare className="h-4 w-4" />}
-            title="2) Infos"
-            text="Service, dimensions, odeurs/taches, ville."
-          />
-          <MiniCard
-            icon={<Clock className="h-4 w-4" />}
-            title="3) Réponse"
-            text="Prix clair + estimation de durée + créneau."
-          />
-        </div>
-      </section>
-
-      {/* CONTENT */}
-      <section className="mt-10  grid gap-8 lg:grid-cols-5 lg:items-start">
-        {/* FORM */}
-        <div
-          id="form"
-          className="lg:col-span-3">
-          <div className="rounded-2xl border border-border bg-card p-4">
-            <h2 className="text-2xl font-bold">Devis en 2 minutes</h2>
-            <p className="mt-2 text-xs text-muted-foreground">Plus les infos sont précises, plus le devis est fiable (matière, dimensions, taches).</p>
-
-            <DevisForm />
-          </div>
-
-          <div className="mt-6 rounded-2xl border border-border bg-muted/40 p-6">
-            <p className="text-sm text-muted-foreground">
-              <strong>Note :</strong> les brûlures, décolorations et migrations de teinture peuvent ne pas disparaître totalement. On vise le meilleur résultat possible sans prendre de risques
-              inutiles pour le textile.
-            </p>
-          </div>
-        </div>
-
-        {/* SIDEBAR */}
-        <aside className="lg:col-span-2 space-y-6">
-          <div className="rounded-2xl border border-border bg-card p-6">
-            <h3 className="font-semibold text-lg">Ce que vous recevez</h3>
-            <ul className="mt-4 space-y-3 text-sm text-slate-700">
-              <li className="flex gap-2">
-                <Check className="h-4 w-4 text-primary mt-0.5" />
-                Une <strong>tarification</strong> avant intervention
-              </li>
-              <li className="flex gap-2">
-                <Check className="h-4 w-4 text-primary mt-0.5" />
-                Une estimation du <strong>temps sur place</strong>
-              </li>
-              <li className="flex gap-2">
-                <Check className="h-4 w-4 text-primary mt-0.5" />
-                Une proposition de <strong>créneau</strong>
-              </li>
-              <li className="flex gap-2">
-                <Check className="h-4 w-4 text-primary mt-0.5" />
-                Des conseils simples (préparation / séchage)
-              </li>
-            </ul>
-
-            <div className="mt-6 flex flex-col justify-center mx-auto gap-3">
-              <Button
-                asChild
-                variant="secondary"
-                className="rounded-full w-fit">
-                <Link href="/tarifs">Voir les tarifs</Link>
-              </Button>
-            </div>
-          </div>
-
-          {/* WhatsApp quick */}
-          <div className="rounded-2xl border border-border bg-muted/40 p-6">
-            <p className="font-semibold">Plus rapide ?</p>
-            <p className="mt-1 text-sm text-muted-foreground">Envoie directement tes photos sur WhatsApp, et on te répond avec un prix clair.</p>
-            <div className="mt-4 flex flex-col gap-3">
-              <Button
-                asChild
-                variant="accent"
-                className="rounded-full w-full">
-                <a
-                  href={WHATSAPP_LINK}
-                  target="_blank"
-                  rel="noopener noreferrer">
-                  WhatsApp
-                </a>
-              </Button>
-              <Button
-                asChild
-                variant="outline"
-                className="rounded-full w-full">
-                <a href={`tel:${PHONE}`}>Appeler</a>
-              </Button>
-            </div>
-          </div>
-
-          <div className="rounded-2xl border border-border bg-card p-6">
-            <h3 className="font-semibold text-lg">On intervient où ?</h3>
-            <p className="mt-2 text-sm text-muted-foreground">
-              <strong>Île-de-France</strong> et <strong>Normandie</strong>.
-            </p>
-            <div className="mt-4 flex flex-wrap gap-2">
-              <Chip
-                href="/zones/paris"
-                label="Paris"
-              />
-              <Chip
-                href="/zones/hauts-de-seine"
-                label="Hauts-de-Seine"
-              />
-              <Chip
-                href="/zones/val-de-marne"
-                label="Val-de-Marne"
-              />
-              <Chip
-                href="/zones/yvelines"
-                label="Yvelines"
-              />
-              <Chip
-                href="/zones/seine-saint-denis"
-                label="Seine-Saint-Denis"
-              />
-              <Chip
-                href="/zones/seine-maritime"
-                label="Seine-Maritime"
-              />
-              <Chip
-                href="/zones/calvados"
-                label="Calvados"
-              />
-              <Chip
-                href="/zones"
-                label="Toutes les zones"
-              />
-            </div>
-          </div>
-
-          <div className="rounded-2xl sr-only border border-border bg-muted/40 p-6">
-            <div className="flex items-start gap-3">
-              <div className="text-primary mt-0.5">
-                <Shield className="h-5 w-5" />
-              </div>
-              <div>
-                <p className="font-semibold">Intervention propre & protégée</p>
-                <p className="mt-1 text-sm text-muted-foreground">Protection des zones, propreté, protocole adapté au textile.</p>
-              </div>
-            </div>
-          </div>
-        </aside>
-      </section>
-
-      {/* FAQ */}
-      <section className="mt-12 md:mt-16 px-4">
-        <div className="max-w-3xl">
-          <h2 className="text-2xl md:text-3xl font-bold">FAQ Devis</h2>
-          <p className="mt-2 text-muted-foreground">Les questions qu’on te pose le plus avant de réserver.</p>
-        </div>
-
-        <div className="mt-8 max-w-4xl">
-          <Accordion
-            type="single"
-            collapsible
-            className="w-full">
-            {FAQS.map((f, idx) => (
-              <AccordionItem
-                key={idx}
-                value={`faq-${idx}`}
-                className="border-b border-slate-200/70">
-                <AccordionTrigger className="text-left">{f.q}</AccordionTrigger>
-                <AccordionContent className="text-sm text-slate-700">{f.a}</AccordionContent>
-              </AccordionItem>
-            ))}
-          </Accordion>
-        </div>
-      </section>
-
-      {/* Sticky mobile CTA */}
-      <div className="fixed bottom-0 left-0 right-0 z-50 md:hidden">
-        <div className="mx-auto max-w-7xl">
-          <div className=" border border-border bg-background/9 5 backdrop-blur p-3 shadow-sm grid grid-cols-3 gap-3">
+    <>
+      {/* Sticky Mobile CTA */}
+      <div className="fixed bottom-0 left-0 right-0 z-50 border-t border-border bg-background/80 backdrop-blur-xl md:hidden">
+        <div className="mx-auto max-w-7xl px-4 py-3">
+          <div className="grid grid-cols-3 gap-2">
             <Button
               asChild
-              variant="accent"
-              className="rounded-full w-full">
-              <a href="#form">Devis</a>
+              className="rounded-full bg-emerald-600 hover:bg-emerald-700 text-white shadow-lg shadow-emerald-600/25">
+              <a href="#form">
+                <FileText className="h-4 w-4 mr-1" />
+                Devis
+              </a>
             </Button>
             <Button
               asChild
               variant="outline"
-              className="rounded-full w-full">
-              <a href={`tel:${PHONE}`}>Appeler</a>
+              className="rounded-full border-2">
+              <a href={`tel:${PHONE}`}>
+                <Phone className="h-4 w-4 mr-1" />
+                Appeler
+              </a>
             </Button>
             <Button
               asChild
               variant="outline"
-              className="rounded-full w-full">
+              className="rounded-full border-2">
               <a
                 href={WHATSAPP_LINK}
                 target="_blank"
@@ -377,35 +163,328 @@ export default function DevisPage() {
           </div>
         </div>
       </div>
-    </main>
-  );
-}
 
-function MiniCard({ icon, title, text }: { icon: React.ReactNode; title: string; text: string }) {
-  return (
-    <div className="rounded-2xl border border-border  p-4">
-      <div className="flex items-start gap-3">
-        <div className="text-primary mt-0.5">{icon}</div>
-        <div>
-          <p className="font-semibold">{title}</p>
-          <p className="mt-1 text-sm text-muted-foreground">{text}</p>
-        </div>
-      </div>
-    </div>
-  );
-}
+      <main className="overflow-x-hidden pb-24 md:pb-0">
+        <Script
+          id="jsonld-devis"
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
 
-function Chip({ href, label }: { href: string; label: string }) {
-  return (
-    <Button
-      asChild
-      variant="secondary"
-      className="rounded-full h-9 px-3">
-      <Link
-        href={href}
-        className="inline-flex items-center gap-2">
-        <MapPin className="h-4 w-4" /> {label}
-      </Link>
-    </Button>
+        {/* HERO */}
+        <section
+          className="relative py-16 md:py-24 overflow-hidden"
+          aria-labelledby="devis-title">
+          {/* Background */}
+          <div className="absolute inset-0 bg-linear-to-br from-slate-50 via-emerald-50/30 to-teal-50/20" />
+          <div className="absolute top-0 right-0 w-160 h-160 bg-linear-to-bl from-emerald-100/40 via-transparent to-transparent rounded-full blur-3xl" />
+          <div className="absolute bottom-0 left-0 w-120 h-120 bg-gradient-to-tr from-teal-100/30 via-transparent to-transparent rounded-full blur-3xl" />
+
+          <div className="relative z-10 mx-auto max-w-7xl px-4 lg:px-8">
+            <div className="max-w-3xl">
+              {/* Badge */}
+              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/90 backdrop-blur-sm border border-slate-200/50 shadow-lg shadow-slate-200/50 text-sm font-medium animate-fade-in">
+                <span className="flex h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
+                <span className="text-slate-700">Réponse sous 24h</span>
+              </div>
+
+              <h1
+                id="devis-title"
+                className="mt-6 text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight text-foreground leading-[1.1] animate-fade-in-up">
+                Votre devis{' '}
+                <span className="relative">
+                  <span className="relative z-10 text-transparent bg-clip-text bg-gradient-to-r from-emerald-600 to-teal-600">en 2 minutes</span>
+                  <span className="absolute bottom-2 left-0 right-0 h-3 bg-emerald-200/60 z-0 rounded-full" />
+                </span>
+              </h1>
+
+              <p className="mt-6 text-lg md:text-xl text-muted-foreground leading-relaxed animate-fade-in-up">
+                Envoyez <strong className="text-foreground">2–3 photos</strong> et quelques infos. On vous répond avec un <strong className="text-foreground">tarif clair</strong> et un créneau
+                d'intervention.
+              </p>
+
+              {/* CTA buttons - Desktop */}
+              <div className="mt-8 hidden md:flex flex-wrap gap-4 animate-fade-in-up">
+                <Button
+                  asChild
+                  size="lg"
+                  className="rounded-full px-8 h-14 text-base font-semibold bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white shadow-xl shadow-emerald-600/30 transition-all hover:shadow-2xl hover:shadow-emerald-600/40 hover:-translate-y-0.5">
+                  <a href="#form">
+                    Remplir le formulaire
+                    <ArrowRight className="h-5 w-5 ml-2" />
+                  </a>
+                </Button>
+                <Button
+                  asChild
+                  size="lg"
+                  variant="accent"
+                  className="rounded-full px-8 h-14 text-base font-semibold border-2 border-emerald-200 text-emerald-50 hover:border-emerald-300 hover:bg-emerald-50 transition-all">
+                  <a href={`tel:${PHONE}`}>
+                    <Phone className="h-5 w-5 mr-2" />
+                    {PHONE_DISPLAY}
+                  </a>
+                </Button>
+                <Button
+                  asChild
+                  size="lg"
+                  variant="accent"
+                  className="rounded-full px-8 h-14 text-base  font-semibold border-2 border-emerald-200 text-emerald-50 hover:border-emerald-300 hover:bg-emerald-50 transition-all">
+                  <a
+                    href={WHATSAPP_LINK}
+                    target="_blank"
+                    rel="noopener noreferrer">
+                    WhatsApp
+                    <ChevronRight className="h-5 w-5 ml-1" />
+                  </a>
+                </Button>
+              </div>
+            </div>
+
+            {/* Steps Cards */}
+            <div className="mt-12 grid grid-cols-1 md:grid-cols-3 gap-4 animate-fade-in-up">
+              {STEPS.map((step, idx) => (
+                <div
+                  key={step.title}
+                  className="group relative rounded-3xl bg-white/80 backdrop-blur-sm p-6 border border-slate-200/50 shadow-lg shadow-slate-200/30 transition-all duration-300 hover:shadow-xl hover:-translate-y-1">
+                  <div className="flex items-start gap-4">
+                    <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-emerald-500 to-teal-600 text-white font-bold text-lg shadow-lg shadow-emerald-500/30 transition-transform duration-300 group-hover:scale-110 group-hover:rotate-[5deg]">
+                      {idx + 1}
+                    </div>
+                    <div>
+                      <div className="flex items-center gap-2 mb-1">
+                        <step.icon className="h-4 w-4 text-emerald-600" />
+                        <h3 className="font-bold text-foreground">{step.title}</h3>
+                      </div>
+                      <p className="text-sm text-muted-foreground">{step.desc}</p>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* MAIN CONTENT */}
+        <section className="py-16 md:py-24 bg-muted/30">
+          <div className="mx-auto max-w-7xl px-4 lg:px-8">
+            <div className="grid gap-8 lg:grid-cols-3 lg:items-start">
+              {/* FORM - Takes 2 columns */}
+              <div
+                id="form"
+                className="lg:col-span-2 scroll-mt-8">
+                <div className="rounded-3xl border border-border bg-card p-6 md:p-8 shadow-xl shadow-slate-200/50">
+                  <div className="flex items-center gap-3 mb-6">
+                    <div className="p-3 rounded-2xl bg-gradient-to-br from-emerald-500 to-teal-600 text-white shadow-lg shadow-emerald-500/30">
+                      <Sparkles className="h-6 w-6" />
+                    </div>
+                    <div>
+                      <h2 className="text-2xl font-bold text-foreground">Devis gratuit</h2>
+                      <p className="text-sm text-muted-foreground">Sans engagement • Réponse rapide</p>
+                    </div>
+                  </div>
+
+                  <DevisForm />
+                </div>
+
+                {/* Note */}
+                <div className="mt-6 rounded-2xl border border-amber-200/50 bg-amber-50/50 p-5">
+                  <p className="text-sm text-amber-900">
+                    <strong>À noter :</strong> les brûlures, décolorations et migrations de teinture peuvent ne pas disparaître totalement. On vise le meilleur résultat possible sans prendre de
+                    risques pour le textile.
+                  </p>
+                </div>
+              </div>
+
+              {/* SIDEBAR */}
+              <aside className="space-y-6">
+                {/* What you get */}
+                <div className="rounded-3xl border border-border bg-card p-6 shadow-lg shadow-slate-200/30">
+                  <h3 className="font-bold text-lg text-foreground flex items-center gap-2">
+                    <Check className="h-5 w-5 text-emerald-600" />
+                    Ce que vous recevez
+                  </h3>
+                  <ul className="mt-4 space-y-3">
+                    {['Une tarification claire avant intervention', 'Une estimation du temps sur place', 'Une proposition de créneau', 'Des conseils (préparation / séchage)'].map((item, idx) => (
+                      <li
+                        key={idx}
+                        className="flex items-start gap-3 text-sm">
+                        <div className="flex-shrink-0 w-5 h-5 rounded-full bg-emerald-100 flex items-center justify-center mt-0.5">
+                          <Check className="h-3 w-3 text-emerald-700" />
+                        </div>
+                        <span className="text-muted-foreground">{item}</span>
+                      </li>
+                    ))}
+                  </ul>
+                  <div className="mt-6">
+                    <Button
+                      asChild
+                      variant="outline"
+                      className="rounded-full w-full border-2">
+                      <Link href="/tarifs">
+                        Voir les tarifs indicatifs
+                        <ChevronRight className="h-4 w-4 ml-2" />
+                      </Link>
+                    </Button>
+                  </div>
+                </div>
+
+                {/* WhatsApp shortcut */}
+                <div className="rounded-3xl bg-gradient-to-br from-emerald-600 to-teal-600 p-6 text-white shadow-xl shadow-emerald-600/30">
+                  <h3 className="font-bold text-lg">Plus rapide ?</h3>
+                  <p className="mt-2 text-sm text-emerald-100">Envoyez directement vos photos sur WhatsApp et recevez un prix clair.</p>
+                  <div className="mt-4 flex flex-col gap-3">
+                    <Button
+                      asChild
+                      className="rounded-full w-full bg-white text-emerald-700 hover:bg-emerald-50 font-semibold shadow-lg">
+                      <a
+                        href={WHATSAPP_LINK}
+                        target="_blank"
+                        rel="noopener noreferrer">
+                        WhatsApp
+                        <ArrowRight className="h-4 w-4 ml-2" />
+                      </a>
+                    </Button>
+                    <Button
+                      asChild
+                      variant="outline"
+                      className="rounded-full w-full border-2 border-white/30 text-white hover:bg-white/10">
+                      <a href={`tel:${PHONE}`}>
+                        <Phone className="h-4 w-4 mr-2" />
+                        Appeler
+                      </a>
+                    </Button>
+                  </div>
+                </div>
+
+                {/* Zones */}
+                <div className="rounded-3xl border border-border bg-card p-6 shadow-lg shadow-slate-200/30">
+                  <h3 className="font-bold text-lg text-foreground flex items-center gap-2">
+                    <MapPin className="h-5 w-5 text-emerald-600" />
+                    Zones d'intervention
+                  </h3>
+                  <p className="mt-2 text-sm text-muted-foreground">
+                    <strong className="text-foreground">Île-de-France</strong> et <strong className="text-foreground">Normandie</strong>
+                  </p>
+                  <div className="mt-4 flex flex-wrap gap-2">
+                    {ZONES.map((zone) => (
+                      <Button
+                        key={zone.name}
+                        asChild
+                        variant="secondary"
+                        className="rounded-full h-8 px-3 text-xs hover:bg-emerald-50 hover:text-emerald-700">
+                        <Link href={zone.href}>{zone.name}</Link>
+                      </Button>
+                    ))}
+                    <Button
+                      asChild
+                      className="rounded-full h-8 px-3 text-xs bg-slate-900 hover:bg-slate-800 text-white">
+                      <Link href="/zones">Toutes</Link>
+                    </Button>
+                  </div>
+                </div>
+
+                {/* Trust */}
+                <div className="rounded-3xl border border-border bg-card p-6 shadow-lg shadow-slate-200/30">
+                  <div className="flex items-start gap-3">
+                    <div className="p-2 rounded-xl bg-emerald-100 text-emerald-700">
+                      <Shield className="h-5 w-5" />
+                    </div>
+                    <div>
+                      <h3 className="font-bold text-foreground">Intervention protégée</h3>
+                      <p className="mt-1 text-sm text-muted-foreground">Protection des zones, propreté, protocole adapté au textile.</p>
+                    </div>
+                  </div>
+
+                  {/* Mini testimonial */}
+                  <div className="mt-4 pt-4 border-t border-border">
+                    <div className="flex items-center gap-1 mb-2">
+                      {[...Array(5)].map((_, i) => (
+                        <Star
+                          key={i}
+                          className="h-3 w-3 fill-amber-400 text-amber-400"
+                        />
+                      ))}
+                    </div>
+                    <p className="text-sm text-foreground italic">"Devis rapide, intervention impeccable !"</p>
+                    <p className="text-xs text-muted-foreground mt-1">— Sophie, Boulogne</p>
+                  </div>
+                </div>
+              </aside>
+            </div>
+          </div>
+        </section>
+
+        {/* FAQ */}
+        <section
+          className="py-16 md:py-24 bg-card"
+          aria-labelledby="faq-title">
+          <div className="mx-auto max-w-7xl px-4 lg:px-8">
+            <div className="max-w-2xl mb-12">
+              <Badge className="bg-emerald-100 text-emerald-700 hover:bg-emerald-100 mb-4">FAQ</Badge>
+              <h2
+                id="faq-title"
+                className="text-3xl md:text-4xl font-black text-foreground tracking-tight">
+                Questions fréquentes
+              </h2>
+              <p className="mt-4 text-lg text-muted-foreground">Les réponses aux questions qu'on nous pose le plus avant de réserver.</p>
+            </div>
+
+            <div className="max-w-3xl">
+              <Accordion
+                type="single"
+                collapsible
+                className="space-y-4">
+                {FAQS.map((f, idx) => (
+                  <AccordionItem
+                    key={idx}
+                    value={`faq-${idx}`}
+                    className="bg-muted/50 rounded-2xl border border-border px-6 overflow-hidden data-[state=open]:shadow-lg data-[state=open]:shadow-slate-200/50 transition-all">
+                    <AccordionTrigger className="text-left font-semibold text-foreground hover:no-underline py-5">{f.q}</AccordionTrigger>
+                    <AccordionContent className="text-muted-foreground pb-5 leading-relaxed">{f.a}</AccordionContent>
+                  </AccordionItem>
+                ))}
+              </Accordion>
+            </div>
+          </div>
+        </section>
+
+        {/* FINAL CTA */}
+        <section className="py-16 md:py-24 bg-gradient-to-br from-emerald-600 via-emerald-600 to-teal-600 text-white relative overflow-hidden">
+          <div className="absolute inset-0 opacity-10">
+            <div className="absolute top-0 left-1/4 w-96 h-96 bg-white rounded-full blur-3xl" />
+            <div className="absolute bottom-0 right-1/4 w-64 h-64 bg-white rounded-full blur-3xl" />
+          </div>
+
+          <div className="relative z-10 mx-auto max-w-4xl px-4 lg:px-8 text-center">
+            <h2 className="text-3xl md:text-5xl font-black tracking-tight">Prêt à nous envoyer vos photos ?</h2>
+            <p className="mt-6 text-xl text-emerald-100 max-w-2xl mx-auto">Formulaire, WhatsApp ou téléphone — choisissez ce qui vous arrange.</p>
+
+            <div className="mt-10 flex flex-col sm:flex-row gap-4 justify-center">
+              <Button
+                asChild
+                size="lg"
+                className="rounded-full px-10 h-14 text-lg font-semibold bg-white text-emerald-700 hover:bg-emerald-50 shadow-xl shadow-emerald-900/20">
+                <a href="#form">
+                  Remplir le formulaire
+                  <ArrowRight className="h-5 w-5 ml-2" />
+                </a>
+              </Button>
+              <Button
+                asChild
+                size="lg"
+                variant="outline"
+                className="rounded-full px-10 h-14 text-lg font-semibold border-2 border-white/30 text-white hover:bg-white/10">
+                <a href={`tel:${PHONE}`}>
+                  <Phone className="h-5 w-5 mr-2" />
+                  {PHONE_DISPLAY}
+                </a>
+              </Button>
+            </div>
+
+            <p className="mt-8 text-emerald-200 text-sm">Réponse sous 24h • Devis sans engagement • Paiement après intervention</p>
+          </div>
+        </section>
+      </main>
+    </>
   );
 }

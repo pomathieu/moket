@@ -38,10 +38,32 @@ const jsonLd = {
       '@id': `${base}/#localbusiness`,
       name: 'MOKET',
       url: base,
+      email: 'contact@moket.fr',
+      currenciesAccepted: 'EUR',
+
       telephone: '+33635090095',
       image: `${base}/og.jpg`,
-      description: 'Nettoyage textile profond à domicile : matelas, canapé en tissu, tapis et moquette. Méthode injection-extraction.',
-      openingHours: 'Mo-Sa 09:00-19:00',
+      description: 'Nettoyage professionnel de textiles à domicile : canapés, matelas, tapis et moquettes en Île-de-France et Normandie.',
+      address: {
+        '@type': 'PostalAddress',
+        addressLocality: 'Paris',
+        addressRegion: 'Île-de-France',
+        addressCountry: 'FR',
+      },
+      geo: {
+        '@type': 'GeoCoordinates',
+        latitude: 48.8566,
+        longitude: 2.3522,
+      },
+
+      openingHoursSpecification: [
+        {
+          '@type': 'OpeningHoursSpecification',
+          dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
+          opens: '09:00',
+          closes: '19:00',
+        },
+      ],
       areaServed: [
         { '@type': 'AdministrativeArea', name: 'Île-de-France' },
         { '@type': 'AdministrativeArea', name: 'Paris' },
