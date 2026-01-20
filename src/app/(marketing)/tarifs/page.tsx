@@ -18,11 +18,10 @@ const PRICING_RULES = {
     moquette: { idf: 150, normandie: 150 },
   },
   surcharges: [
-    { label: 'Poils d’animaux (important)', value: '+20 €' },
-    { label: 'Odeurs fortes (tabac/urine/humidité)', value: '+20 €' },
-    { label: 'Encrassement important / taches multiples', value: '+20 à +40 €' },
+    { label: 'Traitement renforcé (poils, odeurs légères)', value: '+20 €' },
+    { label: 'Traitement intensif (encrassement important, taches multiples, odeurs fortes)', value: '+40 €' },
   ],
-  note: 'Tarifs valables pour un état “standard”. En cas d’encrassement important, poils d’animaux, taches multiples, odeurs fortes, textile très fragile, très grand format ou accès difficile, un ajustement peut être proposé — toujours annoncé avant intervention.',
+  note: 'Tarifs valables pour un état standard. En cas de traitement renforcé ou intensif, un ajustement peut être proposé après évaluation, toujours annoncé et validé avant intervention.',
 };
 
 const PRICES = [
