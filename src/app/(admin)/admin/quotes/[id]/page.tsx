@@ -141,6 +141,7 @@ export default async function page({ params }: { params: Promise<{ id: string }>
         <div className="flex gap-2">
           <Button
             asChild
+            className="cursor-pointer"
             variant="outline">
             <Link href="/admin/quotes">Retour</Link>
           </Button>
@@ -155,6 +156,7 @@ export default async function page({ params }: { params: Promise<{ id: string }>
             />
             <Button
               type="submit"
+              className="cursor-pointer"
               variant="secondary">
               Contacté
             </Button>
@@ -170,6 +172,7 @@ export default async function page({ params }: { params: Promise<{ id: string }>
             />
             <Button
               type="submit"
+              className="cursor-pointer"
               variant="secondary">
               Devisé
             </Button>
@@ -185,6 +188,7 @@ export default async function page({ params }: { params: Promise<{ id: string }>
             />
             <Button
               type="submit"
+              className="cursor-pointer"
               variant="outline">
               Gagné
             </Button>
