@@ -68,7 +68,7 @@ function QuickAnswers() {
       <p className="font-semibold">Réponses rapides</p>
       <ul className="mt-2 space-y-1 text-muted-foreground">
         <li>
-          <strong>Tarifs :</strong> Matelas dès 90€, canapé tissu dès 140€, tapis 35€/m² (min. 120–150€), moquette 12€/m² (min. 150€).
+          <strong>Tarifs :</strong> Matelas dès 90€, canapé tissu dès 140€, tapis 30€/m² (min. 120–150€), moquette 12€/m² (min. 150€).
         </li>
 
         <li>
@@ -175,7 +175,7 @@ export default function Home() {
 
               <h1 className="mt-3 text-4xl md:text-5xl font-extrabold -tracking-normal text-foreground">Nettoyage de canapés, matelas et moquettes à domicile</h1>
               <p className="mt-3 text-sm text-muted-foreground">
-                <strong>Tarifs :</strong> Matelas dès <strong>90€</strong> • Canapé tissu dès <strong>140€</strong> • Tapis <strong>35€/m²</strong>{' '}
+                <strong>Tarifs :</strong> Matelas dès <strong>90€</strong> • Canapé tissu dès <strong>140€</strong> • Tapis <strong>30€/m²</strong>{' '}
                 <span className="text-muted-foreground">(min. 120–150€)</span> • Moquette <strong>12€/m²</strong> <span className="text-muted-foreground">(min. 150€)</span>
               </p>
 
@@ -453,7 +453,7 @@ export default function Home() {
                 <ul className="mt-3 space-y-2 text-sm text-slate-700">
                   <li>• Matelas : 90 € (1 place) / 120 € (2 places)</li>
                   <li>• Canapé tissu : 140 € (2–3 places) / 190 € (4–5 places)</li>
-                  <li>• Tapis : 35 € / m²</li>
+                  <li>• Tapis : 30 € / m²</li>
                   <li>• Moquette : 12 € / m²</li>
                 </ul>
                 <p className="mt-3 text-xs text-muted-foreground">

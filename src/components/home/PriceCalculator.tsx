@@ -35,13 +35,13 @@ type Step = 0 | 1 | 2;
  * Tarifs
  * - Matelas : 90€ (1 place) / 120€ (2 places)
  * - Canapé tissu : 140€ (2–3 places) / 190€ (4–5 places)
- * - Tapis : 35€/m² (minimum 120€ Normandie / 150€ IDF)
+ * - Tapis : 30€/m² (minimum 120€ Normandie / 150€ IDF)
  * - Moquette : 12€/m² (minimum 150€)
  */
 const PRICES = {
   matelas: { small: 90, large: 120 },
   canape: { small: 140, large: 190 },
-  tapis: { perM2: 35 },
+  tapis: { perM2: 30 },
   moquette: { perM2: 12 },
 } as const;
 

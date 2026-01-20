@@ -51,7 +51,7 @@ const PRICES = [
   {
     title: 'Nettoyage de tapis',
     desc: 'Nettoyage des fibres + finition uniforme.',
-    items: [{ label: 'Prix au m²', price: '35 €/m²' }],
+    items: [{ label: 'Prix au m²', price: '30 €/m²' }],
     badges: [`Minimum IDF : ${PRICING_RULES.minIntervention.tapis.idf} €`, `Minimum Normandie : ${PRICING_RULES.minIntervention.tapis.normandie} €`],
     href: '/services/tapis',
     seo: { pricingKind: 'per_sqm' as const },
