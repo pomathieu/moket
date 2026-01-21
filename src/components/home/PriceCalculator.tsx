@@ -218,8 +218,8 @@ export function PriceCalculator({ phone = '+33635090095', className = '', onCTAC
   const primaryCTA = computed.allOk ? 'Recevoir un devis précis (photos)' : 'Compléter les surfaces';
 
   return (
-    <section className={['rounded-2xl bg-card/50 ', className].join(' ')}>
-      <div className="mt-4 rounded-2xl p-3 sm:p-5">
+    <section className={['rounded-2xl bg-card  ', className].join(' ')}>
+      <div className="mt-4 rounded-2xl">
         {/* STEP 0: Items */}
         {step === 0 && (
           <div className="space-y-4">

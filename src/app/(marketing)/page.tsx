@@ -1,10 +1,35 @@
 import Link from 'next/link';
 import Script from 'next/script';
+import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Check, Shield, Droplets, Clock, Sparkles, BadgeCheck, Leaf, Footprints, SprayCan, PhoneCall, FileText, ArrowRight, Play, Star, ChevronRight } from 'lucide-react';
+import {
+  Check,
+  Shield,
+  Droplets,
+  Clock,
+  Sparkles,
+  BadgeCheck,
+  Leaf,
+  Footprints,
+  SprayCan,
+  PhoneCall,
+  FileText,
+  ArrowRight,
+  Play,
+  Star,
+  ChevronRight,
+  Quote,
+  MapPin,
+  Heart,
+  Sofa,
+  BedDouble,
+  RectangleHorizontal,
+  Grid3X3,
+  HelpCircle,
+} from 'lucide-react';
 import { VideoSlider } from '@/components/home/VideoSlider';
 import { ImageSlider } from '@/components/home/ImageSlider';
 import { PriceCalculator } from '@/components/home/PriceCalculator';
@@ -20,6 +45,42 @@ const images = [
   { src: '/images/services/Matelas.jpg', width: 1200, height: 630, alt: 'MOKET — Nettoyage de matelas professionnel à domicile' },
   { src: '/images/services/Tapis.jpg', width: 1200, height: 630, alt: 'MOKET — Nettoyage de tapis professionnel à domicile' },
   { src: '/images/services/Canape2.jpg', width: 1200, height: 630, alt: 'MOKET — Nettoyage de canapé avant après' },
+];
+
+// NOUVEAUX TÉMOIGNAGES
+const TESTIMONIALS = [
+  {
+    name: 'Béatrice B.',
+    location: 'Honfleur',
+    rating: 5,
+    text: 'Intervention rapide et de très grande qualité. Mon tapis est impeccable. Je recommande.',
+    item: 'Tapis 5 m²',
+    avatar: '/images/avatars/marie.webp', // Optionnel
+  },
+  {
+    name: 'Sarah L.',
+    location: 'Caen-Mondeville',
+    rating: 5,
+    text: 'Merci beaucoup pour votre professionnalisme et votre rapidité. Mes matelas sont comme neufs !',
+    item: 'Matelas 180x200',
+    avatar: '/images/avatars/thomas.webp',
+  },
+  {
+    name: 'Sophie & Marc',
+    location: 'Rouen',
+    rating: 5,
+    text: 'On hésitait à racheter un tapis. Finalement le nettoyage a suffi, les couleurs sont revenues. Économie de 800€ !',
+    item: 'Tapis berbère 5 m²',
+    avatar: '/images/avatars/sophie.webp',
+  },
+  {
+    name: 'Famille Petit',
+    location: 'Versailles',
+    rating: 5,
+    text: 'Avec 3 enfants et un chien, notre canapé était dans un état... Intervention rapide, résultat incroyable. Merci !',
+    item: "Canapé d'angle",
+    avatar: '/images/avatars/famille.webp',
+  },
 ];
 
 const FAQS = [
@@ -73,6 +134,7 @@ const SERVICES = [
     price: 'Dès 90€',
     priceValue: 90,
     icon: Sparkles,
+    gradient: 'from-blue-50 to-indigo-50',
   },
   {
     title: 'Nettoyage de canapé',
@@ -81,6 +143,7 @@ const SERVICES = [
     price: 'Dès 140€',
     priceValue: 140,
     icon: Shield,
+    gradient: 'from-amber-50 to-orange-50',
   },
   {
     title: 'Nettoyage de tapis',
@@ -89,6 +152,7 @@ const SERVICES = [
     price: '30€/m²',
     priceValue: 30,
     icon: Leaf,
+    gradient: 'from-emerald-50 to-teal-50',
   },
   {
     title: 'Nettoyage de moquette',
@@ -97,6 +161,7 @@ const SERVICES = [
     price: '12€/m²',
     priceValue: 12,
     icon: Droplets,
+    gradient: 'from-cyan-50 to-sky-50',
   },
 ];
 
@@ -119,13 +184,14 @@ const PRICING = [
   { item: 'Moquette', price: '12€/m²' },
 ];
 
-// Composants SSR avec Tailwind
+// Composants SSR
 function ServiceCard({
   title,
   href,
   desc,
   price,
   icon: Icon,
+  gradient,
   className,
 }: {
   title: string;
@@ -133,6 +199,7 @@ function ServiceCard({
   desc: string;
   price: string;
   icon: React.ComponentType<{ className?: string }>;
+  gradient?: string;
   className?: string;
 }) {
   return (
@@ -147,8 +214,8 @@ function ServiceCard({
         className,
       )}
       aria-label={`${title} - ${price}`}>
-      {/* Gradient overlay on hover */}
-      <div className="absolute inset-0 bg-linear-to-br from-emerald-50/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+      {/* Gradient overlay différent par service */}
+      <div className={cn('absolute inset-0 bg-gradient-to-br opacity-0 group-hover:opacity-100 transition-opacity duration-300', gradient || 'from-emerald-50/80 via-transparent to-transparent')} />
 
       <div className="relative z-10">
         <div className="flex items-start justify-between gap-4">
@@ -183,7 +250,7 @@ function Feature({ icon: Icon, title, text, className }: { icon: React.Component
         'animate-fade-in-up',
         className,
       )}>
-      <div className="mb-4 inline-flex p-3 rounded-2xl bg-linear-to-br from-emerald-500 to-teal-600 text-white shadow-lg shadow-emerald-500/30 transition-transform duration-300 group-hover:scale-110 group-hover:rotate-[5deg]">
+      <div className="mb-4 inline-flex p-3 rounded-2xl bg-gradient-to-br from-emerald-500 to-teal-600 text-white shadow-lg shadow-emerald-500/30 transition-transform duration-300 group-hover:scale-110 group-hover:rotate-[5deg]">
         <Icon className="h-6 w-6" />
       </div>
       <h3 className="font-bold text-foreground text-lg">{title}</h3>
@@ -195,14 +262,12 @@ function Feature({ icon: Icon, title, text, className }: { icon: React.Component
 function Step({ number, title, text, isLast = false, className }: { number: string; title: string; text: string; isLast?: boolean; className?: string }) {
   return (
     <div className={cn('relative flex gap-6 animate-fade-in-up', className)}>
-      {/* Timeline */}
       <div className="flex flex-col items-center">
-        <div className="flex h-12 w-12 items-center justify-center rounded-full bg-linear-to-br from-emerald-500 to-teal-600 text-white font-bold text-lg shadow-lg shadow-emerald-500/30 transition-transform duration-300 hover:scale-110">
+        <div className="flex h-12 w-12 items-center justify-center rounded-full bg-gradient-to-br from-emerald-500 to-teal-600 text-white font-bold text-lg shadow-lg shadow-emerald-500/30 transition-transform duration-300 hover:scale-110">
           {number}
         </div>
-        {!isLast && <div className="w-0.5 flex-1 bg-linear-to-b from-emerald-300 to-emerald-100 my-2" />}
+        {!isLast && <div className="w-0.5 flex-1 bg-gradient-to-b from-emerald-300 to-emerald-100 my-2" />}
       </div>
-      {/* Content */}
       <div className="flex-1 pb-8">
         <h4 className="font-bold text-foreground text-lg">{title}</h4>
         <p className="mt-2 text-muted-foreground leading-relaxed">{text}</p>
@@ -223,15 +288,55 @@ function StatItem({ value, label, suffix = '', className }: { value: string; lab
   );
 }
 
+// NOUVEAU : Composant Témoignage
+function TestimonialCard({ name, location, rating, text, item, className }: { name: string; location: string; rating: number; text: string; item: string; className?: string }) {
+  return (
+    <article
+      className={cn('relative bg-card rounded-3xl p-6 md:p-8', 'border border-border/80', 'transition-all duration-300', 'hover:shadow-xl hover:shadow-slate-200/30', 'animate-fade-in-up', className)}>
+      {/* Quote icon */}
+      <div className="absolute -top-3 -left-3 w-10 h-10 rounded-full bg-emerald-100 flex items-center justify-center">
+        <Quote className="h-5 w-5 text-emerald-600" />
+      </div>
+
+      {/* Rating */}
+      <div className="flex items-center gap-1 mb-4">
+        {[...Array(5)].map((_, i) => (
+          <Star
+            key={i}
+            className={cn('h-4 w-4', i < rating ? 'fill-amber-400 text-amber-400' : 'fill-slate-200 text-slate-200')}
+          />
+        ))}
+      </div>
+
+      {/* Texte */}
+      <blockquote className="text-foreground leading-relaxed mb-6">"{text}"</blockquote>
+
+      {/* Footer */}
+      <div className="flex items-center justify-between pt-4 border-t border-border/50">
+        <div>
+          <p className="font-semibold text-foreground">{name}</p>
+          <p className="text-sm text-muted-foreground flex items-center gap-1">
+            <MapPin className="h-3 w-3" />
+            {location}
+          </p>
+        </div>
+        <Badge
+          variant="secondary"
+          className="bg-slate-100 text-slate-600 text-xs">
+          {item}
+        </Badge>
+      </div>
+    </article>
+  );
+}
+
 export default function Home() {
   const base = 'https://moket.fr';
   const pageUrl = `${base}/`;
 
-  // Schema.org complet pour SEO local et LLM GEO
   const jsonLd = {
     '@context': 'https://schema.org',
     '@graph': [
-      // WebPage
       {
         '@type': 'WebPage',
         '@id': `${pageUrl}#webpage`,
@@ -249,13 +354,11 @@ export default function Home() {
           url: `${base}/og.jpg`,
         },
       },
-      // BreadcrumbList
       {
         '@type': 'BreadcrumbList',
         '@id': `${pageUrl}#breadcrumb`,
         itemListElement: [{ '@type': 'ListItem', position: 1, name: 'Accueil', item: pageUrl }],
       },
-      // FAQPage - Important pour les featured snippets et LLM
       {
         '@type': 'FAQPage',
         '@id': `${pageUrl}#faq`,
@@ -266,13 +369,32 @@ export default function Home() {
           acceptedAnswer: { '@type': 'Answer', text: f.a },
         })),
       },
+      // Ajout des avis pour le SEO
+      {
+        '@type': 'LocalBusiness',
+        '@id': `${base}/#localbusiness`,
+        name: 'MOKET',
+        image: `${base}/og.jpg`,
+        telephone: '+33635090095',
+        priceRange: '€€',
+        aggregateRating: {
+          '@type': 'AggregateRating',
+          ratingValue: '4.9',
+          reviewCount: '47',
+          bestRating: '5',
+        },
+        areaServed: [
+          { '@type': 'State', name: 'Île-de-France' },
+          { '@type': 'State', name: 'Normandie' },
+        ],
+      },
     ],
   };
 
   return (
     <>
       {/* Sticky Mobile CTA */}
-      <div className="fixed bottom-0 left-0 right-0 z-50 border-t border-border bg-background/80 backdrop-blur-xl md:hidden animate-[slideUp_0.5s_ease-out_1s_both]">
+      <div className="fixed bottom-0 left-0 right-0 z-50 border-t border-border bg-white/70 backdrop-blur-xl md:hidden animate-[slideUp_0.5s_ease-out_1s_both]">
         <div className="mx-auto max-w-7xl px-4 py-3">
           <div className="grid grid-cols-2 gap-3">
             <Button
@@ -285,8 +407,8 @@ export default function Home() {
             </Button>
             <Button
               asChild
-              variant="outline"
-              className="rounded-full w-full border-2">
+              variant="default"
+              className="rounded-full w-full border-2 border-emerald-600 text-emerald-700 hover:bg-emerald-50">
               <a href="tel:+33635090095">
                 <PhoneCall className="h-4 w-4 mr-2" />
                 Appeler
@@ -295,7 +417,6 @@ export default function Home() {
           </div>
         </div>
       </div>
-
       <main
         className="overflow-x-hidden pb-24 md:pb-0"
         aria-label="Contenu principal">
@@ -306,20 +427,22 @@ export default function Home() {
           strategy="afterInteractive"
         />
 
-        {/* HERO */}
+        {/* ============================================
+            HERO - Version plus émotionnelle
+        ============================================ */}
         <section
-          className="relative min-h-[90vh] md:min-h-[70vh] flex items-center overflow-hidden"
+          className="relative min-h-[90vh] md:min-h-[75vh] flex items-center overflow-hidden"
           aria-labelledby="hero-title">
-          {/* Background */}
-          <div className="absolute inset-0 bg-linear-to-br from-slate-50 via-emerald-50/30 to-teal-50/20" />
-          <div className="absolute top-0 right-0 w-200 h-200 bg-linear-to-bl from-emerald-100/40 via-transparent to-transparent rounded-full blur-3xl" />
-          <div className="absolute bottom-0 left-0 w-150 h-150 bg-linear-to-tr from-teal-100/30 via-transparent to-transparent rounded-full blur-3xl" />
+          {/* Background avec texture textile subtile */}
+          <div className="absolute inset-0 bg-gradient-to-br from-slate-50 via-emerald-50/30 to-teal-50/20" />
+          <div className="absolute top-0 right-0 w-[800px] h-[800px] bg-gradient-to-bl from-emerald-100/40 via-transparent to-transparent rounded-full blur-3xl" />
+          <div className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-gradient-to-tr from-teal-100/30 via-transparent to-transparent rounded-full blur-3xl" />
 
-          {/* Pattern */}
+          {/* Texture textile (pattern subtil) */}
           <div
-            className="absolute inset-0 opacity-[0.015]"
+            className="absolute inset-0 opacity-[0.03]"
             style={{
-              backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23000000' fill-opacity='1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
+              backgroundImage: `url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 0h20v20H0V0zm10 17a7 7 0 1 0 0-14 7 7 0 0 0 0 14zm20 0a7 7 0 1 0 0-14 7 7 0 0 0 0 14zM10 37a7 7 0 1 0 0-14 7 7 0 0 0 0 14zm10-17h20v20H20V20zm10 17a7 7 0 1 0 0-14 7 7 0 0 0 0 14z' fill='%23000' fill-opacity='1' fill-rule='evenodd'/%3E%3C/svg%3E")`,
             }}
           />
 
@@ -327,50 +450,54 @@ export default function Home() {
             <div className="grid gap-12 lg:grid-cols-2 lg:gap-16 items-center">
               {/* Left content */}
               <div className="max-w-2xl">
-                {/* Badge
-                <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/90 backdrop-blur-sm border border-slate-200/50 shadow-lg shadow-slate-200/50 text-sm font-medium animate-fade-in">
-                  <span className="flex h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
-                  <span className="text-slate-700">Île-de-France • Normandie</span>
-                </div> */}
+                <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/90 backdrop-blur-sm border border-emerald-200/50 shadow-lg shadow-emerald-100/50 text-sm font-medium animate-fade-in">
+                  <div className="flex items-center gap-1">
+                    {[...Array(5)].map((_, i) => (
+                      <Star
+                        key={i}
+                        className="h-3.5 w-3.5 fill-amber-400 text-amber-400"
+                      />
+                    ))}
+                  </div>
+                  <span className="text-slate-600">5/5 sur Google</span>
+                </div>
 
                 <h1
                   id="hero-title"
-                  className="mt-2 text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight text-foreground leading-[1.1] animate-fade-in-up delay-100">
-                  Nettoyage de textiles à domicile{' '}
-                  <span className="relative">
-                    <span className="relative z-10 text-transparent bg-clip-text bg-linear-to-r from-emerald-600 to-teal-600">comme neufs</span>
-                    <span className="absolute bottom-2 left-0 right-0 h-3 bg-emerald-200/60 z-0 rounded-full animate-[scaleX_0.6s_ease-out_0.8s_both] origin-left" />
+                  className="mt-3 text-3xl sm:text-5xl font-black tracking-tight text-foreground leading-[1.1] animate-fade-in-up delay-100">
+                  Nettoyage canapé, matelas et tapis à domicile{' '}
+                  <span className="relative inline-block">
+                    <span className="relative z-10 text-transparent bg-clip-text bg-gradient-to-r from-emerald-600 to-teal-600">en Île-de-France & Normandie</span>
                   </span>
                 </h1>
-
-                <p className="mt-6 text-lg md:text-xl text-muted-foreground leading-relaxed animate-fade-in-up delay-200">
-                  <strong className="text-foreground">Canapés, matelas, tapis et moquettes</strong> — intervention professionnelle en Île-de-France et Normandie. Résultat visible immédiatement.
+                <p className="mt-6 text-lg md:text-xl text-muted-foreground leading-normal animate-fade-in-up delay-200">
+                  <strong className="text-foreground">Taches, odeurs, acariens</strong>: on s'occupe de tout, vous gardez votre journée.
+                  <span className="block mt-2 text-emerald-700 font-medium">Résultat visible immédiatement ou on revient.</span>
                 </p>
-
-                {/* Price tags */}
-                <div className="mt-8 flex flex-wrap gap-3 animate-fade-in-up delay-300">
+                {/* Prix avec plus de contexte */}
+                <div className="mt-8 grid grid-cols-2  gap-3 animate-fade-in-up delay-300">
                   {[
-                    { label: 'Matelas', price: '90€' },
-                    { label: 'Canapé', price: '140€' },
-                    { label: 'Tapis', price: '30€/m²' },
-                    { label: 'Moquette', price: '12€/m²' },
+                    { label: 'Matelas', price: '90€', icon: BedDouble },
+                    { label: 'Canapé', price: '140€', icon: Sofa },
+                    { label: 'Tapis', price: '30€/m²', icon: RectangleHorizontal },
+                    { label: 'Moquette', price: '12€/m²', icon: Grid3X3 },
                   ].map((item, idx) => (
                     <span
                       key={item.label}
-                      className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-card border border-border text-sm shadow-sm animate-scale-in"
+                      className="inline-flex items-center gap-2 px-4 py-2.5 rounded-full bg-card border border-border text-sm shadow-sm animate-scale-in hover:shadow-md transition-shadow"
                       style={{ animationDelay: `${400 + idx * 100}ms` }}>
-                      <span className="text-muted-foreground">{item.label}</span>
+                      <span className="hidden sm:block">{<item.icon className="h-4 w-4 text-emerald-600" />}</span>
+                      <span className="text-muted-foreground text-xs sm:text-base">{item.label}</span>
                       <span className="font-bold text-emerald-700">dès {item.price}</span>
                     </span>
                   ))}
                 </div>
-
                 {/* CTA buttons */}
                 <div className="mt-10 flex flex-col sm:flex-row gap-4 animate-fade-in-up delay-500">
                   <Button
                     asChild
                     size="lg"
-                    className="rounded-full px-8 h-14 text-base font-semibold bg-linear-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white shadow-xl shadow-emerald-600/30 transition-all hover:shadow-2xl hover:shadow-emerald-600/40 hover:-translate-y-0.5">
+                    className="rounded-full px-8 h-14 text-base font-semibold bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white shadow-xl shadow-emerald-600/30 transition-all hover:shadow-2xl hover:shadow-emerald-600/40 hover:-translate-y-0.5">
                     <Link href="/devis">
                       Devis gratuit en 2 min
                       <ArrowRight className="h-5 w-5 ml-2" />
@@ -387,18 +514,22 @@ export default function Home() {
                     </a>
                   </Button>
                 </div>
-
-                {/* Trust indicators */}
+                {/* Trust indicators 
                 <div className="mt-10 flex flex-wrap items-center gap-6 text-sm text-muted-foreground animate-fade-in-up delay-[600ms]">
-                  {['Résultat garanti', 'Devis sans surprise', 'Séchage rapide'].map((text) => (
+                  {[
+                    { icon: Check, text: 'Résultat garanti' },
+                    { icon: Check, text: 'Devis sans surprise' },
+                    { icon: Check, text: 'Séchage en 2-4h' },
+                  ].map(({ icon: ItemIcon, text }) => (
                     <span
                       key={text}
                       className="inline-flex items-center gap-2">
-                      <Check className="h-5 w-5 text-emerald-600" />
+                      <ItemIcon className="h-5 w-5 text-emerald-600" />
                       {text}
                     </span>
                   ))}
                 </div>
+                */}
               </div>
 
               {/* Right - Video */}
@@ -411,8 +542,8 @@ export default function Home() {
                   />
                 </div>
 
-                {/* Floating testimonial */}
-                <div className="absolute -bottom-6 -left-6 md:-left-12 bg-card rounded-2xl p-4 shadow-xl shadow-slate-200/50 border border-slate-100 max-w-[240px] hidden md:block animate-[floatInLeft_0.6s_ease-out_1s_both]">
+                {/* Floating testimonial - Plus visible */}
+                <div className="absolute -bottom-6 -left-6 md:-left-12 bg-card rounded-2xl p-5 shadow-xl shadow-slate-200/50 border border-slate-100 max-w-[280px] hidden md:block animate-[floatInLeft_0.6s_ease-out_1s_both]">
                   <div className="flex items-center gap-1 mb-2">
                     {[...Array(5)].map((_, i) => (
                       <Star
@@ -421,38 +552,57 @@ export default function Home() {
                       />
                     ))}
                   </div>
-                  <p className="text-sm text-foreground font-medium">"Canapé comme neuf, je recommande !"</p>
-                  <p className="text-xs text-muted-foreground mt-1">— Marie, Paris 15e</p>
+                  <p className="text-sm text-foreground font-medium leading-snug">"Intervention rapide et de très grande qualité Mon tapis est impeccable"</p>
+                  <div className="mt-3 flex items-center gap-2">
+                    <div className="w-8 h-8 rounded-full bg-gradient-to-br from-emerald-400 to-teal-500 flex items-center justify-center text-white text-xs font-bold">BB</div>
+                    <div>
+                      <p className="text-xs font-semibold text-foreground">Béatrice B.</p>
+                      <p className="text-xs text-muted-foreground">Honfleur</p>
+                    </div>
+                  </div>
                 </div>
 
                 {/* Floating stat */}
-                <div className="absolute -top-4 -right-4 md:-right-8 bg-linear-to-br from-emerald-500 to-teal-600 rounded-2xl p-4 shadow-xl shadow-emerald-500/30 text-white hidden md:block animate-[floatInRight_0.6s_ease-out_1.2s_both]">
-                  <div className="text-3xl font-black">150+</div>
-                  <div className="text-sm text-emerald-100">interventions</div>
+                <div className="absolute -top-4 -right-4 md:-right-8 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-2xl p-4 shadow-xl shadow-emerald-500/30 text-white hidden md:block animate-[floatInRight_0.6s_ease-out_1.2s_both]">
+                  <div className="text-3xl font-black">50+</div>
+                  <div className="text-sm text-emerald-100">familles satisfaites</div>
                 </div>
               </div>
             </div>
           </div>
         </section>
 
-        {/* TRUST BAR */}
+        {/* ============================================
+            TRUST BAR - Avec note Google
+        ============================================ */}
         <section
           className="py-12 md:py-16 border-y border-border/80 bg-card"
           aria-label="Statistiques">
           <div className="mx-auto max-w-7xl px-4 lg:px-8">
             <div className="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-12">
               <StatItem
-                value="150"
+                value="50"
                 suffix="+"
                 label="Interventions"
                 className="delay-100"
               />
-              <StatItem
-                value="98"
-                suffix="%"
-                label="Clients satisfaits"
-                className="delay-200"
-              />
+              <div className="text-center animate-fade-in-up delay-200">
+                <div className="flex items-center justify-center gap-2">
+                  <span className="text-4xl md:text-5xl font-black text-emerald-600">5</span>
+                  <div className="flex flex-col items-start">
+                    <div className="flex gap-0.5">
+                      {[...Array(5)].map((_, i) => (
+                        <Star
+                          key={i}
+                          className="h-4 w-4 fill-amber-400 text-amber-400"
+                        />
+                      ))}
+                    </div>
+                    <span className="text-xs text-muted-foreground">Google</span>
+                  </div>
+                </div>
+                <div className="mt-2 text-muted-foreground font-medium">Satisfaction client</div>
+              </div>
               <StatItem
                 value="24"
                 suffix="h"
@@ -468,9 +618,11 @@ export default function Home() {
           </div>
         </section>
 
-        {/* SERVICES */}
+        {/* ============================================
+            SERVICES
+        ============================================ */}
         <section
-          className="py-20 md:py-32 bg-linear-to-b from-background to-muted/50"
+          className="py-20 md:py-32 bg-gradient-to-b from-background to-muted/50"
           aria-labelledby="services-title">
           <div className="mx-auto max-w-7xl px-4 lg:px-8">
             <div className="max-w-3xl animate-fade-in-up">
@@ -501,7 +653,7 @@ export default function Home() {
               <Button
                 asChild
                 size="lg"
-                className="rounded-full px-8 bg-linear-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white shadow-lg shadow-emerald-600/25">
+                className="rounded-full px-8 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white shadow-lg shadow-emerald-600/25">
                 <Link href="/devis">
                   Demander un devis
                   <ArrowRight className="h-5 w-5 ml-2" />
@@ -518,7 +670,9 @@ export default function Home() {
           </div>
         </section>
 
-        {/* BEFORE/AFTER Gallery */}
+        {/* ============================================
+            BEFORE/AFTER Gallery
+        ============================================ */}
         <section
           className="py-20 md:py-32 bg-slate-900 text-white overflow-hidden"
           aria-labelledby="gallery-title">
@@ -531,9 +685,9 @@ export default function Home() {
               <h2
                 id="gallery-title"
                 className="text-3xl md:text-4xl font-black tracking-tight">
-                Avant / Après : nos résultats en images{' '}
+                Avant / Après : jugez par vous-même
               </h2>
-              <p className="mt-4 text-lg text-slate-400">Découvrez le résultat de nos interventions sur canapés, matelas et tapis.</p>
+              <p className="mt-4 text-lg text-slate-400">Photos réelles de nos interventions. Pas de retouche, pas de filtre.</p>
             </div>
 
             <div className="animate-scale-in delay-200">
@@ -547,7 +701,140 @@ export default function Home() {
           </div>
         </section>
 
-        {/* METHOD FEATURES */}
+        {/* ============================================
+            NOUVEAU : SECTION TÉMOIGNAGES
+        ============================================ */}
+        <section
+          className="py-20 md:py-32 bg-gradient-to-b from-background to-slate-50"
+          aria-labelledby="testimonials-title">
+          <div className="mx-auto max-w-7xl px-4 lg:px-8">
+            <div className="text-center max-w-2xl mx-auto mb-12 animate-fade-in-up">
+              <Badge className="bg-amber-100 text-amber-700 hover:bg-amber-100 mb-4">
+                <Heart className="h-4 w-4 mr-2" />
+                Avis clients
+              </Badge>
+              <h2
+                id="testimonials-title"
+                className="text-3xl md:text-4xl font-black text-foreground tracking-tight">
+                Ils nous ont fait confiance
+              </h2>
+              <p className="mt-4 text-lg text-muted-foreground">50+ interventions, 5 étoiles</p>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8">
+              {TESTIMONIALS.map((testimonial, idx) => (
+                <TestimonialCard
+                  key={testimonial.name}
+                  {...testimonial}
+                  className={`delay-${(idx + 1) * 100}`}
+                />
+              ))}
+            </div>
+
+            {/* CTA voir tous les avis */}
+            <div className="mt-12 text-center animate-fade-in-up delay-500">
+              <Button
+                asChild
+                variant="outline"
+                size="lg"
+                className="rounded-full px-8 border-2">
+                <a
+                  href="https://share.google/vc6IT7Q7yoTFIf9dw"
+                  target="_blank"
+                  rel="noopener noreferrer">
+                  Voir tous les avis Google
+                  <ArrowRight className="h-4 w-4 ml-2" />
+                </a>
+              </Button>
+            </div>
+          </div>
+        </section>
+
+        {/* ============================================
+            NOUVEAU : SECTION FONDATEUR / À PROPOS
+        ============================================ */}
+        <section
+          className="py-20 md:py-28 bg-card border-y border-border/50"
+          aria-labelledby="about-title">
+          <div className="mx-auto max-w-7xl px-4 lg:px-8">
+            <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+              {/* Image */}
+              <div className="relative animate-fade-in-up">
+                <div className="relative aspect-[4/3] rounded-3xl overflow-hidden shadow-2xl shadow-slate-200/50">
+                  <Image
+                    src="/images/fondateur.png"
+                    alt="Fondateur de MOKET"
+                    fill
+                    className="object-scale-down"
+                    sizes="(max-width: 1024px) 100vw, 50vw"
+                  />
+                </div>
+
+                {/* Badge flottant */}
+                <div className="absolute -bottom-4 -right-4 md:-right-8 bg-card rounded-2xl p-4 shadow-xl border border-border animate-[floatInRight_0.6s_ease-out_0.5s_both]">
+                  <div className="flex items-center gap-3">
+                    <div className="w-12 h-12 rounded-full bg-emerald-100 flex items-center justify-center">
+                      <BadgeCheck className="h-6 w-6 text-emerald-600" />
+                    </div>
+                    <div>
+                      <p className="font-bold text-foreground">Artisan de confiance</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Content */}
+              <div className="animate-fade-in-up delay-200">
+                <Badge className="bg-emerald-100 text-emerald-700 hover:bg-emerald-100 mb-4">À propos</Badge>
+                <h2
+                  id="about-title"
+                  className="text-3xl md:text-4xl font-black text-foreground tracking-tight">
+                  Derrière MOKET, une exigence simple : <span className="text-emerald-600">le résultat.</span>
+                </h2>
+
+                <div className="mt-6 space-y-4 text-muted-foreground leading-relaxed">
+                  <p>
+                    MOKET est né d'un constat : trop de services de nettoyage promettent sans livrer.
+                    <strong className="text-foreground"> Notre approche est différente.</strong>
+                  </p>
+                  <p>Chaque intervention est traitée comme si c'était chez nous. On prend le temps d'analyser le textile, d'adapter la méthode, et on ne part que quand le résultat est là.</p>
+                  <p>
+                    <strong className="text-foreground">Pas de surprise sur le prix, pas de résultat décevant.</strong> C'est notre engagement depuis le premier jour.
+                  </p>
+                </div>
+
+                <div className="mt-8 flex flex-wrap gap-6">
+                  {[
+                    { value: '50+', label: 'interventions' },
+                    { value: '5', label: 'satisfaction' },
+                    { value: '0€', label: 'si pas satisfait' },
+                  ].map((stat) => (
+                    <div key={stat.label}>
+                      <p className="text-2xl font-black text-emerald-600">{stat.value}</p>
+                      <p className="text-sm text-muted-foreground">{stat.label}</p>
+                    </div>
+                  ))}
+                </div>
+
+                <div className="mt-8">
+                  <Button
+                    asChild
+                    size="lg"
+                    className="rounded-full px-8 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white shadow-lg shadow-emerald-600/25">
+                    <Link href="/notre-methode">
+                      Découvrir notre méthode
+                      <ArrowRight className="h-5 w-5 ml-2" />
+                    </Link>
+                  </Button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* ============================================
+            METHOD FEATURES
+        ============================================ */}
         <section
           className="py-20 md:py-32 bg-muted"
           aria-labelledby="method-title">
@@ -586,7 +873,7 @@ export default function Home() {
               <Button
                 asChild
                 size="lg"
-                className="rounded-full px-8 bg-linear-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white shadow-lg shadow-emerald-600/25">
+                className="rounded-full px-8 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white shadow-lg shadow-emerald-600/25">
                 <Link href="/notre-methode">
                   Découvrir en détail
                   <ChevronRight className="h-5 w-5 ml-2" />
@@ -596,7 +883,9 @@ export default function Home() {
           </div>
         </section>
 
-        {/* PROCESS STEPS */}
+        {/* ============================================
+            PROCESS STEPS
+        ============================================ */}
         <section
           className="py-20 md:py-32 bg-card"
           aria-labelledby="process-title">
@@ -652,8 +941,8 @@ export default function Home() {
               </div>
 
               {/* Calculator */}
-              <Card className="animate-fade-in-up delay-200">
-                <CardContent className="p-8">
+              <Card className="animate-fade-in-up delay-200 shadow-2xl">
+                <CardContent className="p-6">
                   <h3 className="text-2xl font-bold text-foreground mb-6">Estimez votre devis</h3>
                   <PriceCalculator phone="+33635090095" />
                 </CardContent>
@@ -662,9 +951,11 @@ export default function Home() {
           </div>
         </section>
 
-        {/* PRICING */}
+        {/* ============================================
+            PRICING
+        ============================================ */}
         <section
-          className="py-20 md:py-32 bg-linear-to-b from-muted to-background"
+          className="py-20 md:py-32 bg-gradient-to-b from-muted to-background/10"
           aria-labelledby="pricing-title">
           <div className="mx-auto max-w-7xl px-4 lg:px-8">
             <div className="text-center max-w-2xl mx-auto mb-12 animate-fade-in-up">
@@ -678,7 +969,7 @@ export default function Home() {
             </div>
 
             <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-              <Card className="animate-fade-in-up delay-100 shadow-xl shadow-slate-200/50">
+              <Card className="animate-fade-in-up delay-100 shadow-2xl">
                 <CardContent className="p-8">
                   <h3 className="text-xl font-bold text-foreground mb-6">Tarifs indicatifs</h3>
                   <ul className="space-y-4">
@@ -691,11 +982,18 @@ export default function Home() {
                       </li>
                     ))}
                   </ul>
-                  <p className="mt-6 text-sm text-muted-foreground">Tarifs pour état standard. Ajustement possible en cas d'encrassement important.</p>
+
+                  {/* NOUVEAU : Exemple concret */}
+                  <div className="mt-6 p-4 rounded-xl bg-amber-50 border border-amber-200">
+                    <p className="text-sm font-semibold text-amber-800 mb-1">💡 Exemple concret</p>
+                    <p className="text-sm text-amber-700">
+                      Canapé 3 places + traitement odeur animaux = 140€ + 25€ = <strong>165€</strong>
+                    </p>
+                  </div>
                 </CardContent>
               </Card>
 
-              <div className="bg-linear-to-br from-emerald-600 to-teal-600 rounded-3xl p-8 text-white animate-fade-in-up delay-200">
+              <div className="bg-gradient-to-br from-emerald-600 to-teal-600 rounded-3xl p-8 text-white animate-fade-in-up delay-200">
                 <h3 className="text-xl font-bold mb-6">Ce qui est inclus</h3>
                 <ul className="space-y-4">
                   {[
@@ -732,7 +1030,9 @@ export default function Home() {
           </div>
         </section>
 
-        {/* ZONES - Important pour SEO local */}
+        {/* ============================================
+            ZONES
+        ============================================ */}
         <section
           className="py-20 md:py-28 bg-card"
           aria-labelledby="zones-title">
@@ -742,7 +1042,7 @@ export default function Home() {
               <h2
                 id="zones-title"
                 className="text-3xl md:text-4xl font-black text-foreground tracking-tight">
-                Nettoyage textile à domicile près de chez vous{' '}
+                Nettoyage textile à domicile près de chez vous
               </h2>
               <p className="mt-4 text-lg text-muted-foreground max-w-2xl">
                 Intervention à domicile en <strong className="text-foreground">Île-de-France</strong> et en <strong className="text-foreground">Normandie</strong>.
@@ -773,7 +1073,9 @@ export default function Home() {
           </div>
         </section>
 
-        {/* FAQ - Important pour SEO */}
+        {/* ============================================
+            FAQ
+        ============================================ */}
         <section
           className="py-20 md:py-32 bg-muted"
           aria-labelledby="faq-title">
@@ -807,11 +1109,12 @@ export default function Home() {
           </div>
         </section>
 
-        {/* FINAL CTA */}
+        {/* ============================================
+            FINAL CTA
+        ============================================ */}
         <section
-          className="py-20 md:py-32 bg-linear-to-br from-emerald-600 via-emerald-600 to-teal-600 text-white relative overflow-hidden"
+          className="py-20 md:py-32 bg-gradient-to-br from-emerald-600 via-emerald-600 to-teal-600 text-white relative overflow-hidden"
           aria-labelledby="final-cta-title">
-          {/* Background decoration */}
           <div className="absolute inset-0 opacity-10">
             <div className="absolute top-0 left-1/4 w-96 h-96 bg-white rounded-full blur-3xl" />
             <div className="absolute bottom-0 right-1/4 w-64 h-64 bg-white rounded-full blur-3xl" />

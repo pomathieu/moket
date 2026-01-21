@@ -6,8 +6,8 @@ import { CITIES } from '@/lib/cities';
 export default function sitemap(): MetadataRoute.Sitemap {
   const base = 'https://moket.fr';
 
-  const STATIC_DATE = new Date('2026-01-08');
-  const CITY_DATE = new Date('2026-01-14');
+  const STATIC_DATE = new Date('2026-01-21');
+  const CITY_DATE = new Date('2026-01-21');
 
   /* =========================
      Pages statiques
