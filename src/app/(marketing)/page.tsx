@@ -762,7 +762,7 @@ export default function Home() {
               <div className="relative animate-fade-in-up">
                 <div className="relative aspect-[4/3] rounded-3xl overflow-hidden shadow-2xl shadow-slate-200/50">
                   <Image
-                    src="/images/fondateur.jpeg"
+                    src="/images/fondateur.png"
                     alt="Fondateur de MOKET"
                     fill
                     className="object-scale-down"
