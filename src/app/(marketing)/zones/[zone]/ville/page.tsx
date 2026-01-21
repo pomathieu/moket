@@ -155,9 +155,9 @@ export default async function ZoneCitiesPage({ params }: PageProps) {
           className="relative min-h-[45vh] md:min-h-[40vh] flex items-center overflow-hidden"
           aria-labelledby="hero-title">
           {/* Background */}
-          <div className="absolute inset-0 bg-gradient-to-br from-slate-50 via-emerald-50/30 to-teal-50/20" />
-          <div className="absolute top-0 right-0 w-[50rem] h-[50rem] bg-gradient-to-bl from-emerald-100/40 via-transparent to-transparent rounded-full blur-3xl" />
-          <div className="absolute bottom-0 left-0 w-[37.5rem] h-[37.5rem] bg-gradient-to-tr from-teal-100/30 via-transparent to-transparent rounded-full blur-3xl" />
+          <div className="absolute inset-0 bg-linear-to-br from-slate-50 via-emerald-50/30 to-teal-50/20" />
+          <div className="absolute top-0 right-0 w-[50rem] h-[50rem] bg-linear-to-bl from-emerald-100/40 via-transparent to-transparent rounded-full blur-3xl" />
+          <div className="absolute bottom-0 left-0 w-[37.5rem] h-[37.5rem] bg-linear-to-tr from-teal-100/30 via-transparent to-transparent rounded-full blur-3xl" />
 
           {/* Pattern */}
           <div
@@ -205,7 +205,7 @@ export default async function ZoneCitiesPage({ params }: PageProps) {
                 className="mt-6 text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight text-foreground leading-[1.1] animate-fade-in-up">
                 Villes couvertes dans{' '}
                 <span className="relative">
-                  <span className="relative z-10 text-transparent bg-clip-text bg-gradient-to-r from-emerald-600 to-teal-600">{zoneData.title}</span>
+                  <span className="relative z-10 text-transparent bg-clip-text bg-linear-to-r from-emerald-600 to-teal-600">{zoneData.title}</span>
                   <span className="absolute bottom-2 left-0 right-0 h-3 bg-emerald-200/60 z-0 rounded-full animate-[scaleX_0.6s_ease-out_0.8s_both] origin-left" />
                 </span>
               </h1>
@@ -220,7 +220,7 @@ export default async function ZoneCitiesPage({ params }: PageProps) {
                 <Button
                   asChild
                   size="lg"
-                  className="rounded-full px-8 h-14 text-base font-semibold bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white shadow-xl shadow-emerald-600/30 transition-all hover:shadow-2xl hover:shadow-emerald-600/40 hover:-translate-y-0.5">
+                  className="rounded-full px-8 h-14 text-base font-semibold bg-linear-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white shadow-xl shadow-emerald-600/30 transition-all hover:shadow-2xl hover:shadow-emerald-600/40 hover:-translate-y-0.5">
                   <Link href="/devis">
                     Demander un devis gratuit
                     <ArrowRight className="h-5 w-5 ml-2" />
@@ -248,7 +248,7 @@ export default async function ZoneCitiesPage({ params }: PageProps) {
             aria-labelledby="city-pages-title">
             <div className="mx-auto max-w-7xl px-4 lg:px-8">
               <div className="flex items-center gap-4 mb-8 animate-fade-in-up">
-                <div className="p-3 rounded-2xl bg-gradient-to-br from-emerald-500 to-teal-600 text-white shadow-lg shadow-emerald-500/30">
+                <div className="p-3 rounded-2xl bg-linear-to-br from-emerald-500 to-teal-600 text-white shadow-lg shadow-emerald-500/30">
                   <Home className="h-6 w-6" />
                 </div>
                 <div>
@@ -272,7 +272,7 @@ export default async function ZoneCitiesPage({ params }: PageProps) {
                       'transition-all duration-500',
                       'hover:shadow-2xl hover:shadow-slate-200/50 hover:border-emerald-200 hover:-translate-y-1',
                     )}>
-                    <div className="absolute inset-0 bg-gradient-to-br from-emerald-50/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                    <div className="absolute inset-0 bg-linear-to-br from-emerald-50/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                     <div className="relative z-10">
                       <div className="flex items-center gap-2 mb-3">
                         <MapPin className="h-4 w-4 text-emerald-600" />
@@ -298,7 +298,7 @@ export default async function ZoneCitiesPage({ params }: PageProps) {
             aria-labelledby="sectors-title">
             <div className="mx-auto max-w-7xl px-4 lg:px-8">
               <div className="flex items-center gap-4 mb-8 animate-fade-in-up">
-                <div className="p-3 rounded-2xl bg-gradient-to-br from-violet-500 to-purple-600 text-white shadow-lg shadow-violet-500/30">
+                <div className="p-3 rounded-2xl bg-linear-to-br from-violet-500 to-purple-600 text-white shadow-lg shadow-violet-500/30">
                   <Building2 className="h-6 w-6" />
                 </div>
                 <div>
@@ -340,7 +340,7 @@ export default async function ZoneCitiesPage({ params }: PageProps) {
 
         {/* CTA SECTION */}
         <section
-          className="py-16 md:py-20 bg-gradient-to-br from-emerald-600 via-emerald-600 to-teal-600 text-white relative overflow-hidden"
+          className="py-16 md:py-20 bg-linear-to-br from-emerald-600 via-emerald-600 to-teal-600 text-white relative overflow-hidden"
           aria-labelledby="cta-title">
           <div className="absolute inset-0 opacity-10">
             <div className="absolute top-0 left-1/4 w-96 h-96 bg-white rounded-full blur-3xl" />
@@ -388,7 +388,7 @@ export default async function ZoneCitiesPage({ params }: PageProps) {
           aria-labelledby="explore-title">
           <div className="mx-auto max-w-7xl px-4 lg:px-8">
             <div className="flex items-center gap-4 mb-8 animate-fade-in-up">
-              <div className="p-3 rounded-2xl bg-gradient-to-br from-slate-700 to-slate-900 text-white shadow-lg">
+              <div className="p-3 rounded-2xl bg-linear-to-br from-slate-700 to-slate-900 text-white shadow-lg">
                 <Sparkles className="h-6 w-6" />
               </div>
               <h2
@@ -426,7 +426,7 @@ export default async function ZoneCitiesPage({ params }: PageProps) {
                     'transition-all duration-300',
                     'hover:shadow-xl hover:shadow-slate-200/50 hover:border-emerald-200 hover:-translate-y-1',
                   )}>
-                  <div className="absolute inset-0 bg-gradient-to-br from-emerald-50/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                  <div className="absolute inset-0 bg-linear-to-br from-emerald-50/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                   <div className="relative z-10 flex items-center gap-3">
                     <div className="p-2 rounded-xl bg-emerald-100 text-emerald-700 transition-transform duration-300 group-hover:scale-110">
                       <service.icon className="h-5 w-5" />

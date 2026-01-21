@@ -169,7 +169,7 @@ function Feature({ icon: Icon, title, text, className }: { icon: React.Component
         'animate-fade-in-up',
         className,
       )}>
-      <div className="mb-4 inline-flex p-3 rounded-2xl bg-gradient-to-br from-emerald-500 to-teal-600 text-white shadow-lg shadow-emerald-500/30 transition-transform duration-300 group-hover:scale-110 group-hover:rotate-[5deg]">
+      <div className="mb-4 inline-flex p-3 rounded-2xl bg-linear-to-br from-emerald-500 to-teal-600 text-white shadow-lg shadow-emerald-500/30 transition-transform duration-300 group-hover:scale-110 group-hover:rotate-[5deg]">
         <Icon className="h-6 w-6" />
       </div>
       <h3 className="font-bold text-foreground text-lg">{title}</h3>
@@ -197,10 +197,10 @@ function Step({
     <div className={cn('relative flex gap-6 animate-fade-in-up', className)}>
       {/* Timeline */}
       <div className="flex flex-col items-center">
-        <div className="flex h-14 w-14 items-center justify-center rounded-full bg-gradient-to-br from-emerald-500 to-teal-600 text-white font-bold text-xl shadow-lg shadow-emerald-500/30 transition-transform duration-300 hover:scale-110">
+        <div className="flex h-14 w-14 items-center justify-center rounded-full bg-linear-to-br from-emerald-500 to-teal-600 text-white font-bold text-xl shadow-lg shadow-emerald-500/30 transition-transform duration-300 hover:scale-110">
           {number}
         </div>
-        {!isLast && <div className="w-0.5 flex-1 bg-gradient-to-b from-emerald-300 to-emerald-100 my-3" />}
+        {!isLast && <div className="w-0.5 flex-1 bg-linear-to-b from-emerald-300 to-emerald-100 my-3" />}
       </div>
       {/* Content */}
       <div className="flex-1 pb-10">
@@ -322,9 +322,9 @@ export default function NotreMethodePage() {
           className="relative py-8 md:py-20 overflow-hidden"
           aria-labelledby="method-title">
           {/* Background */}
-          <div className="absolute inset-0 bg-gradient-to-br from-slate-50 via-emerald-50/30 to-teal-50/20" />
-          <div className="absolute top-0 right-0 w-[50rem] h-[50rem] bg-gradient-to-bl from-emerald-100/40 via-transparent to-transparent rounded-full blur-3xl" />
-          <div className="absolute bottom-0 left-0 w-150 h-150 bg-gradient-to-tr from-teal-100/30 via-transparent to-transparent rounded-full blur-3xl" />
+          <div className="absolute inset-0 bg-linear-to-br from-slate-50 via-emerald-50/30 to-teal-50/20" />
+          <div className="absolute top-0 right-0 w-200 h-200 bg-linear-to-bl from-emerald-100/40 via-transparent to-transparent rounded-full blur-3xl" />
+          <div className="absolute bottom-0 left-0 w-150 h-150 bg-linear-to-tr from-teal-100/30 via-transparent to-transparent rounded-full blur-3xl" />
 
           <div className="relative z-10 mx-auto max-w-7xl px-4 lg:px-8">
             <div className="grid gap-12 lg:grid-cols-2 lg:gap-16 items-center">
@@ -353,7 +353,7 @@ export default function NotreMethodePage() {
                   className="mt-6 text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight text-foreground leading-[1.1] animate-fade-in-up delay-100">
                   Notre méthode de nettoyage{' '}
                   <span className="relative">
-                    <span className="relative z-10 text-transparent bg-clip-text bg-gradient-to-r from-emerald-600 to-teal-600">en profondeur</span>
+                    <span className="relative z-10 text-transparent bg-clip-text bg-linear-to-r from-emerald-600 to-teal-600">en profondeur</span>
                     <span className="absolute bottom-2 left-0 right-0 h-3 bg-emerald-200/60 z-0 rounded-full animate-[scaleX_0.6s_ease-out_0.8s_both] origin-left" />
                   </span>
                 </h1>
@@ -386,7 +386,7 @@ export default function NotreMethodePage() {
                   <Button
                     asChild
                     size="lg"
-                    className="rounded-full px-8 h-14 text-base font-semibold bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white shadow-xl shadow-emerald-600/30 transition-all hover:shadow-2xl hover:shadow-emerald-600/40 hover:-translate-y-0.5">
+                    className="rounded-full px-8 h-14 text-base font-semibold bg-linear-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white shadow-xl shadow-emerald-600/30 transition-all hover:shadow-2xl hover:shadow-emerald-600/40 hover:-translate-y-0.5">
                     <Link href="/devis">
                       Demander un devis gratuit
                       <ArrowRight className="h-5 w-5 ml-2" />
@@ -429,7 +429,7 @@ export default function NotreMethodePage() {
                 </div>
 
                 {/* Floating stat */}
-                <div className="absolute -top-4 -right-4 md:-right-8 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-2xl p-4 shadow-xl shadow-emerald-500/30 text-white hidden md:block animate-[floatInRight_0.6s_ease-out_1.2s_both]">
+                <div className="absolute -top-4 -right-4 md:-right-8 bg-linear-to-br from-emerald-500 to-teal-600 rounded-2xl p-4 shadow-xl shadow-emerald-500/30 text-white hidden md:block animate-[floatInRight_0.6s_ease-out_1.2s_both]">
                   <div className="text-3xl font-black">5</div>
                   <div className="text-sm text-emerald-100">étapes clés</div>
                 </div>
@@ -473,7 +473,7 @@ export default function NotreMethodePage() {
 
         {/* PRINCIPES - Ce qui fait la différence */}
         <section
-          className="py-20 md:py-32 bg-gradient-to-b from-background to-muted/50"
+          className="py-20 md:py-32 bg-linear-to-b from-background to-muted/50"
           aria-labelledby="principes-title">
           <div className="mx-auto max-w-7xl px-4 lg:px-8">
             <div className="max-w-3xl animate-fade-in-up">
@@ -527,7 +527,7 @@ export default function NotreMethodePage() {
                   key={col.method}
                   className={cn(
                     'animate-fade-in-up',
-                    colIdx === 0 ? 'bg-slate-800/50 border-slate-700' : 'bg-gradient-to-br from-emerald-600 to-teal-600 border-emerald-500',
+                    colIdx === 0 ? 'bg-slate-800/50 border-slate-700' : 'bg-linear-to-br from-emerald-600 to-teal-600 border-emerald-500',
                     `delay-${(colIdx + 1) * 100}`,
                   )}>
                   <CardContent className="p-8">
@@ -537,7 +537,7 @@ export default function NotreMethodePage() {
                         <li
                           key={idx}
                           className="flex items-center gap-3">
-                          <div className={cn('flex-shrink-0 w-6 h-6 rounded-full flex items-center justify-center', point.negative ? 'bg-red-500/20' : 'bg-white/20')}>
+                          <div className={cn('shrink-0  w-6 h-6 rounded-full flex items-center justify-center', point.negative ? 'bg-red-500/20' : 'bg-white/20')}>
                             {point.negative ? <span className="text-red-400 text-sm">✕</span> : <Check className="h-4 w-4 text-white" />}
                           </div>
                           <span className={colIdx === 0 ? 'text-slate-300' : 'text-white'}>{point.text}</span>
@@ -589,7 +589,7 @@ export default function NotreMethodePage() {
               {/* Card visuelle */}
               <div className="lg:sticky lg:top-32 animate-fade-in-up delay-200">
                 <Card className="overflow-hidden shadow-2xl shadow-slate-200/50">
-                  <div className="bg-gradient-to-br from-emerald-600 to-teal-600 p-8 text-white">
+                  <div className="bg-linear-to-br from-emerald-600 to-teal-600 p-8 text-white">
                     <h3 className="text-2xl font-bold mb-2">Résultat garanti</h3>
                     <p className="text-emerald-100">Chaque étape est pensée pour un résultat optimal, sans risque pour vos textiles.</p>
                   </div>
@@ -600,7 +600,7 @@ export default function NotreMethodePage() {
                         <li
                           key={idx}
                           className="flex items-center gap-3">
-                          <div className="flex-shrink-0 w-6 h-6 rounded-full bg-emerald-100 flex items-center justify-center">
+                          <div className="shrink-0 w-6 h-6 rounded-full bg-emerald-100 flex items-center justify-center">
                             <Check className="h-4 w-4 text-emerald-600" />
                           </div>
                           <span className="text-muted-foreground">{item}</span>
@@ -612,7 +612,7 @@ export default function NotreMethodePage() {
                       <Button
                         asChild
                         size="lg"
-                        className="w-full rounded-full bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white shadow-lg shadow-emerald-600/25">
+                        className="w-full rounded-full bg-linear-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white shadow-lg shadow-emerald-600/25">
                         <Link href="/devis">
                           Demander un devis gratuit
                           <ArrowRight className="h-5 w-5 ml-2" />
@@ -669,7 +669,7 @@ export default function NotreMethodePage() {
                     'animate-fade-in-up',
                     `delay-${(idx + 1) * 100}`,
                   )}>
-                  <div className="absolute inset-0 bg-gradient-to-br from-emerald-50/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                  <div className="absolute inset-0 bg-linear-to-br from-emerald-50/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                   <div className="relative z-10">
                     <div className="p-3 rounded-2xl bg-emerald-100/80 text-emerald-700 w-fit transition-transform duration-300 group-hover:scale-110 group-hover:rotate-[5deg]">
                       <item.icon className="h-6 w-6" />
@@ -723,7 +723,7 @@ export default function NotreMethodePage() {
 
         {/* FINAL CTA */}
         <section
-          className="py-20 md:py-32 bg-gradient-to-br from-emerald-600 via-emerald-600 to-teal-600 text-white relative overflow-hidden"
+          className="py-20 md:py-32 bg-linear-to-br from-emerald-600 via-emerald-600 to-teal-600 text-white relative overflow-hidden"
           aria-labelledby="final-cta-title">
           {/* Background decoration */}
           <div className="absolute inset-0 opacity-10">

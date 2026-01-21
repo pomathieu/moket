@@ -176,9 +176,9 @@ export default function DevisPage() {
           className="relative py-8 md:py-20 overflow-hidden"
           aria-labelledby="devis-title">
           {/* Background */}
-          <div className="absolute inset-0 bg-gradient-to-br from-slate-50 via-emerald-50/30 to-teal-50/20" />
-          <div className="absolute top-0 right-0 w-160 h-160 bg-gradient-to-bl from-emerald-100/40 via-transparent to-transparent rounded-full blur-3xl" />
-          <div className="absolute bottom-0 left-0 w-120 h-120 bg-gradient-to-tr from-teal-100/30 via-transparent to-transparent rounded-full blur-3xl" />
+          <div className="absolute inset-0 bg-linear-to-br from-slate-50 via-emerald-50/30 to-teal-50/20" />
+          <div className="absolute top-0 right-0 w-160 h-160 bg-linear-to-bl from-emerald-100/40 via-transparent to-transparent rounded-full blur-3xl" />
+          <div className="absolute bottom-0 left-0 w-120 h-120 bg-linear-to-tr from-teal-100/30 via-transparent to-transparent rounded-full blur-3xl" />
 
           <div className="relative z-10 mx-auto max-w-7xl px-4 lg:px-8">
             <nav className="flex items-center gap-2 text-sm text-muted-foreground mb-6 animate-fade-in">
@@ -203,14 +203,14 @@ export default function DevisPage() {
                 className="mt-6 text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight text-foreground leading-[1.1] animate-fade-in-up">
                 Devis{' '}
                 <span className="relative">
-                  <span className="relative z-10 text-transparent bg-clip-text bg-gradient-to-r from-emerald-600 to-teal-600">en 2 min</span>
+                  <span className="relative z-10 text-transparent bg-clip-text bg-linear-to-r from-emerald-600 to-teal-600">en 2 min</span>
                   <span className="absolute bottom-2 left-0 right-0 h-3 bg-emerald-200/60 z-0 rounded-full" />
                 </span>
               </h1>
 
               <p className="mt-6 text-lg md:text-xl text-muted-foreground leading-relaxed animate-fade-in-up">
                 Envoyez <strong className="text-foreground">2–3 photos</strong> et quelques infos. On vous répond{' '}
-                <span className="relative z-10 text-transparent bg-clip-text bg-gradient-to-r font-bold from-emerald-600 to-teal-600">sous 24 heures {''}</span>
+                <span className="relative z-10 text-transparent bg-clip-text bg-linear-to-r font-bold from-emerald-600 to-teal-600">sous 24 heures {''}</span>
                 avec un <strong className="text-foreground">tarif clair et fixe</strong> et un créneau d'intervention.
               </p>
 
@@ -219,7 +219,7 @@ export default function DevisPage() {
                 <Button
                   asChild
                   size="lg"
-                  className="rounded-full px-8 h-14 text-base font-semibold bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white shadow-xl shadow-emerald-600/30 transition-all hover:shadow-2xl hover:shadow-emerald-600/40 hover:-translate-y-0.5">
+                  className="rounded-full px-8 h-14 text-base font-semibold bg-linear-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white shadow-xl shadow-emerald-600/30 transition-all hover:shadow-2xl hover:shadow-emerald-600/40 hover:-translate-y-0.5">
                   <a href="#form">
                     Remplir le formulaire
                     <ArrowRight className="h-5 w-5 ml-2" />
@@ -258,7 +258,7 @@ export default function DevisPage() {
                   key={step.title}
                   className="group relative rounded-3xl bg-white/80 backdrop-blur-sm p-6 border border-slate-200/50 shadow-lg shadow-slate-200/30 transition-all duration-300 hover:shadow-xl hover:-translate-y-1">
                   <div className="flex items-start gap-4">
-                    <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-emerald-500 to-teal-600 text-white font-bold text-lg shadow-lg shadow-emerald-500/30 transition-transform duration-300 group-hover:scale-110 group-hover:rotate-[5deg]">
+                    <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-linear-to-br from-emerald-500 to-teal-600 text-white font-bold text-lg shadow-lg shadow-emerald-500/30 transition-transform duration-300 group-hover:scale-110 group-hover:rotate-[5deg]">
                       {idx + 1}
                     </div>
                     <div>
@@ -285,7 +285,7 @@ export default function DevisPage() {
                 className="lg:col-span-2 scroll-mt-8">
                 <div className="rounded-3xl border border-border bg-card p-6 md:p-8 shadow-xl shadow-slate-200/50">
                   <div className="flex items-center gap-3 mb-6">
-                    <div className="p-3 rounded-2xl bg-gradient-to-br from-emerald-500 to-teal-600 text-white shadow-lg shadow-emerald-500/30">
+                    <div className="p-3 rounded-2xl bg-linear-to-br from-emerald-500 to-teal-600 text-white shadow-lg shadow-emerald-500/30">
                       <Sparkles className="h-6 w-6" />
                     </div>
                     <div>
@@ -319,7 +319,7 @@ export default function DevisPage() {
                       <li
                         key={idx}
                         className="flex items-start gap-3 text-sm">
-                        <div className="flex-shrink-0 w-5 h-5 rounded-full bg-emerald-100 flex items-center justify-center mt-0.5">
+                        <div className="shrink-0  w-5 h-5 rounded-full bg-emerald-100 flex items-center justify-center mt-0.5">
                           <Check className="h-3 w-3 text-emerald-700" />
                         </div>
                         <span className="text-muted-foreground">{item}</span>
@@ -340,7 +340,7 @@ export default function DevisPage() {
                 </div>
 
                 {/* WhatsApp shortcut */}
-                <div className="rounded-3xl bg-gradient-to-br from-emerald-600 to-teal-600 p-6 text-white shadow-xl shadow-emerald-600/30">
+                <div className="rounded-3xl bg-linear-to-br from-emerald-600 to-teal-600 p-6 text-white shadow-xl shadow-emerald-600/30">
                   <h3 className="font-bold text-lg">Plus rapide ?</h3>
                   <p className="mt-2 text-sm text-emerald-100">Envoyez directement vos photos sur WhatsApp et recevez un prix clair.</p>
                   <div className="mt-4 flex flex-col gap-3">
@@ -460,7 +460,7 @@ export default function DevisPage() {
         </section>
 
         {/* FINAL CTA */}
-        <section className="py-16 md:py-24 bg-gradient-to-br from-emerald-600 via-emerald-600 to-teal-600 text-white relative overflow-hidden">
+        <section className="py-16 md:py-24 bg-linear-to-br from-emerald-600 via-emerald-600 to-teal-600 text-white relative overflow-hidden">
           <div className="absolute inset-0 opacity-10">
             <div className="absolute top-0 left-1/4 w-96 h-96 bg-white rounded-full blur-3xl" />
             <div className="absolute bottom-0 right-1/4 w-64 h-64 bg-white rounded-full blur-3xl" />

@@ -230,6 +230,14 @@ export default async function page({ params }: { params: Promise<{ id: string }>
                   <div className="font-medium">{serviceLabel(quote.service)}</div>
                 </div>
                 <div>
+                  <div className="text-xs text-zinc-500">Taille</div>
+                  <div className="font-medium">{quote.size || '—'}</div>
+                </div>
+                <div>
+                  <div className="text-xs text-zinc-500">Surface</div>
+                  <div className="font-medium">{quote.surface || '—'}</div>
+                </div>
+                <div>
                   <div className="text-xs text-zinc-500">Email</div>
                   <div className="font-medium">{quote.email || '—'}</div>
                 </div>
@@ -243,18 +251,28 @@ export default async function page({ params }: { params: Promise<{ id: string }>
                 </div>
               </div>
 
-              {(quote.details || quote.dimensions) && (
+              {(quote.details || quote.size || quote.surface) && (
                 <>
                   <Separator />
                   <div className="grid grid-cols-1 gap-2 md:grid-cols-2">
-                    <div>
-                      <div className="text-xs text-zinc-500">Dimensions (global)</div>
-                      <div className="font-medium">{quote.dimensions || '—'}</div>
-                    </div>
-                    <div>
-                      <div className="text-xs text-zinc-500">Détails (global)</div>
-                      <div className="font-medium">{quote.details || '—'}</div>
-                    </div>
+                    {quote.size && (
+                      <div>
+                        <div className="text-xs text-zinc-500">Taille</div>
+                        <div className="font-medium">{quote.size}</div>
+                      </div>
+                    )}
+                    {quote.surface && (
+                      <div>
+                        <div className="text-xs text-zinc-500">Surface</div>
+                        <div className="font-medium">{quote.surface}</div>
+                      </div>
+                    )}
+                    {quote.details && (
+                      <div className="md:col-span-2">
+                        <div className="text-xs text-zinc-500">Détails (global)</div>
+                        <div className="font-medium">{quote.details}</div>
+                      </div>
+                    )}
                   </div>
                 </>
               )}

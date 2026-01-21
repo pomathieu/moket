@@ -124,9 +124,9 @@ export default function ZonesPage() {
           className="relative py-8 md:py-20 overflow-hidden"
           aria-labelledby="zones-title">
           {/* Background */}
-          <div className="absolute inset-0 bg-gradient-to-br from-slate-50 via-emerald-50/30 to-teal-50/20" />
-          <div className="absolute top-0 right-0 w-[50rem] h-[50rem] bg-gradient-to-bl from-emerald-100/40 via-transparent to-transparent rounded-full blur-3xl" />
-          <div className="absolute bottom-0 left-0 w-[37.5rem] h-[37.5rem] bg-gradient-to-tr from-teal-100/30 via-transparent to-transparent rounded-full blur-3xl" />
+          <div className="absolute inset-0 bg-linear-to-br from-slate-50 via-emerald-50/30 to-teal-50/20" />
+          <div className="absolute top-0 right-0 w-[50rem] h-[50rem] bg-linear-to-bl from-emerald-100/40 via-transparent to-transparent rounded-full blur-3xl" />
+          <div className="absolute bottom-0 left-0 w-[37.5rem] h-[37.5rem] bg-linear-to-tr from-teal-100/30 via-transparent to-transparent rounded-full blur-3xl" />
 
           <div className="relative z-10 mx-auto max-w-7xl px-4 lg:px-8">
             <div className="max-w-4xl">
@@ -152,7 +152,7 @@ export default function ZonesPage() {
                 className="mt-6 text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight text-foreground leading-[1.1] animate-fade-in-up">
                 Zones{' '}
                 <span className="relative">
-                  <span className="relative z-10 text-transparent bg-clip-text bg-gradient-to-r from-emerald-600 to-teal-600">d&#39;intervention</span>
+                  <span className="relative z-10 text-transparent bg-clip-text bg-linear-to-r from-emerald-600 to-teal-600">d&#39;intervention</span>
                   <span className="absolute bottom-2 left-0 right-0 h-3 bg-emerald-200/60 z-0 rounded-full animate-[scaleX_0.6s_ease-out_0.8s_both] origin-left" />
                 </span>
               </h1>
@@ -188,7 +188,7 @@ export default function ZonesPage() {
                 <Button
                   asChild
                   size="lg"
-                  className="rounded-full px-8 h-14 text-base font-semibold bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white shadow-xl shadow-emerald-600/30 transition-all hover:shadow-2xl hover:shadow-emerald-600/40 hover:-translate-y-0.5">
+                  className="rounded-full px-8 h-14 text-base font-semibold bg-linear-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white shadow-xl shadow-emerald-600/30 transition-all hover:shadow-2xl hover:shadow-emerald-600/40 hover:-translate-y-0.5">
                   <Link href="/devis">
                     Demander un devis gratuit
                     <ArrowRight className="h-5 w-5 ml-2" />
@@ -215,7 +215,7 @@ export default function ZonesPage() {
           aria-labelledby="idf-title">
           <div className="mx-auto max-w-7xl px-4 lg:px-8">
             <div className="flex items-center gap-4 mb-8 animate-fade-in-up">
-              <div className="p-3 rounded-2xl bg-gradient-to-br from-blue-500 to-indigo-600 text-white shadow-lg shadow-blue-500/30">
+              <div className="p-3 rounded-2xl bg-linear-to-br from-blue-500 to-indigo-600 text-white shadow-lg shadow-blue-500/30">
                 <MapPin className="h-6 w-6" />
               </div>
               <div>
@@ -239,7 +239,7 @@ export default function ZonesPage() {
                     'transition-all duration-300',
                     'hover:shadow-xl hover:shadow-slate-200/50 hover:border-emerald-200 hover:-translate-y-1',
                   )}>
-                  <div className="absolute inset-0 bg-gradient-to-br from-emerald-50/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                  <div className="absolute inset-0 bg-linear-to-br from-emerald-50/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                   <div className="relative z-10">
                     <div className="flex items-center justify-between mb-2">
                       <span className="text-xs font-medium text-muted-foreground bg-slate-100 px-2 py-1 rounded-md">{zone.postalCode}</span>
@@ -259,7 +259,7 @@ export default function ZonesPage() {
           aria-labelledby="normandie-title">
           <div className="mx-auto max-w-7xl px-4 lg:px-8">
             <div className="flex items-center gap-4 mb-8 animate-fade-in-up">
-              <div className="p-3 rounded-2xl bg-gradient-to-br from-emerald-500 to-teal-600 text-white shadow-lg shadow-emerald-500/30">
+              <div className="p-3 rounded-2xl bg-linear-to-br from-emerald-500 to-teal-600 text-white shadow-lg shadow-emerald-500/30">
                 <MapPin className="h-6 w-6" />
               </div>
               <div>
@@ -283,7 +283,7 @@ export default function ZonesPage() {
                     'transition-all duration-300',
                     'hover:shadow-xl hover:shadow-slate-200/50 hover:border-emerald-200 hover:-translate-y-1',
                   )}>
-                  <div className="absolute inset-0 bg-gradient-to-br from-emerald-50/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                  <div className="absolute inset-0 bg-linear-to-br from-emerald-50/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                   <div className="relative z-10">
                     <div className="flex items-center justify-between mb-2">
                       <span className="text-xs font-medium text-muted-foreground bg-slate-100 px-2 py-1 rounded-md">{zone.postalCode}</span>
@@ -323,7 +323,7 @@ export default function ZonesPage() {
                   <CardContent className="p-6">
                     <div className="flex items-center gap-4 mb-4">
                       <div className="relative">
-                        <div className="p-3 rounded-2xl bg-gradient-to-br from-emerald-500 to-teal-600 text-white shadow-lg shadow-emerald-500/30 transition-transform duration-300 group-hover:scale-110 group-hover:rotate-[5deg]">
+                        <div className="p-3 rounded-2xl bg-linear-to-br from-emerald-500 to-teal-600 text-white shadow-lg shadow-emerald-500/30 transition-transform duration-300 group-hover:scale-110 group-hover:rotate-[5deg]">
                           <step.icon className="h-6 w-6" />
                         </div>
                         <span className="absolute -top-2 -right-2 w-6 h-6 bg-slate-900 text-white text-xs font-bold rounded-full flex items-center justify-center">{idx + 1}</span>
@@ -364,7 +364,7 @@ export default function ZonesPage() {
                       <li
                         key={idx}
                         className="flex items-start gap-3">
-                        <div className="flex-shrink-0 w-6 h-6 rounded-full bg-emerald-500/20 flex items-center justify-center mt-0.5">
+                        <div className="shrink-0 w-6 h-6 rounded-full bg-emerald-500/20 flex items-center justify-center mt-0.5">
                           <Check className="h-4 w-4 text-emerald-400" />
                         </div>
                         <span className="text-slate-300">{item}</span>
@@ -400,7 +400,7 @@ export default function ZonesPage() {
               <div className="relative animate-fade-in-up">
                 <div className="relative bg-slate-800/50 rounded-3xl p-8 border border-slate-700">
                   <div className="grid grid-cols-2 gap-6">
-                    <div className="bg-gradient-to-br from-blue-500/20 to-indigo-600/20 rounded-2xl p-6 border border-blue-500/30">
+                    <div className="bg-linear-to-br from-blue-500/20 to-indigo-600/20 rounded-2xl p-6 border border-blue-500/30">
                       <div className="flex items-center gap-3 mb-4">
                         <MapPin className="h-5 w-5 text-blue-400" />
                         <span className="font-semibold text-white">Île-de-France</span>
@@ -408,7 +408,7 @@ export default function ZonesPage() {
                       <p className="text-3xl font-black text-blue-400">{idf.length}</p>
                       <p className="text-sm text-slate-400">départements</p>
                     </div>
-                    <div className="bg-gradient-to-br from-emerald-500/20 to-teal-600/20 rounded-2xl p-6 border border-emerald-500/30">
+                    <div className="bg-linear-to-br from-emerald-500/20 to-teal-600/20 rounded-2xl p-6 border border-emerald-500/30">
                       <div className="flex items-center gap-3 mb-4">
                         <MapPin className="h-5 w-5 text-emerald-400" />
                         <span className="font-semibold text-white">Normandie</span>
@@ -420,7 +420,7 @@ export default function ZonesPage() {
 
                   <div className="mt-6 p-4 rounded-2xl bg-slate-700/50 border border-slate-600">
                     <p className="text-sm text-slate-300 flex items-start gap-2">
-                      <Clock className="h-5 w-5 text-amber-400 flex-shrink-0 mt-0.5" />
+                      <Clock className="h-5 w-5 text-amber-400 shrink-0 mt-0.5" />
                       <span>
                         <strong className="text-white">Réponse sous 24h</strong> — Envoyez vos photos et recevez un devis clair rapidement.
                       </span>
@@ -438,7 +438,7 @@ export default function ZonesPage() {
 
         {/* FINAL CTA */}
         <section
-          className="py-20 md:py-32 bg-gradient-to-br from-emerald-600 via-emerald-600 to-teal-600 text-white relative overflow-hidden"
+          className="py-20 md:py-32 bg-linear-to-br from-emerald-600 via-emerald-600 to-teal-600 text-white relative overflow-hidden"
           aria-labelledby="final-cta-title">
           {/* Background decoration */}
           <div className="absolute inset-0 opacity-10">

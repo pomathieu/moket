@@ -239,9 +239,9 @@ export default async function CityPage({ params }: PageProps) {
           className="relative min-h-[50vh] md:min-h-[45vh] flex items-center overflow-hidden"
           aria-labelledby="hero-title">
           {/* Background */}
-          <div className="absolute inset-0 bg-gradient-to-br from-slate-50 via-emerald-50/30 to-teal-50/20" />
-          <div className="absolute top-0 right-0 w-[50rem] h-[50rem] bg-gradient-to-bl from-emerald-100/40 via-transparent to-transparent rounded-full blur-3xl" />
-          <div className="absolute bottom-0 left-0 w-[37.5rem] h-[37.5rem] bg-gradient-to-tr from-teal-100/30 via-transparent to-transparent rounded-full blur-3xl" />
+          <div className="absolute inset-0 bg-linear-to-br from-slate-50 via-emerald-50/30 to-teal-50/20" />
+          <div className="absolute top-0 right-0 w-[50rem] h-[50rem] bg-linear-to-bl from-emerald-100/40 via-transparent to-transparent rounded-full blur-3xl" />
+          <div className="absolute bottom-0 left-0 w-[37.5rem] h-[37.5rem] bg-linear-to-tr from-teal-100/30 via-transparent to-transparent rounded-full blur-3xl" />
 
           {/* Pattern */}
           <div
@@ -291,7 +291,7 @@ export default async function CityPage({ params }: PageProps) {
                   <>
                     {cityData.seo.h1.split(cityData.name)[0]}
                     <span className="relative">
-                      <span className="relative z-10 text-transparent bg-clip-text bg-gradient-to-r from-emerald-600 to-teal-600">{cityData.name}</span>
+                      <span className="relative z-10 text-transparent bg-clip-text bg-linear-to-r from-emerald-600 to-teal-600">{cityData.name}</span>
                       <span className="absolute bottom-2 left-0 right-0 h-3 bg-emerald-200/60 z-0 rounded-full animate-[scaleX_0.6s_ease-out_0.8s_both] origin-left" />
                     </span>
                     {cityData.seo.h1.split(cityData.name)[1]}
@@ -306,7 +306,7 @@ export default async function CityPage({ params }: PageProps) {
               {/* Short note */}
               {cityData.shortNote && (
                 <div className="mt-6 flex items-start gap-3 p-4 rounded-2xl bg-amber-50 border border-amber-200 animate-fade-in-up">
-                  <Clock className="h-5 w-5 text-amber-600 flex-shrink-0 mt-0.5" />
+                  <Clock className="h-5 w-5 text-amber-600 shrink-0 mt-0.5" />
                   <div>
                     <p className="font-semibold text-amber-800">Info</p>
                     <p className="text-sm text-amber-700">{cityData.shortNote}</p>
@@ -333,7 +333,7 @@ export default async function CityPage({ params }: PageProps) {
                 <Button
                   asChild
                   size="lg"
-                  className="rounded-full px-8 h-14 text-base font-semibold bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white shadow-xl shadow-emerald-600/30 transition-all hover:shadow-2xl hover:shadow-emerald-600/40 hover:-translate-y-0.5">
+                  className="rounded-full px-8 h-14 text-base font-semibold bg-linear-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white shadow-xl shadow-emerald-600/30 transition-all hover:shadow-2xl hover:shadow-emerald-600/40 hover:-translate-y-0.5">
                   <Link href="/devis">
                     Devis à {cityData.name}
                     <ArrowRight className="h-5 w-5 ml-2" />
@@ -361,7 +361,7 @@ export default async function CityPage({ params }: PageProps) {
             aria-labelledby="segments-title">
             <div className="mx-auto max-w-7xl px-4 lg:px-8">
               <div className="flex items-center gap-4 mb-8 animate-fade-in-up">
-                <div className="p-3 rounded-2xl bg-gradient-to-br from-violet-500 to-purple-600 text-white shadow-lg shadow-violet-500/30">
+                <div className="p-3 rounded-2xl bg-linear-to-br from-violet-500 to-purple-600 text-white shadow-lg shadow-violet-500/30">
                   <Target className="h-6 w-6" />
                 </div>
                 <div>
@@ -398,7 +398,7 @@ export default async function CityPage({ params }: PageProps) {
               <Card className="animate-fade-in-up border-border/80 shadow-xl shadow-slate-200/30">
                 <CardContent className="p-8">
                   <div className="flex items-center gap-3 mb-6">
-                    <div className="p-3 rounded-2xl bg-gradient-to-br from-emerald-500 to-teal-600 text-white shadow-lg shadow-emerald-500/30">
+                    <div className="p-3 rounded-2xl bg-linear-to-br from-emerald-500 to-teal-600 text-white shadow-lg shadow-emerald-500/30">
                       <Droplets className="h-6 w-6" />
                     </div>
                     <h2
@@ -412,7 +412,7 @@ export default async function CityPage({ params }: PageProps) {
                       <li
                         key={idx}
                         className="flex items-start gap-3">
-                        <div className="flex-shrink-0 p-2 rounded-xl bg-emerald-100">
+                        <div className="shrink-0 p-2 rounded-xl bg-emerald-100">
                           <item.icon className="h-4 w-4 text-emerald-600" />
                         </div>
                         <span className="text-muted-foreground">{item.text}</span>
@@ -426,7 +426,7 @@ export default async function CityPage({ params }: PageProps) {
               <Card className="animate-fade-in-up border-border/80 shadow-xl shadow-slate-200/30">
                 <CardContent className="p-8">
                   <div className="flex items-center gap-3 mb-6">
-                    <div className="p-3 rounded-2xl bg-gradient-to-br from-blue-500 to-indigo-600 text-white shadow-lg shadow-blue-500/30">
+                    <div className="p-3 rounded-2xl bg-linear-to-br  from-blue-500 to-indigo-600 text-white shadow-lg shadow-blue-500/30">
                       <Clock className="h-6 w-6" />
                     </div>
                     <h2 className="text-xl font-bold text-foreground">Déroulé d&#39;intervention</h2>
@@ -436,7 +436,7 @@ export default async function CityPage({ params }: PageProps) {
                       <li
                         key={step.num}
                         className="flex items-start gap-4">
-                        <div className="flex-shrink-0 w-8 h-8 rounded-full bg-gradient-to-br from-blue-500 to-indigo-600 text-white text-sm font-bold flex items-center justify-center">{step.num}</div>
+                        <div className="shrink-0 w-8 h-8 rounded-full bg-linear-to-br from-blue-500 to-indigo-600 text-white text-sm font-bold flex items-center justify-center">{step.num}</div>
                         <div>
                           <p className="font-semibold text-foreground">{step.title}</p>
                           <p className="text-sm text-muted-foreground">{step.desc}</p>
@@ -457,7 +457,7 @@ export default async function CityPage({ params }: PageProps) {
           <div className="mx-auto max-w-7xl px-4 lg:px-8">
             <div className="max-w-3xl">
               <div className="flex items-center gap-4 mb-8 animate-fade-in-up">
-                <div className="p-3 rounded-2xl bg-gradient-to-br from-amber-500 to-orange-600 text-white shadow-lg shadow-amber-500/30">
+                <div className="p-3 rounded-2xl bg-linear-to-br from-amber-500 to-orange-600 text-white shadow-lg shadow-amber-500/30">
                   <Lightbulb className="h-6 w-6" />
                 </div>
                 <h2
@@ -484,7 +484,7 @@ export default async function CityPage({ params }: PageProps) {
                       <li
                         key={idx}
                         className="flex items-start gap-3">
-                        <div className="flex-shrink-0 w-6 h-6 rounded-full bg-amber-100 flex items-center justify-center mt-0.5">
+                        <div className="shrink-0 w-6 h-6 rounded-full bg-amber-100 flex items-center justify-center mt-0.5">
                           <Check className="h-4 w-4 text-amber-600" />
                         </div>
                         <span className="text-muted-foreground">{useCase}</span>
@@ -499,7 +499,7 @@ export default async function CityPage({ params }: PageProps) {
 
         {/* CTA SECTION */}
         <section
-          className="py-16 md:py-20 bg-gradient-to-br from-emerald-600 via-emerald-600 to-teal-600 text-white relative overflow-hidden"
+          className="py-16 md:py-20 bg-linear-to-br from-emerald-600 via-emerald-600 to-teal-600 text-white relative overflow-hidden"
           aria-labelledby="cta-title">
           <div className="absolute inset-0 opacity-10">
             <div className="absolute top-0 left-1/4 w-96 h-96 bg-white rounded-full blur-3xl" />
@@ -580,7 +580,7 @@ export default async function CityPage({ params }: PageProps) {
           aria-labelledby="explore-title">
           <div className="mx-auto max-w-7xl px-4 lg:px-8">
             <div className="flex items-center gap-4 mb-8 animate-fade-in-up">
-              <div className="p-3 rounded-2xl bg-gradient-to-br from-slate-700 to-slate-900 text-white shadow-lg">
+              <div className="p-3 rounded-2xl bg-linear-to-br from-slate-700 to-slate-900 text-white shadow-lg">
                 <Sparkles className="h-6 w-6" />
               </div>
               <h2
@@ -618,7 +618,7 @@ export default async function CityPage({ params }: PageProps) {
                     'transition-all duration-300',
                     'hover:shadow-xl hover:shadow-slate-200/50 hover:border-emerald-200 hover:-translate-y-1',
                   )}>
-                  <div className="absolute inset-0 bg-gradient-to-br from-emerald-50/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                  <div className="absolute inset-0 bg-linear-to-br from-emerald-50/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                   <div className="relative z-10 flex items-center gap-3">
                     <div className="p-2 rounded-xl bg-emerald-100 text-emerald-700 transition-transform duration-300 group-hover:scale-110">
                       <service.icon className="h-5 w-5" />
@@ -638,7 +638,7 @@ export default async function CityPage({ params }: PageProps) {
             aria-labelledby="other-cities-title">
             <div className="mx-auto max-w-7xl px-4 lg:px-8">
               <div className="flex items-center gap-4 mb-8 animate-fade-in-up">
-                <div className="p-3 rounded-2xl bg-gradient-to-br from-rose-500 to-pink-600 text-white shadow-lg shadow-rose-500/30">
+                <div className="p-3 rounded-2xl bg-linear-to-br from-rose-500 to-pink-600 text-white shadow-lg shadow-rose-500/30">
                   <Home className="h-6 w-6" />
                 </div>
                 <h2

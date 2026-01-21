@@ -29,7 +29,7 @@ function EnhancedAlert({ type = 'info', children, ...props }: { type?: 'info' | 
     <div
       className={`border rounded-lg p-4 my-6 flex items-start gap-3 ${variants[type]}`}
       {...props}>
-      <Icon className="w-5 h-5 mt-0.5 flex-shrink-0" />
+      <Icon className="w-5 h-5 mt-0.5 shrink-0" />
       <div className="flex-1">{children}</div>
     </div>
   );
@@ -249,7 +249,7 @@ const mdxComponents = {
   // 🎯 Séparateur
   hr: (props: HTMLAttributes<HTMLHRElement>) => (
     <hr
-      className="my-12 border-0 h-px bg-gradient-to-r from-transparent via-border to-transparent"
+      className="my-12 border-0 h-px bg-linear-to-r from-transparent via-border to-transparent"
       {...props}
     />
   ),

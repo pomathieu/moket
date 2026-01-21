@@ -167,13 +167,13 @@ function PitchCard({
         className,
       )}>
       {/* Gradient overlay on hover */}
-      <div className="absolute inset-0 bg-gradient-to-br from-slate-50/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+      <div className="absolute inset-0 bg-linear-to-br from-slate-50/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
 
       <div className="relative z-10">
         <div
           className={cn(
             'mb-5 inline-flex p-3 rounded-2xl text-white shadow-lg transition-transform duration-300 group-hover:scale-110 group-hover:rotate-[5deg]',
-            `bg-gradient-to-br ${color} ${shadowColor}`,
+            `bg-linear-to-br ${color} ${shadowColor}`,
           )}>
           <Icon className="h-6 w-6" />
         </div>
@@ -183,7 +183,7 @@ function PitchCard({
             <li
               key={point}
               className="flex items-start gap-3 text-muted-foreground">
-              <div className="flex-shrink-0 mt-1">
+              <div className="shrink-0 mt-1">
                 <Check className="h-4 w-4 text-emerald-600" />
               </div>
               <span className="leading-relaxed">{point}</span>
@@ -276,9 +276,9 @@ export default function PourquoiMoketPage() {
           className="relative py-8 md:py-20 overflow-hidden"
           aria-labelledby="pourquoi-moket-title">
           {/* Background */}
-          <div className="absolute inset-0 bg-gradient-to-br from-slate-50 via-emerald-50/30 to-teal-50/20" />
-          <div className="absolute top-0 right-0 w-200 h-[50rem] bg-gradient-to-bl from-emerald-100/40 via-transparent to-transparent rounded-full blur-3xl" />
-          <div className="absolute bottom-0 left-0 w-[37.5rem] h-[37.5rem] bg-gradient-to-tr from-teal-100/30 via-transparent to-transparent rounded-full blur-3xl" />
+          <div className="absolute inset-0 bg-linear-to-br from-slate-50 via-emerald-50/30 to-teal-50/20" />
+          <div className="absolute top-0 right-0 w-200 h-[50rem] bg-linear-to-bl from-emerald-100/40 via-transparent to-transparent rounded-full blur-3xl" />
+          <div className="absolute bottom-0 left-0 w-[37.5rem] h-[37.5rem] bg-linear-to-tr from-teal-100/30 via-transparent to-transparent rounded-full blur-3xl" />
 
           <div className="relative z-10 mx-auto max-w-7xl px-4 lg:px-8">
             <div className="max-w-4xl">
@@ -304,7 +304,7 @@ export default function PourquoiMoketPage() {
                 className="mt-6 text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight text-foreground leading-[1.1] animate-fade-in-up delay-100">
                 Pourquoi choisir{' '}
                 <span className="relative">
-                  <span className="relative z-10 text-transparent bg-clip-text bg-gradient-to-r from-emerald-600 to-teal-600">MOKET</span>
+                  <span className="relative z-10 text-transparent bg-clip-text bg-linear-to-r from-emerald-600 to-teal-600">MOKET</span>
                   <span className="absolute bottom-2 left-0 right-0 h-3 bg-emerald-200/60 z-0 rounded-full animate-[scaleX_0.6s_ease-out_0.8s_both] origin-left" />
                 </span>{' '}
                 ?
@@ -338,7 +338,7 @@ export default function PourquoiMoketPage() {
                 <Button
                   asChild
                   size="lg"
-                  className="rounded-full px-8 h-14 text-base font-semibold bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white shadow-xl shadow-emerald-600/30 transition-all hover:shadow-2xl hover:shadow-emerald-600/40 hover:-translate-y-0.5">
+                  className="rounded-full px-8 h-14 text-base font-semibold bg-linear-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white shadow-xl shadow-emerald-600/30 transition-all hover:shadow-2xl hover:shadow-emerald-600/40 hover:-translate-y-0.5">
                   <Link href="/devis">
                     Demander un devis gratuit
                     <ArrowRight className="h-5 w-5 ml-2" />
@@ -407,7 +407,7 @@ export default function PourquoiMoketPage() {
 
         {/* NOTRE APPROCHE */}
         <section
-          className="py-20 md:py-32 bg-gradient-to-b from-background to-muted/50"
+          className="py-20 md:py-32 bg-linear-to-b from-background to-muted/50"
           aria-labelledby="approche-title">
           <div className="mx-auto max-w-7xl px-4 lg:px-8">
             <div className="max-w-3xl animate-fade-in-up">
@@ -437,7 +437,7 @@ export default function PourquoiMoketPage() {
               <Button
                 asChild
                 size="lg"
-                className="rounded-full px-8 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white shadow-lg shadow-emerald-600/25">
+                className="rounded-full px-8 bg-linear-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white shadow-lg shadow-emerald-600/25">
                 <Link href="/devis">
                   Demander un devis
                   <ArrowRight className="h-5 w-5 ml-2" />
@@ -474,7 +474,7 @@ export default function PourquoiMoketPage() {
 
             <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
               {/* Ce qu'on promet */}
-              <Card className="bg-gradient-to-br from-emerald-600 to-teal-600 border-emerald-500 animate-fade-in-up delay-100">
+              <Card className="bg-linear-to-br from-emerald-600 to-teal-600 border-emerald-500 animate-fade-in-up delay-100">
                 <CardContent className="p-8">
                   <div className="flex items-center gap-3 mb-6">
                     <div className="p-2 rounded-xl bg-white/20">
@@ -487,7 +487,7 @@ export default function PourquoiMoketPage() {
                       <li
                         key={idx}
                         className="flex items-start gap-3">
-                        <div className="flex-shrink-0 w-6 h-6 rounded-full bg-white/20 flex items-center justify-center mt-0.5">
+                        <div className="shrink-0 w-6 h-6 rounded-full bg-white/20 flex items-center justify-center mt-0.5">
                           <Check className="h-4 w-4 text-white" />
                         </div>
                         <span className="text-white/90">{item}</span>
@@ -511,7 +511,7 @@ export default function PourquoiMoketPage() {
                       <li
                         key={idx}
                         className="flex items-start gap-3">
-                        <div className="flex-shrink-0 w-6 h-6 rounded-full bg-slate-700 flex items-center justify-center mt-0.5">
+                        <div className="shrink-0 w-6 h-6 rounded-full bg-slate-700 flex items-center justify-center mt-0.5">
                           <X className="h-4 w-4 text-slate-500" />
                         </div>
                         <span className="text-slate-400">{item}</span>
@@ -520,7 +520,7 @@ export default function PourquoiMoketPage() {
                   </ul>
                   <div className="mt-6 p-4 rounded-2xl bg-slate-700/50 border border-slate-600">
                     <p className="text-sm text-slate-300 flex items-start gap-2">
-                      <Leaf className="h-5 w-5 text-emerald-400 flex-shrink-0 mt-0.5" />
+                      <Leaf className="h-5 w-5 text-emerald-400 shrink-0 mt-0.5" />
                       <span>
                         <strong className="text-white">Notre objectif :</strong> le meilleur résultat possible, sans abîmer votre textile.
                       </span>
@@ -630,7 +630,7 @@ export default function PourquoiMoketPage() {
 
         {/* FINAL CTA */}
         <section
-          className="py-20 md:py-32 bg-gradient-to-br from-emerald-600 via-emerald-600 to-teal-600 text-white relative overflow-hidden"
+          className="py-20 md:py-32 bg-linear-to-br from-emerald-600 via-emerald-600 to-teal-600 text-white relative overflow-hidden"
           aria-labelledby="final-cta-title">
           {/* Background decoration */}
           <div className="absolute inset-0 opacity-10">

@@ -184,9 +184,9 @@ export default function ServicesPage() {
           className="relative py-8 md:py-20 overflow-hidden"
           aria-labelledby="services-title">
           {/* Background */}
-          <div className="absolute inset-0 bg-gradient-to-br from-slate-50 via-emerald-50/30 to-teal-50/20" />
-          <div className="absolute top-0 right-0 w-[40rem] h-160 bg-gradient-to-bl from-emerald-100/40 via-transparent to-transparent rounded-full blur-3xl" />
-          <div className="absolute bottom-0 left-0 w-[30rem] h-120 bg-gradient-to-tr from-teal-100/30 via-transparent to-transparent rounded-full blur-3xl" />
+          <div className="absolute inset-0 bg-linear-to-br from-slate-50 via-emerald-50/30 to-teal-50/20" />
+          <div className="absolute top-0 right-0 w-160 h-160 bg-linear-to-bl from-emerald-100/40 via-transparent to-transparent rounded-full blur-3xl" />
+          <div className="absolute bottom-0 left-0 w-120 h-120 bg-linear-to-tr from-teal-100/30 via-transparent to-transparent rounded-full blur-3xl" />
 
           <div className="relative z-10 mx-auto max-w-7xl px-4 lg:px-8">
             <nav className="flex items-center gap-2 text-sm text-muted-foreground mb-6 animate-fade-in">
@@ -210,7 +210,7 @@ export default function ServicesPage() {
                 className="mt-6 text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight text-foreground leading-[1.1] animate-fade-in-up">
                 Nettoyage textile{' '}
                 <span className="relative">
-                  <span className="relative z-10 text-transparent bg-clip-text bg-gradient-to-r from-emerald-600 to-teal-600">professionnel</span>
+                  <span className="relative z-10 text-transparent bg-clip-text bg-linear-to-r from-emerald-600 to-teal-600">professionnel</span>
                   <span className="absolute bottom-2 left-0 right-0 h-3 bg-emerald-200/60 z-0 rounded-full" />
                 </span>
               </h1>
@@ -225,7 +225,7 @@ export default function ServicesPage() {
                 <Button
                   asChild
                   size="lg"
-                  className="rounded-full px-8 h-14 text-base font-semibold bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white shadow-xl shadow-emerald-600/30 transition-all hover:shadow-2xl hover:shadow-emerald-600/40 hover:-translate-y-0.5">
+                  className="rounded-full px-8 h-14 text-base font-semibold bg-linear-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white shadow-xl shadow-emerald-600/30 transition-all hover:shadow-2xl hover:shadow-emerald-600/40 hover:-translate-y-0.5">
                   <Link href="/devis">
                     Demander un devis
                     <ArrowRight className="h-5 w-5 ml-2" />
@@ -253,7 +253,7 @@ export default function ServicesPage() {
               {/* Use Cases */}
               <div className="rounded-3xl border border-border bg-card p-8 shadow-lg shadow-slate-200/30">
                 <div className="flex items-center gap-3 mb-6">
-                  <div className="p-3 rounded-2xl bg-gradient-to-br from-emerald-500 to-teal-600 text-white shadow-lg shadow-emerald-500/30">
+                  <div className="p-3 rounded-2xl bg-linear-to-br from-emerald-500 to-teal-600 text-white shadow-lg shadow-emerald-500/30">
                     <Check className="h-6 w-6" />
                   </div>
                   <div>
@@ -296,7 +296,7 @@ export default function ServicesPage() {
                     <div
                       key={idx}
                       className="flex items-start gap-4 p-4 rounded-2xl bg-amber-50/50 border border-amber-100">
-                      <div className="flex-shrink-0 w-6 h-6 rounded-full bg-amber-100 flex items-center justify-center mt-0.5">
+                      <div className="shrink-0 w-6 h-6 rounded-full bg-amber-100 flex items-center justify-center mt-0.5">
                         <span className="text-amber-700 text-xs font-bold">{idx + 1}</span>
                       </div>
                       <span className="text-muted-foreground">{item}</span>
@@ -347,11 +347,11 @@ export default function ServicesPage() {
                         'hover:shadow-2xl hover:shadow-slate-200/50 hover:border-border hover:-translate-y-1',
                       )}>
                       {/* Gradient overlay on hover */}
-                      <div className="absolute inset-0 bg-gradient-to-br from-emerald-50/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                      <div className="absolute inset-0 bg-linear-to-br from-emerald-50/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
 
                       <div className="relative z-10">
                         <div className="flex items-start gap-4 mb-4">
-                          <div className="p-3 rounded-2xl bg-gradient-to-br from-emerald-500 to-teal-600 text-white shadow-lg shadow-emerald-500/30 transition-transform duration-300 group-hover:scale-110 group-hover:rotate-[5deg]">
+                          <div className="p-3 rounded-2xl bg-linear-to-br from-emerald-500 to-teal-600 text-white shadow-lg shadow-emerald-500/30 transition-transform duration-300 group-hover:scale-110 group-hover:rotate-[5deg]">
                             <Icon className="h-6 w-6" />
                           </div>
                         </div>
@@ -362,7 +362,7 @@ export default function ServicesPage() {
                         <div className="mt-5">
                           <Button
                             asChild
-                            className="rounded-full w-full bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white shadow-lg shadow-emerald-600/25">
+                            className="rounded-full w-full bg-linear-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white shadow-lg shadow-emerald-600/25">
                             <Link href={`/services/${s.slug}`}>
                               Voir le service
                               <ArrowRight className="h-4 w-4 ml-2" />
@@ -404,7 +404,7 @@ export default function ServicesPage() {
 
                 {/* Quick stats */}
                 <div className="mt-6 grid grid-cols-2 gap-4">
-                  <div className="rounded-2xl bg-gradient-to-br from-emerald-500 to-teal-600 p-4 text-white text-center">
+                  <div className="rounded-2xl bg-linear-to-br from-emerald-500 to-teal-600 p-4 text-white text-center">
                     <div className="text-3xl font-black">150+</div>
                     <div className="text-sm text-emerald-100">Interventions</div>
                   </div>
@@ -450,7 +450,7 @@ export default function ServicesPage() {
         {/* CTA SECTION */}
         <section className="py-16 md:py-24 bg-muted/30">
           <div className="mx-auto max-w-7xl px-4 lg:px-8">
-            <div className="rounded-3xl bg-gradient-to-br from-emerald-600 to-teal-600 p-8 md:p-12 text-white shadow-xl shadow-emerald-600/20">
+            <div className="rounded-3xl bg-linear-to-br from-emerald-600 to-teal-600 p-8 md:p-12 text-white shadow-xl shadow-emerald-600/20">
               <div className="grid gap-8 lg:grid-cols-2 lg:items-center">
                 <div>
                   <h2 className="text-2xl md:text-3xl font-black">Obtenir un devis gratuit</h2>
@@ -541,7 +541,7 @@ export default function ServicesPage() {
         </section>
 
         {/* FINAL CTA */}
-        <section className="py-16 md:py-24 bg-gradient-to-br from-emerald-600 via-emerald-600 to-teal-600 text-white relative overflow-hidden">
+        <section className="py-16 md:py-24 bg-linear-to-br from-emerald-600 via-emerald-600 to-teal-600 text-white relative overflow-hidden">
           <div className="absolute inset-0 opacity-10">
             <div className="absolute top-0 left-1/4 w-96 h-96 bg-white rounded-full blur-3xl" />
             <div className="absolute bottom-0 right-1/4 w-64 h-64 bg-white rounded-full blur-3xl" />

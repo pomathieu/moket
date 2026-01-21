@@ -169,7 +169,7 @@ function StepIndicator({ currentStep, totalSteps }: { currentStep: number; total
               <div
                 className={cn(
                   'w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold transition-all duration-300',
-                  isActive && 'bg-gradient-to-br from-emerald-500 to-teal-600 text-white shadow-lg shadow-emerald-500/30 scale-110',
+                  isActive && 'bg-linear-to-br from-emerald-500 to-teal-600 text-white shadow-lg shadow-emerald-500/30 scale-110',
                   isCompleted && 'bg-emerald-100 text-emerald-700',
                   !isActive && !isCompleted && 'bg-slate-100 text-slate-400',
                 )}>
@@ -981,7 +981,7 @@ export function DevisForm() {
             type="button"
             onClick={goNext}
             disabled={isSubmitting}
-            className="rounded-full px-6 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white shadow-lg shadow-emerald-600/25">
+            className="rounded-full px-6 bg-linear-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white shadow-lg shadow-emerald-600/25">
             Continuer
             <ChevronRight className="h-4 w-4 ml-1" />
           </Button>
@@ -989,7 +989,7 @@ export function DevisForm() {
           <Button
             type="submit"
             disabled={isSubmitting}
-            className="rounded-full px-8 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white shadow-lg shadow-emerald-600/25">
+            className="rounded-full px-8 bg-linear-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white shadow-lg shadow-emerald-600/25">
             {isSubmitting ? (
               <>
                 <Loader2 className="h-4 w-4 mr-2 animate-spin" />

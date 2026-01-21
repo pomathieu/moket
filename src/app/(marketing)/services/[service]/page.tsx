@@ -253,9 +253,9 @@ export default async function ServicePage({ params }: PageProps) {
           className="relative py-16 md:py-24 overflow-hidden"
           aria-labelledby="service-title">
           {/* Background */}
-          <div className="absolute inset-0 bg-gradient-to-br from-slate-50 via-emerald-50/30 to-teal-50/20" />
-          <div className="absolute top-0 right-0 w-[40rem] h-[40rem] bg-gradient-to-bl from-emerald-100/40 via-transparent to-transparent rounded-full blur-3xl" />
-          <div className="absolute bottom-0 left-0 w-[30rem] h-[30rem] bg-gradient-to-tr from-teal-100/30 via-transparent to-transparent rounded-full blur-3xl" />
+          <div className="absolute inset-0 bg-linear-to-br from-slate-50 via-emerald-50/30 to-teal-50/20" />
+          <div className="absolute top-0 right-0 w-[40rem] h-[40rem] bg-linear-to-bl from-emerald-100/40 via-transparent to-transparent rounded-full blur-3xl" />
+          <div className="absolute bottom-0 left-0 w-[30rem] h-[30rem] bg-linear-to-tr from-teal-100/30 via-transparent to-transparent rounded-full blur-3xl" />
 
           <div className="relative z-10 mx-auto max-w-7xl px-4 lg:px-8">
             {/* Breadcrumb */}
@@ -274,7 +274,7 @@ export default async function ServicePage({ params }: PageProps) {
               {/* Left content */}
               <div className="max-w-xl">
                 <div className="inline-flex items-center gap-3 px-4 py-2 rounded-full bg-white/90 backdrop-blur-sm border border-slate-200/50 shadow-lg shadow-slate-200/50 text-sm font-medium animate-fade-in">
-                  <div className="p-1.5 rounded-lg bg-gradient-to-br from-emerald-500 to-teal-600 text-white">
+                  <div className="p-1.5 rounded-lg bg-linear-to-br from-emerald-500 to-teal-600 text-white">
                     <Icon className="h-4 w-4" />
                   </div>
                   <span className="text-slate-700">Intervention à domicile</span>
@@ -295,7 +295,7 @@ export default async function ServicePage({ params }: PageProps) {
                   <Button
                     asChild
                     size="lg"
-                    className="rounded-full px-8 h-14 text-base font-semibold bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white shadow-xl shadow-emerald-600/30 transition-all hover:shadow-2xl hover:shadow-emerald-600/40 hover:-translate-y-0.5">
+                    className="rounded-full px-8 h-14 text-base font-semibold bg-linear-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white shadow-xl shadow-emerald-600/30 transition-all hover:shadow-2xl hover:shadow-emerald-600/40 hover:-translate-y-0.5">
                     <Link href="/devis">
                       Demander un devis
                       <ArrowRight className="h-5 w-5 ml-2" />
@@ -337,7 +337,7 @@ export default async function ServicePage({ params }: PageProps) {
                     />
                   </div>
                   {/* Floating badge */}
-                  <div className="absolute -bottom-4 -left-4 md:-left-8 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-2xl p-4 shadow-xl shadow-emerald-500/30 text-white hidden md:block">
+                  <div className="absolute -bottom-4 -left-4 md:-left-8 bg-linear-to-br from-emerald-500 to-teal-600 rounded-2xl p-4 shadow-xl shadow-emerald-500/30 text-white hidden md:block">
                     <div className="text-2xl font-black">150+</div>
                     <div className="text-sm text-emerald-100">interventions</div>
                   </div>
@@ -356,7 +356,7 @@ export default async function ServicePage({ params }: PageProps) {
                 {seoBody.useCases.length > 0 && (
                   <div className="rounded-3xl border border-border bg-card p-8 shadow-lg shadow-slate-200/30">
                     <div className="flex items-center gap-3 mb-6">
-                      <div className="p-3 rounded-2xl bg-gradient-to-br from-emerald-500 to-teal-600 text-white shadow-lg shadow-emerald-500/30">
+                      <div className="p-3 rounded-2xl bg-linear-to-br from-emerald-500 to-teal-600 text-white shadow-lg shadow-emerald-500/30">
                         <Check className="h-6 w-6" />
                       </div>
                       <div>
@@ -370,7 +370,7 @@ export default async function ServicePage({ params }: PageProps) {
                         <div
                           key={idx}
                           className="flex items-center gap-4 p-4 rounded-2xl bg-emerald-50/50 border border-emerald-100">
-                          <div className="flex-shrink-0 w-8 h-8 rounded-full bg-emerald-100 flex items-center justify-center">
+                          <div className="shrink-0 w-8 h-8 rounded-full bg-emerald-100 flex items-center justify-center">
                             <Check className="h-4 w-4 text-emerald-700" />
                           </div>
                           <span className="text-foreground">{item}</span>
@@ -398,7 +398,7 @@ export default async function ServicePage({ params }: PageProps) {
                         <div
                           key={idx}
                           className="flex items-start gap-4 p-4 rounded-2xl bg-amber-50/50 border border-amber-100">
-                          <div className="flex-shrink-0 w-6 h-6 rounded-full bg-amber-100 flex items-center justify-center mt-0.5">
+                          <div className="shrink-0 w-6 h-6 rounded-full bg-amber-100 flex items-center justify-center mt-0.5">
                             <span className="text-amber-700 text-xs font-bold">{idx + 1}</span>
                           </div>
                           <span className="text-muted-foreground">{item}</span>
@@ -441,7 +441,7 @@ export default async function ServicePage({ params }: PageProps) {
           <div className="mx-auto max-w-7xl px-4 lg:px-8">
             <div className="grid gap-8 lg:grid-cols-2">
               {/* What you get */}
-              <div className="rounded-3xl bg-gradient-to-br from-emerald-600 to-teal-600 p-8 text-white shadow-xl shadow-emerald-600/20">
+              <div className="rounded-3xl bg-linear-to-br from-emerald-600 to-teal-600 p-8 text-white shadow-xl shadow-emerald-600/20">
                 <h2 className="text-2xl font-black">Ce que vous obtenez</h2>
                 <p className="mt-2 text-emerald-100">Notre engagement pour chaque intervention</p>
 
@@ -450,7 +450,7 @@ export default async function ServicePage({ params }: PageProps) {
                     <li
                       key={idx}
                       className="flex items-start gap-4">
-                      <div className="flex-shrink-0 w-8 h-8 rounded-full bg-white/20 flex items-center justify-center">
+                      <div className="shrink-0 w-8 h-8 rounded-full bg-white/20 flex items-center justify-center">
                         <Check className="h-4 w-4" />
                       </div>
                       <span className="pt-1">{bullet}</span>
@@ -484,10 +484,10 @@ export default async function ServicePage({ params }: PageProps) {
                         key={idx}
                         className="flex gap-4">
                         <div className="flex flex-col items-center">
-                          <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-emerald-500 to-teal-600 text-white font-bold shadow-lg shadow-emerald-500/30">
+                          <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-linear-to-br from-emerald-500 to-teal-600 text-white font-bold shadow-lg shadow-emerald-500/30">
                             {idx + 1}
                           </div>
-                          {idx < PROCESS_STEPS.length - 1 && <div className="w-0.5 flex-1 bg-gradient-to-b from-emerald-300 to-emerald-100 my-2" />}
+                          {idx < PROCESS_STEPS.length - 1 && <div className="w-0.5 flex-1 bg-linear-to-b from-emerald-300 to-emerald-100 my-2" />}
                         </div>
                         <div className="flex-1 pb-4">
                           <div className="flex items-center gap-2">
@@ -598,9 +598,9 @@ export default async function ServicePage({ params }: PageProps) {
                       'transition-all duration-300',
                       'hover:shadow-xl hover:shadow-slate-200/50 hover:-translate-y-1',
                     )}>
-                    <div className="absolute inset-0 bg-gradient-to-br from-emerald-50/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                    <div className="absolute inset-0 bg-linear-to-br from-emerald-50/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                     <div className="relative z-10">
-                      <div className="p-3 rounded-2xl bg-gradient-to-br from-emerald-500 to-teal-600 text-white shadow-lg shadow-emerald-500/30 w-fit transition-transform duration-300 group-hover:scale-110 group-hover:rotate-[5deg]">
+                      <div className="p-3 rounded-2xl bg-linear-to-br from-emerald-500 to-teal-600 text-white shadow-lg shadow-emerald-500/30 w-fit transition-transform duration-300 group-hover:scale-110 group-hover:rotate-[5deg]">
                         <OtherIcon className="h-5 w-5" />
                       </div>
                       <h3 className="mt-4 font-bold text-foreground">{s.title}</h3>
@@ -618,7 +618,7 @@ export default async function ServicePage({ params }: PageProps) {
         </section>
 
         {/* FINAL CTA */}
-        <section className="py-16 md:py-24 bg-gradient-to-br from-emerald-600 via-emerald-600 to-teal-600 text-white relative overflow-hidden">
+        <section className="py-16 md:py-24 bg-linear-to-br from-emerald-600 via-emerald-600 to-teal-600 text-white relative overflow-hidden">
           <div className="absolute inset-0 opacity-10">
             <div className="absolute top-0 left-1/4 w-96 h-96 bg-white rounded-full blur-3xl" />
             <div className="absolute bottom-0 right-1/4 w-64 h-64 bg-white rounded-full blur-3xl" />

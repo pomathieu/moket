@@ -261,9 +261,9 @@ export default async function ZoneServicePage({ params }: PageProps) {
           className="relative min-h-[50vh] md:min-h-[45vh] flex items-center overflow-hidden"
           aria-labelledby="hero-title">
           {/* Background */}
-          <div className="absolute inset-0 bg-gradient-to-br from-slate-50 via-emerald-50/30 to-teal-50/20" />
-          <div className="absolute top-0 right-0 w-[50rem] h-[50rem] bg-gradient-to-bl from-emerald-100/40 via-transparent to-transparent rounded-full blur-3xl" />
-          <div className="absolute bottom-0 left-0 w-[37.5rem] h-[37.5rem] bg-gradient-to-tr from-teal-100/30 via-transparent to-transparent rounded-full blur-3xl" />
+          <div className="absolute inset-0 bg-linear-to-br from-slate-50 via-emerald-50/30 to-teal-50/20" />
+          <div className="absolute top-0 right-0 w-[50rem] h-[50rem] bg-linear-to-bl from-emerald-100/40 via-transparent to-transparent rounded-full blur-3xl" />
+          <div className="absolute bottom-0 left-0 w-[37.5rem] h-[37.5rem] bg-linear-to-tr from-teal-100/30 via-transparent to-transparent rounded-full blur-3xl" />
 
           {/* Pattern */}
           <div
@@ -315,7 +315,7 @@ export default async function ZoneServicePage({ params }: PageProps) {
                 className="mt-6 text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight text-foreground leading-[1.1] animate-fade-in-up">
                 {service.title}{' '}
                 <span className="relative">
-                  <span className="relative z-10 text-transparent bg-clip-text bg-gradient-to-r from-emerald-600 to-teal-600">à {zone.title}</span>
+                  <span className="relative z-10 text-transparent bg-clip-text bg-linear-to-r from-emerald-600 to-teal-600">à {zone.title}</span>
                   <span className="absolute bottom-2 left-0 right-0 h-3 bg-emerald-200/60 z-0 rounded-full animate-[scaleX_0.6s_ease-out_0.8s_both] origin-left" />
                 </span>
               </h1>
@@ -327,7 +327,7 @@ export default async function ZoneServicePage({ params }: PageProps) {
               {/* Zone short note */}
               {zone.shortNote && (
                 <div className="mt-6 flex items-start gap-3 p-4 rounded-2xl bg-amber-50 border border-amber-200 animate-fade-in-up">
-                  <Clock className="h-5 w-5 text-amber-600 flex-shrink-0 mt-0.5" />
+                  <Clock className="h-5 w-5 text-amber-600 shrink-0 mt-0.5" />
                   <div>
                     <p className="font-semibold text-amber-800">Info zone</p>
                     <p className="text-sm text-amber-700">{zone.shortNote}</p>
@@ -340,7 +340,7 @@ export default async function ZoneServicePage({ params }: PageProps) {
                 <Button
                   asChild
                   size="lg"
-                  className="rounded-full px-8 h-14 text-base font-semibold bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white shadow-xl shadow-emerald-600/30 transition-all hover:shadow-2xl hover:shadow-emerald-600/40 hover:-translate-y-0.5">
+                  className="rounded-full px-8 h-14 text-base font-semibold bg-linear-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white shadow-xl shadow-emerald-600/30 transition-all hover:shadow-2xl hover:shadow-emerald-600/40 hover:-translate-y-0.5">
                   <Link href="/devis">
                     Demander un devis gratuit
                     <ArrowRight className="h-5 w-5 ml-2" />
@@ -371,7 +371,7 @@ export default async function ZoneServicePage({ params }: PageProps) {
               <Card className="animate-fade-in-up border-border/80 shadow-xl shadow-slate-200/30">
                 <CardContent className="p-8">
                   <div className="flex items-center gap-3 mb-6">
-                    <div className="p-3 rounded-2xl bg-gradient-to-br from-emerald-500 to-teal-600 text-white shadow-lg shadow-emerald-500/30">
+                    <div className="p-3 rounded-2xl bg-linear-to-br from-emerald-500 to-teal-600 text-white shadow-lg shadow-emerald-500/30">
                       <ThumbsUp className="h-6 w-6" />
                     </div>
                     <h2
@@ -385,7 +385,7 @@ export default async function ZoneServicePage({ params }: PageProps) {
                       <li
                         key={idx}
                         className="flex items-start gap-3">
-                        <div className="flex-shrink-0 w-6 h-6 rounded-full bg-emerald-100 flex items-center justify-center mt-0.5">
+                        <div className="shrink-0 w-6 h-6 rounded-full bg-emerald-100 flex items-center justify-center mt-0.5">
                           <Check className="h-4 w-4 text-emerald-600" />
                         </div>
                         <span className="text-muted-foreground">{benefit}</span>
@@ -399,7 +399,7 @@ export default async function ZoneServicePage({ params }: PageProps) {
               <Card className="animate-fade-in-up border-border/80 shadow-xl shadow-slate-200/30">
                 <CardContent className="p-8">
                   <div className="flex items-center gap-3 mb-6">
-                    <div className="p-3 rounded-2xl bg-gradient-to-br from-blue-500 to-indigo-600 text-white shadow-lg shadow-blue-500/30">
+                    <div className="p-3 rounded-2xl bg-linear-to-br from-blue-500 to-indigo-600 text-white shadow-lg shadow-blue-500/30">
                       <Calendar className="h-6 w-6" />
                     </div>
                     <h2 className="text-xl font-bold text-foreground">Délais & créneaux à {zone.title}</h2>
@@ -436,7 +436,7 @@ export default async function ZoneServicePage({ params }: PageProps) {
             aria-labelledby="cities-title">
             <div className="mx-auto max-w-7xl px-4 lg:px-8">
               <div className="flex items-center gap-4 mb-8 animate-fade-in-up">
-                <div className="p-3 rounded-2xl bg-gradient-to-br from-violet-500 to-purple-600 text-white shadow-lg shadow-violet-500/30">
+                <div className="p-3 rounded-2xl bg-linear-to-br from-violet-500 to-purple-600 text-white shadow-lg shadow-violet-500/30">
                   <Home className="h-6 w-6" />
                 </div>
                 <div>
@@ -464,7 +464,7 @@ export default async function ZoneServicePage({ params }: PageProps) {
 
         {/* CTA SECTION */}
         <section
-          className="py-16 md:py-20 bg-gradient-to-br from-emerald-600 via-emerald-600 to-teal-600 text-white relative overflow-hidden"
+          className="py-16 md:py-20 bg-linear-to-br from-emerald-600 via-emerald-600 to-teal-600 text-white relative overflow-hidden"
           aria-labelledby="cta-title">
           <div className="absolute inset-0 opacity-10">
             <div className="absolute top-0 left-1/4 w-96 h-96 bg-white rounded-full blur-3xl" />
@@ -545,7 +545,7 @@ export default async function ZoneServicePage({ params }: PageProps) {
           aria-labelledby="links-title">
           <div className="mx-auto max-w-7xl px-4 lg:px-8">
             <div className="flex items-center gap-4 mb-8 animate-fade-in-up">
-              <div className="p-3 rounded-2xl bg-gradient-to-br from-slate-700 to-slate-900 text-white shadow-lg">
+              <div className="p-3 rounded-2xl bg-linear-to-br from-slate-700 to-slate-900 text-white shadow-lg">
                 <Droplets className="h-6 w-6" />
               </div>
               <h2
@@ -564,7 +564,7 @@ export default async function ZoneServicePage({ params }: PageProps) {
                   'transition-all duration-300',
                   'hover:shadow-xl hover:shadow-slate-200/50 hover:-translate-y-1',
                 )}>
-                <div className="absolute inset-0 bg-gradient-to-br from-emerald-50/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                <div className="absolute inset-0 bg-linear-to-br from-emerald-50/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                 <div className="relative z-10">
                   <h3 className="font-bold text-foreground group-hover:text-emerald-700 transition-colors">Page {service.title}</h3>
                   <p className="mt-1 text-sm text-muted-foreground">En savoir plus sur ce service</p>
@@ -583,7 +583,7 @@ export default async function ZoneServicePage({ params }: PageProps) {
                   'transition-all duration-300',
                   'hover:shadow-xl hover:shadow-slate-200/50 hover:-translate-y-1',
                 )}>
-                <div className="absolute inset-0 bg-gradient-to-br from-blue-50/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                <div className="absolute inset-0 bg-linear-to-br from-blue-50/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                 <div className="relative z-10">
                   <h3 className="font-bold text-foreground group-hover:text-blue-700 transition-colors">Zone {zone.title}</h3>
                   <p className="mt-1 text-sm text-muted-foreground">Tous les services dans cette zone</p>
