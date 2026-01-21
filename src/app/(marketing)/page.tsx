@@ -323,19 +323,19 @@ export default function Home() {
             }}
           />
 
-          <div className="relative z-10 mx-auto max-w-7xl px-4 lg:px-8 py-16 md:py-24">
+          <div className="relative z-10 mx-auto max-w-7xl px-4 lg:px-8 py-8 md:py-20">
             <div className="grid gap-12 lg:grid-cols-2 lg:gap-16 items-center">
               {/* Left content */}
               <div className="max-w-2xl">
-                {/* Badge */}
+                {/* Badge
                 <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/90 backdrop-blur-sm border border-slate-200/50 shadow-lg shadow-slate-200/50 text-sm font-medium animate-fade-in">
                   <span className="flex h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
                   <span className="text-slate-700">Île-de-France • Normandie</span>
-                </div>
+                </div> */}
 
                 <h1
                   id="hero-title"
-                  className="mt-6 text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight text-foreground leading-[1.1] animate-fade-in-up delay-100">
+                  className="mt-2 text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight text-foreground leading-[1.1] animate-fade-in-up delay-100">
                   Nettoyage de textiles à domicile{' '}
                   <span className="relative">
                     <span className="relative z-10 text-transparent bg-clip-text bg-gradient-to-r from-emerald-600 to-teal-600">comme neufs</span>

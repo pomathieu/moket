@@ -265,7 +265,7 @@ export default function TarifsPage() {
 
         {/* HERO */}
         <section
-          className="relative py-16 md:py-24 overflow-hidden"
+          className="relative py-8 md:py-20 overflow-hidden"
           aria-labelledby="tarifs-title">
           {/* Background */}
           <div className="absolute inset-0 bg-gradient-to-br from-slate-50 via-emerald-50/30 to-teal-50/20" />
@@ -283,11 +283,12 @@ export default function TarifsPage() {
               <span className="text-foreground font-medium">Tarifs</span>
             </nav>
             <div className="max-w-3xl">
+              {/* Badge 
               <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/90 backdrop-blur-sm border border-slate-200/50 shadow-lg shadow-slate-200/50 text-sm font-medium animate-fade-in">
                 <span className="flex h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
                 <span className="text-slate-700">Prix transparents</span>
               </div>
-
+*/}
               <h1
                 id="tarifs-title"
                 className="mt-6 text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight text-foreground leading-[1.1] animate-fade-in-up">

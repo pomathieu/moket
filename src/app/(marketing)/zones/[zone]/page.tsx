@@ -226,14 +226,6 @@ export default async function ZonePage({ params }: PageProps) {
           <div className="absolute top-0 right-0 w-[50rem] h-[50rem] bg-gradient-to-bl from-emerald-100/40 via-transparent to-transparent rounded-full blur-3xl" />
           <div className="absolute bottom-0 left-0 w-[37.5rem] h-[37.5rem] bg-gradient-to-tr from-teal-100/30 via-transparent to-transparent rounded-full blur-3xl" />
 
-          {/* Pattern */}
-          <div
-            className="absolute inset-0 opacity-[0.015]"
-            style={{
-              backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23000000' fill-opacity='1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
-            }}
-          />
-
           <div className="relative z-10 mx-auto max-w-7xl px-4 lg:px-8 py-16 md:py-24">
             <div className="max-w-4xl">
               {/* Breadcrumb */}
@@ -253,7 +245,7 @@ export default async function ZonePage({ params }: PageProps) {
                 <span className="text-foreground font-medium">{zoneData.title}</span>
               </nav>
 
-              {/* Badge */}
+              {/* Badge 
               <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/90 backdrop-blur-sm border border-slate-200/50 shadow-lg shadow-slate-200/50 text-sm font-medium animate-fade-in">
                 <MapPin className="h-4 w-4 text-emerald-600" />
                 <span className="text-slate-700">{zoneData.regionLabel}</span>
@@ -264,6 +256,7 @@ export default async function ZonePage({ params }: PageProps) {
                   </>
                 )}
               </div>
+              */}
 
               <h1
                 id="hero-title"

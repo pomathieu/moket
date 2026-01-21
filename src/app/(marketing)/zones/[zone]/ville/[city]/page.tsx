@@ -276,14 +276,14 @@ export default async function CityPage({ params }: PageProps) {
                 <span className="text-foreground font-medium">{cityData.name}</span>
               </nav>
 
-              {/* Badge */}
+              {/* Badge 
               <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/90 backdrop-blur-sm border border-slate-200/50 shadow-lg shadow-slate-200/50 text-sm font-medium animate-fade-in">
                 <MapPin className="h-4 w-4 text-emerald-600" />
                 <span className="text-slate-700">{cityData.name}</span>
                 <span className="text-slate-300">•</span>
                 <span className="text-slate-500">{zoneData.title}</span>
               </div>
-
+*/}
               <h1
                 id="hero-title"
                 className="mt-6 text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight text-foreground leading-[1.1] animate-fade-in-up">

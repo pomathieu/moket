@@ -173,34 +173,45 @@ export default function DevisPage() {
 
         {/* HERO */}
         <section
-          className="relative py-16 md:py-24 overflow-hidden"
+          className="relative py-8 md:py-20 overflow-hidden"
           aria-labelledby="devis-title">
           {/* Background */}
-          <div className="absolute inset-0 bg-linear-to-br from-slate-50 via-emerald-50/30 to-teal-50/20" />
-          <div className="absolute top-0 right-0 w-160 h-160 bg-linear-to-bl from-emerald-100/40 via-transparent to-transparent rounded-full blur-3xl" />
+          <div className="absolute inset-0 bg-gradient-to-br from-slate-50 via-emerald-50/30 to-teal-50/20" />
+          <div className="absolute top-0 right-0 w-160 h-160 bg-gradient-to-bl from-emerald-100/40 via-transparent to-transparent rounded-full blur-3xl" />
           <div className="absolute bottom-0 left-0 w-120 h-120 bg-gradient-to-tr from-teal-100/30 via-transparent to-transparent rounded-full blur-3xl" />
 
           <div className="relative z-10 mx-auto max-w-7xl px-4 lg:px-8">
+            <nav className="flex items-center gap-2 text-sm text-muted-foreground mb-6 animate-fade-in">
+              <Link
+                href="/"
+                className="hover:text-emerald-600 transition-colors">
+                Accueil
+              </Link>
+              <ChevronRight className="h-4 w-4" />
+              <span className="text-foreground font-medium">Devis</span>
+            </nav>
+
             <div className="max-w-3xl">
-              {/* Badge */}
+              {/* Badge 
               <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/90 backdrop-blur-sm border border-slate-200/50 shadow-lg shadow-slate-200/50 text-sm font-medium animate-fade-in">
                 <span className="flex h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
                 <span className="text-slate-700">Réponse sous 24h</span>
-              </div>
+              </div>*/}
 
               <h1
                 id="devis-title"
                 className="mt-6 text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight text-foreground leading-[1.1] animate-fade-in-up">
-                Votre devis{' '}
+                Devis{' '}
                 <span className="relative">
-                  <span className="relative z-10 text-transparent bg-clip-text bg-gradient-to-r from-emerald-600 to-teal-600">en 2 minutes</span>
+                  <span className="relative z-10 text-transparent bg-clip-text bg-gradient-to-r from-emerald-600 to-teal-600">en 2 min</span>
                   <span className="absolute bottom-2 left-0 right-0 h-3 bg-emerald-200/60 z-0 rounded-full" />
                 </span>
               </h1>
 
               <p className="mt-6 text-lg md:text-xl text-muted-foreground leading-relaxed animate-fade-in-up">
-                Envoyez <strong className="text-foreground">2–3 photos</strong> et quelques infos. On vous répond avec un <strong className="text-foreground">tarif clair</strong> et un créneau
-                d'intervention.
+                Envoyez <strong className="text-foreground">2–3 photos</strong> et quelques infos. On vous répond{' '}
+                <span className="relative z-10 text-transparent bg-clip-text bg-gradient-to-r font-bold from-emerald-600 to-teal-600">sous 24 heures {''}</span>
+                avec un <strong className="text-foreground">tarif clair et fixe</strong> et un créneau d'intervention.
               </p>
 
               {/* CTA buttons - Desktop */}

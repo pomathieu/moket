@@ -181,7 +181,7 @@ export default function ServicesPage() {
 
         {/* HERO */}
         <section
-          className="relative py-16 md:py-24 overflow-hidden"
+          className="relative py-8 md:py-20 overflow-hidden"
           aria-labelledby="services-title">
           {/* Background */}
           <div className="absolute inset-0 bg-gradient-to-br from-slate-50 via-emerald-50/30 to-teal-50/20" />
@@ -199,11 +199,12 @@ export default function ServicesPage() {
               <span className="text-foreground font-medium">Services</span>
             </nav>
             <div className="max-w-3xl">
+              {/* Badge 
               <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/90 backdrop-blur-sm border border-slate-200/50 shadow-lg shadow-slate-200/50 text-sm font-medium animate-fade-in">
                 <span className="flex h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
                 <span className="text-slate-700">Intervention à domicile</span>
               </div>
-
+*/}
               <h1
                 id="services-title"
                 className="mt-6 text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight text-foreground leading-[1.1] animate-fade-in-up">
@@ -246,7 +247,7 @@ export default function ServicesPage() {
         </section>
 
         {/* USE CASES & LIMITS */}
-        <section className="py-16 md:py-24 bg-muted/30">
+        <section className="py-8 md:py-20 bg-muted/30">
           <div className="mx-auto max-w-7xl px-4 lg:px-8">
             <div className="grid gap-8 lg:grid-cols-2">
               {/* Use Cases */}

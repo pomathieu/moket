@@ -196,7 +196,7 @@ function ServiceCard({ service, isSelected, onClick }: { service: (typeof SERVIC
       type="button"
       onClick={onClick}
       className={cn(
-        'relative p-4 rounded-2xl border-2 transition-all duration-200 text-left w-full',
+        'relative p-3 rounded-2xl border-2 transition-all duration-200 text-left w-full',
         'hover:shadow-lg hover:-translate-y-0.5',
         isSelected ? 'border-emerald-500 bg-emerald-50 shadow-lg shadow-emerald-500/20' : 'border-slate-200 bg-white hover:border-slate-300',
       )}>
@@ -205,7 +205,7 @@ function ServiceCard({ service, isSelected, onClick }: { service: (typeof SERVIC
           <Check className="h-4 w-4 text-white" />
         </div>
       )}
-      <div className={cn('w-12 h-12 rounded-xl flex items-center justify-center mb-3 transition-colors', isSelected ? 'bg-emerald-500 text-white' : 'bg-slate-100 text-slate-600')}>
+      <div className={cn('w-10 h-10 rounded-xl flex items-center justify-center mb-3 transition-colors', isSelected ? 'bg-emerald-500 text-white' : 'bg-slate-100 text-slate-600')}>
         <Icon className="h-6 w-6" />
       </div>
       <span className={cn('font-semibold', isSelected ? 'text-emerald-700' : 'text-foreground')}>{service.label}</span>

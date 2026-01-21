@@ -5,11 +5,11 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { ZONES } from '@/lib/zones';
-import { MapPin, ChevronRight, ArrowRight, PhoneCall, FileText, Check, Clock, Truck, Calendar, Shield, Sparkles } from 'lucide-react';
+import { MapPin, ChevronRight, ArrowRight, PhoneCall, FileText, Check, Clock, Truck, Calendar, Shield, Sparkles, Phone } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 const SITE_URL = 'https://moket.fr';
-const PHONE_NUMBER = '+33635090095';
+const PHONE = '+33635090095';
 const PHONE_DISPLAY = '06 35 09 00 95';
 
 export const metadata: Metadata = {
@@ -85,12 +85,12 @@ export default function ZonesPage() {
   return (
     <>
       {/* Sticky Mobile CTA */}
-      <div className="fixed bottom-0 left-0 right-0 z-50 border-t border-border bg-background/80 backdrop-blur-xl md:hidden animate-[slideUp_0.5s_ease-out_1s_both]">
+      <div className="fixed bottom-0 left-0 right-0 z-50 border-t border-border bg-background/80 backdrop-blur-xl md:hidden">
         <div className="mx-auto max-w-7xl px-4 py-3">
           <div className="grid grid-cols-2 gap-3">
             <Button
               asChild
-              className="rounded-full w-full bg-emerald-600 hover:bg-emerald-700 text-white shadow-lg shadow-emerald-600/25">
+              className="rounded-full bg-emerald-600 hover:bg-emerald-700 text-white shadow-lg shadow-emerald-600/25">
               <Link href="/devis">
                 <FileText className="h-4 w-4 mr-2" />
                 Devis gratuit
@@ -99,9 +99,9 @@ export default function ZonesPage() {
             <Button
               asChild
               variant="outline"
-              className="rounded-full w-full border-2">
-              <a href={`tel:${PHONE_NUMBER}`}>
-                <PhoneCall className="h-4 w-4 mr-2" />
+              className="rounded-full border-2">
+              <a href={`tel:${PHONE}`}>
+                <Phone className="h-4 w-4 mr-2" />
                 Appeler
               </a>
             </Button>
@@ -121,22 +121,14 @@ export default function ZonesPage() {
 
         {/* HERO */}
         <section
-          className="relative min-h-[50vh] md:min-h-[45vh] flex items-center overflow-hidden"
-          aria-labelledby="hero-title">
+          className="relative py-8 md:py-20 overflow-hidden"
+          aria-labelledby="zones-title">
           {/* Background */}
           <div className="absolute inset-0 bg-gradient-to-br from-slate-50 via-emerald-50/30 to-teal-50/20" />
           <div className="absolute top-0 right-0 w-[50rem] h-[50rem] bg-gradient-to-bl from-emerald-100/40 via-transparent to-transparent rounded-full blur-3xl" />
           <div className="absolute bottom-0 left-0 w-[37.5rem] h-[37.5rem] bg-gradient-to-tr from-teal-100/30 via-transparent to-transparent rounded-full blur-3xl" />
 
-          {/* Pattern */}
-          <div
-            className="absolute inset-0 opacity-[0.015]"
-            style={{
-              backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23000000' fill-opacity='1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
-            }}
-          />
-
-          <div className="relative z-10 mx-auto max-w-7xl px-4 lg:px-8 py-16 md:py-24">
+          <div className="relative z-10 mx-auto max-w-7xl px-4 lg:px-8">
             <div className="max-w-4xl">
               {/* Breadcrumb */}
               <nav className="flex items-center gap-2 text-sm text-muted-foreground mb-6 animate-fade-in">
@@ -149,14 +141,14 @@ export default function ZonesPage() {
                 <span className="text-foreground font-medium">Zones d&#39;intervention</span>
               </nav>
 
-              {/* Badge */}
+              {/* Badge 
               <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/90 backdrop-blur-sm border border-slate-200/50 shadow-lg shadow-slate-200/50 text-sm font-medium animate-fade-in">
                 <span className="flex h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
                 <span className="text-slate-700">2 régions couvertes</span>
               </div>
-
+*/}
               <h1
-                id="hero-title"
+                id="zones-title"
                 className="mt-6 text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight text-foreground leading-[1.1] animate-fade-in-up">
                 Zones{' '}
                 <span className="relative">
@@ -207,7 +199,7 @@ export default function ZonesPage() {
                   size="lg"
                   variant="outline"
                   className="rounded-full px-8 h-14 text-base font-semibold border-2 border-slate-300 hover:border-slate-400 hover:bg-slate-50 transition-all">
-                  <a href={`tel:${PHONE_NUMBER}`}>
+                  <a href={`tel:${PHONE}`}>
                     <PhoneCall className="h-5 w-5 mr-2" />
                     <span itemProp="telephone">{PHONE_DISPLAY}</span>
                   </a>
@@ -396,7 +388,7 @@ export default function ZonesPage() {
                     size="lg"
                     variant="outline"
                     className="rounded-full px-8 border-2 border-white/30 text-white hover:bg-white/10">
-                    <a href={`tel:${PHONE_NUMBER}`}>
+                    <a href={`tel:${PHONE}`}>
                       <PhoneCall className="h-5 w-5 mr-2" />
                       {PHONE_DISPLAY}
                     </a>
@@ -477,7 +469,7 @@ export default function ZonesPage() {
                 size="lg"
                 variant="outline"
                 className="rounded-full px-10 h-14 text-lg font-semibold border-2 border-white/30 text-white hover:bg-white/10">
-                <a href={`tel:${PHONE_NUMBER}`}>
+                <a href={`tel:${PHONE}`}>
                   <PhoneCall className="h-5 w-5 mr-2" />
                   {PHONE_DISPLAY}
                 </a>

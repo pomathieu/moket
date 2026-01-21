@@ -36,6 +36,24 @@ function serviceLabel(v: string) {
   }
 }
 
+function sizeLabel(service: string, size: string): string {
+  if (service === "matelas") {
+    switch (size) {
+      case "1-place": return "1 place (90€)";
+      case "2-places": return "2 places (120€)";
+      default: return size;
+    }
+  }
+  if (service === "canape") {
+    switch (size) {
+      case "2-3-places": return "2–3 places (140€)";
+      case "4-5-places": return "4–5 places (190€)";
+      default: return size;
+    }
+  }
+  return size;
+}
+
 function isLikelyEmail(v: string) {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v.trim());
 }
@@ -59,7 +77,8 @@ function safeExt(filename: string) {
 
 type Item = {
   service?: string;
-  dimensions?: string;
+  size?: string;
+  surface?: string;
   details?: string;
 };
 
@@ -99,8 +118,10 @@ export async function POST(req: Request) {
       postalCode: String(form.get("postalCode") ?? ""),
       address: String(form.get("address") ?? ""),
 
-      dimensions: String(form.get("dimensions") ?? ""),
+      size: String(form.get("size") ?? ""),
+      surface: String(form.get("surface") ?? ""),
       details: String(form.get("details") ?? ""),
+      
       name: String(form.get("name") ?? ""),
       email: String(form.get("email") ?? ""),
       phone: String(form.get("phone") ?? ""),
@@ -185,7 +206,10 @@ export async function POST(req: Request) {
 
         items: items ?? null,
         details: payload.details?.trim() || null,
-        dimensions: payload.dimensions?.trim() || null,
+        
+        // Dedicated columns for size and surface
+        size: payload.size?.trim() || null,
+        surface: payload.surface?.trim() || null,
 
         photos: null,
         meta: {
@@ -246,7 +270,7 @@ export async function POST(req: Request) {
       });
     }
 
-    // Update row avec photos (même si 0 upload -> [] c’est OK)
+    // Update row avec photos (même si 0 upload -> [] c'est OK)
     const { error: updErr } = await supabaseAdmin
       .from("quotes")
       .update({ photos: uploaded })
@@ -254,12 +278,40 @@ export async function POST(req: Request) {
 
     if (updErr) {
       console.error("SUPABASE update photos error:", updErr);
-      // on ne bloque pas le flow email
     }
 
     // =========================
     // 3) HTML emails
     // =========================
+    
+    // Helper to format size/surface for display
+    function formatDimensions(service: string, size: string | null, surface: string | null): string {
+      if (size && (service === "matelas" || service === "canape")) {
+        return sizeLabel(service, size);
+      }
+      if (surface && (service === "tapis" || service === "moquette")) {
+        return `${surface} m²`;
+      }
+      return "-";
+    }
+
+    // Helper to format item size/surface for display
+    function formatItemDimensions(item: Item): string {
+      if (!item) return "-";
+      const svc = String(item.service ?? "");
+      
+      if (item.size && (svc === "matelas" || svc === "canape")) {
+        return sizeLabel(svc, item.size);
+      }
+      if (item.surface && (svc === "tapis" || svc === "moquette")) {
+        return `${item.surface} m²`;
+      }
+      return "-";
+    }
+
+    // Primary item dimensions for display
+    const primaryDimensions = formatDimensions(payload.service, payload.size, payload.surface);
+
     const prestationsHtml =
       items && items.length > 0
         ? `
@@ -268,7 +320,7 @@ export async function POST(req: Request) {
             <thead>
               <tr>
                 <th align="left" style="padding:8px;border-top:1px solid #e2e8f0;color:#475569;font-size:12px">Type</th>
-                <th align="left" style="padding:8px;border-top:1px solid #e2e8f0;color:#475569;font-size:12px">Dimensions</th>
+                <th align="left" style="padding:8px;border-top:1px solid #e2e8f0;color:#475569;font-size:12px">Taille / Surface</th>
                 <th align="left" style="padding:8px;border-top:1px solid #e2e8f0;color:#475569;font-size:12px">Détails</th>
               </tr>
             </thead>
@@ -276,12 +328,12 @@ export async function POST(req: Request) {
               ${items
                 .map((it) => {
                   const type = serviceLabel(String(it.service ?? "autre"));
-                  const dim = (it.dimensions ?? "").trim();
+                  const dims = formatItemDimensions(it);
                   const det = (it.details ?? "").trim();
                   return `
                     <tr>
                       <td style="padding:8px;border-top:1px solid #e2e8f0">${esc(type)}</td>
-                      <td style="padding:8px;border-top:1px solid #e2e8f0">${esc(dim || "-")}</td>
+                      <td style="padding:8px;border-top:1px solid #e2e8f0">${esc(dims)}</td>
                       <td style="padding:8px;border-top:1px solid #e2e8f0">${esc(det || "-")}</td>
                     </tr>
                   `;
@@ -292,7 +344,7 @@ export async function POST(req: Request) {
         `
         : "";
 
-    // PJ pour l’email owner (tu gardes tes pièces jointes)
+    // PJ pour l'email owner
     const attachments = await Promise.all(
       files.map(async (file) => ({
         filename: file.name || "photo.jpg",
@@ -317,6 +369,7 @@ export async function POST(req: Request) {
           <tr><td style="padding:8px;border-top:1px solid #e2e8f0"><strong>Email</strong></td><td style="padding:8px;border-top:1px solid #e2e8f0">${esc(payload.email || "-")}</td></tr>
           <tr><td style="padding:8px;border-top:1px solid #e2e8f0"><strong>Téléphone</strong></td><td style="padding:8px;border-top:1px solid #e2e8f0">${esc(payload.phone || "-")}</td></tr>
           <tr><td style="padding:8px;border-top:1px solid #e2e8f0"><strong>Adresse</strong></td><td style="padding:8px;border-top:1px solid #e2e8f0">${esc(payload.address?.trim() || "-")}</td></tr>
+          <tr><td style="padding:8px;border-top:1px solid #e2e8f0"><strong>Taille / Surface</strong></td><td style="padding:8px;border-top:1px solid #e2e8f0">${esc(primaryDimensions)}</td></tr>
           <tr><td style="padding:8px;border-top:1px solid #e2e8f0"><strong>Photos</strong></td><td style="padding:8px;border-top:1px solid #e2e8f0">${files.length}</td></tr>
           <tr><td style="padding:8px;border-top:1px solid #e2e8f0"><strong>Photos uploadées</strong></td><td style="padding:8px;border-top:1px solid #e2e8f0">${uploaded.length}</td></tr>
         </table>
@@ -355,11 +408,11 @@ export async function POST(req: Request) {
           ${items
             .map((it, i) => {
               const type = serviceLabel(String(it.service ?? "autre"));
-              const dim = (it.dimensions ?? "").trim();
+              const dims = formatItemDimensions(it);
               const det = (it.details ?? "").trim();
 
               const parts = [
-                dim ? `Dimensions : ${esc(dim)}` : "",
+                dims !== "-" ? `Taille/Surface : ${esc(dims)}` : "",
                 det ? `Détails : ${esc(det)}` : "",
               ].filter(Boolean);
 
@@ -412,6 +465,7 @@ export async function POST(req: Request) {
       <p style="margin:0 0 8px">
         <strong>Lieu :</strong> ${esc(payload.address?.trim() || `${payload.city} (${payload.postalCode})`)}
       </p>
+      ${primaryDimensions !== "-" ? `<p style="margin:0 0 8px"><strong>Taille/Surface :</strong> ${esc(primaryDimensions)}</p>` : ""}
       <p style="margin:0 0 8px">
         <strong>Photos :</strong> ${files.length}
       </p>
