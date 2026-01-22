@@ -312,12 +312,12 @@ export default function TarifsPage() {
             </nav>
 
             <div className="max-w-3xl">
-              {/* Badge */}
+              {/* Badge 
               <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/80 backdrop-blur-sm border border-emerald-200/50 shadow-lg shadow-emerald-100/50 text-sm font-medium mb-6">
                 <span className="flex h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
                 <span className="text-emerald-700">Prix transparents • Sans surprise</span>
               </div>
-
+*/}
               <h1
                 id="tarifs-title"
                 className="text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight text-foreground leading-[1.1]">
