@@ -215,7 +215,7 @@ function ServiceCard({
       )}
       aria-label={`${title} - ${price}`}>
       {/* Gradient overlay différent par service */}
-      <div className={cn('absolute inset-0 bg-gradient-to-br opacity-0 group-hover:opacity-100 transition-opacity duration-300', gradient || 'from-emerald-50/80 via-transparent to-transparent')} />
+      <div className={cn('absolute inset-0 bg-linear-to-br opacity-0 group-hover:opacity-100 transition-opacity duration-300', gradient || 'from-emerald-50/80 via-transparent to-transparent')} />
 
       <div className="relative z-10">
         <div className="flex items-start justify-between gap-4">
@@ -250,7 +250,7 @@ function Feature({ icon: Icon, title, text, className }: { icon: React.Component
         'animate-fade-in-up',
         className,
       )}>
-      <div className="mb-4 inline-flex p-3 rounded-2xl bg-gradient-to-br from-emerald-500 to-teal-600 text-white shadow-lg shadow-emerald-500/30 transition-transform duration-300 group-hover:scale-110 group-hover:rotate-[5deg]">
+      <div className="mb-4 inline-flex p-3 rounded-2xl bg-linear-to-br from-emerald-500 to-teal-600 text-white shadow-lg shadow-emerald-500/30 transition-transform duration-300 group-hover:scale-110 group-hover:rotate-[5deg]">
         <Icon className="h-6 w-6" />
       </div>
       <h3 className="font-bold text-foreground text-lg">{title}</h3>
@@ -263,7 +263,7 @@ function Step({ number, title, text, isLast = false, className }: { number: stri
   return (
     <div className={cn('relative flex gap-6 animate-fade-in-up', className)}>
       <div className="flex flex-col items-center">
-        <div className="flex h-12 w-12 items-center justify-center rounded-full bg-gradient-to-br from-emerald-500 to-teal-600 text-white font-bold text-lg shadow-lg shadow-emerald-500/30 transition-transform duration-300 hover:scale-110">
+        <div className="flex h-12 w-12 items-center justify-center rounded-full bg-linear-to-br from-emerald-500 to-teal-600 text-white font-bold text-lg shadow-lg shadow-emerald-500/30 transition-transform duration-300 hover:scale-110">
           {number}
         </div>
         {!isLast && <div className="w-0.5 flex-1 bg-gradient-to-b from-emerald-300 to-emerald-100 my-2" />}
@@ -435,8 +435,8 @@ export default function Home() {
           aria-labelledby="hero-title">
           {/* Background avec texture textile subtile */}
           <div className="absolute inset-0 bg-gradient-to-br from-slate-50 via-emerald-50/30 to-teal-50/20" />
-          <div className="absolute top-0 right-0 w-[800px] h-[800px] bg-gradient-to-bl from-emerald-100/40 via-transparent to-transparent rounded-full blur-3xl" />
-          <div className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-gradient-to-tr from-teal-100/30 via-transparent to-transparent rounded-full blur-3xl" />
+          <div className="absolute top-0 right-0 w-200 h-200 bg-gradient-to-bl from-emerald-100/40 via-transparent to-transparent rounded-full blur-3xl" />
+          <div className="absolute bottom-0 left-0 w-150 h-150 bg-gradient-to-tr from-teal-100/30 via-transparent to-transparent rounded-full blur-3xl" />
 
           {/* Texture textile (pattern subtil) */}
           <div

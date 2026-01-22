@@ -12,8 +12,7 @@ const PHONE = '+33635090095';
 const PHONE_DISPLAY = '06 35 09 00 95';
 
 const WHATSAPP_NUMBER_INTL = '33635090095';
-const WHATSAPP_TEXT = 'Bonjour, je souhaite un devis.\n\n- Service : \n- Ville / CP : \n- Dimensions (si possible) : \n- Détails (taches/odeurs) : \n\nJe vous envoie les photos juste après.';
-const WHATSAPP_LINK = `https://wa.me/${WHATSAPP_NUMBER_INTL}?text=${encodeURIComponent(WHATSAPP_TEXT)}`;
+const WHATSAPP_LINK = `https://wa.me/${WHATSAPP_NUMBER_INTL}`;
 
 export const metadata: Metadata = {
   title: 'Demander un devis | Nettoyage canapé, matelas, tapis & moquette | MOKET',
