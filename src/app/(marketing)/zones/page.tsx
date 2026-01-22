@@ -125,7 +125,7 @@ export default function ZonesPage() {
           aria-labelledby="zones-title">
           {/* Background */}
           <div className="absolute inset-0 bg-linear-to-br from-slate-50 via-emerald-50/30 to-teal-50/20" />
-          <div className="absolute top-0 right-0 w-[50rem] h-[50rem] bg-linear-to-bl from-emerald-100/40 via-transparent to-transparent rounded-full blur-3xl" />
+          <div className="absolute top-0 right-0 w-200 h-[50rem] bg-linear-to-bl from-emerald-100/40 via-transparent to-transparent rounded-full blur-3xl" />
           <div className="absolute bottom-0 left-0 w-[37.5rem] h-[37.5rem] bg-linear-to-tr from-teal-100/30 via-transparent to-transparent rounded-full blur-3xl" />
 
           <div className="relative z-10 mx-auto max-w-7xl px-4 lg:px-8">
@@ -151,9 +151,20 @@ export default function ZonesPage() {
                 id="zones-title"
                 className="mt-6 text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight text-foreground leading-[1.1] animate-fade-in-up">
                 Zones{' '}
-                <span className="relative">
-                  <span className="relative z-10 text-transparent bg-clip-text bg-linear-to-r from-emerald-600 to-teal-600">d&#39;intervention</span>
-                  <span className="absolute bottom-2 left-0 right-0 h-3 bg-emerald-200/60 z-0 rounded-full animate-[scaleX_0.6s_ease-out_0.8s_both] origin-left" />
+                <span className="relative inline-block">
+                  <span className="relative z-10 text-transparent bg-clip-text bg-gradient-to-r from-emerald-600 via-teal-600 to-cyan-600">d&#39;intervention</span>
+                  <svg
+                    className="absolute -bottom-2 left-0 w-full h-3 text-emerald-200"
+                    viewBox="0 0 100 12"
+                    preserveAspectRatio="none">
+                    <path
+                      d="M0 8 Q25 0 50 8 T100 8"
+                      stroke="currentColor"
+                      strokeWidth="4"
+                      fill="none"
+                      strokeLinecap="round"
+                    />
+                  </svg>
                 </span>
               </h1>
 

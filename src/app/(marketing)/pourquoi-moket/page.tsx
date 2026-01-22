@@ -303,10 +303,21 @@ export default function PourquoiMoketPage() {
                 id="pourquoi-moket-title"
                 className="mt-6 text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight text-foreground leading-[1.1] animate-fade-in-up delay-100">
                 Pourquoi choisir{' '}
-                <span className="relative">
-                  <span className="relative z-10 text-transparent bg-clip-text bg-linear-to-r from-emerald-600 to-teal-600">MOKET</span>
-                  <span className="absolute bottom-2 left-0 right-0 h-3 bg-emerald-200/60 z-0 rounded-full animate-[scaleX_0.6s_ease-out_0.8s_both] origin-left" />
-                </span>{' '}
+                <span className="relative inline-block">
+                  <span className="relative z-10 text-transparent bg-clip-text bg-gradient-to-r from-emerald-600 via-teal-600 to-cyan-600">MOKET</span>
+                  <svg
+                    className="absolute -bottom-2 left-0 w-full h-3 text-emerald-200"
+                    viewBox="0 0 100 12"
+                    preserveAspectRatio="none">
+                    <path
+                      d="M0 8 Q25 0 50 8 T100 8"
+                      stroke="currentColor"
+                      strokeWidth="4"
+                      fill="none"
+                      strokeLinecap="round"
+                    />
+                  </svg>
+                </span>
                 ?
               </h1>
 

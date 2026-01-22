@@ -266,7 +266,7 @@ function Step({ number, title, text, isLast = false, className }: { number: stri
         <div className="flex h-12 w-12 items-center justify-center rounded-full bg-linear-to-br from-emerald-500 to-teal-600 text-white font-bold text-lg shadow-lg shadow-emerald-500/30 transition-transform duration-300 hover:scale-110">
           {number}
         </div>
-        {!isLast && <div className="w-0.5 flex-1 bg-gradient-to-b from-emerald-300 to-emerald-100 my-2" />}
+        {!isLast && <div className="w-0.5 flex-1 bg-linear-to-b from-emerald-300 to-emerald-100 my-2" />}
       </div>
       <div className="flex-1 pb-8">
         <h4 className="font-bold text-foreground text-lg">{title}</h4>
@@ -434,9 +434,9 @@ export default function Home() {
           className="relative min-h-[90vh] md:min-h-[75vh] flex items-center overflow-hidden"
           aria-labelledby="hero-title">
           {/* Background avec texture textile subtile */}
-          <div className="absolute inset-0 bg-gradient-to-br from-slate-50 via-emerald-50/30 to-teal-50/20" />
-          <div className="absolute top-0 right-0 w-200 h-200 bg-gradient-to-bl from-emerald-100/40 via-transparent to-transparent rounded-full blur-3xl" />
-          <div className="absolute bottom-0 left-0 w-150 h-150 bg-gradient-to-tr from-teal-100/30 via-transparent to-transparent rounded-full blur-3xl" />
+          <div className="absolute inset-0 bg-linear-to-br from-slate-50 via-emerald-50/30 to-teal-50/20" />
+          <div className="absolute top-0 right-0 w-200 h-200 bg-linear-to-bl from-emerald-100/40 via-transparent to-transparent rounded-full blur-3xl" />
+          <div className="absolute bottom-0 left-0 w-150 h-150 bg-linear-to-tr from-teal-100/30 via-transparent to-transparent rounded-full blur-3xl" />
 
           {/* Texture textile (pattern subtil) */}
           <div
@@ -467,7 +467,7 @@ export default function Home() {
                   className="mt-3 text-3xl sm:text-5xl font-black tracking-tight text-foreground leading-[1.1] animate-fade-in-up delay-100">
                   Nettoyage canapé, matelas et tapis à domicile{' '}
                   <span className="relative inline-block">
-                    <span className="relative z-10 text-transparent bg-clip-text bg-gradient-to-r from-emerald-600 to-teal-600">en Île-de-France & Normandie</span>
+                    <span className="relative z-10 text-transparent bg-clip-text bg-linear-to-r from-emerald-600 to-teal-600">en Île-de-France & Normandie</span>
                   </span>
                 </h1>
                 <p className="mt-6 text-lg md:text-xl text-muted-foreground leading-normal animate-fade-in-up delay-200">
@@ -497,7 +497,7 @@ export default function Home() {
                   <Button
                     asChild
                     size="lg"
-                    className="rounded-full px-8 h-14 text-base font-semibold bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white shadow-xl shadow-emerald-600/30 transition-all hover:shadow-2xl hover:shadow-emerald-600/40 hover:-translate-y-0.5">
+                    className="rounded-full px-8 h-14 text-base font-semibold bg-linear-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white shadow-xl shadow-emerald-600/30 transition-all hover:shadow-2xl hover:shadow-emerald-600/40 hover:-translate-y-0.5">
                     <Link href="/devis">
                       Devis gratuit en 2 min
                       <ArrowRight className="h-5 w-5 ml-2" />
@@ -554,7 +554,7 @@ export default function Home() {
                   </div>
                   <p className="text-sm text-foreground font-medium leading-snug">"Intervention rapide et de très grande qualité. Mon tapis est impeccable !"</p>
                   <div className="mt-3 flex items-center gap-2">
-                    <div className="w-8 h-8 rounded-full bg-gradient-to-br from-emerald-400 to-teal-500 flex items-center justify-center text-white text-xs font-bold">BB</div>
+                    <div className="w-8 h-8 rounded-full bg-linear-to-br from-emerald-400 to-teal-500 flex items-center justify-center text-white text-xs font-bold">BB</div>
                     <div>
                       <p className="text-xs font-semibold text-foreground">Béatrice B.</p>
                       <p className="text-xs text-muted-foreground">Honfleur</p>
@@ -987,7 +987,7 @@ export default function Home() {
                   <div className="mt-6 p-4 rounded-xl bg-amber-50 border border-amber-200">
                     <p className="text-sm font-semibold text-amber-800 mb-1">💡 Exemple concret</p>
                     <p className="text-sm text-amber-700">
-                      Canapé 3 places + traitement odeur animaux = 140€ + 25€ = <strong>165€</strong>
+                      Canapé 3 places + traitement odeur animaux = 140€ + 20€ = <strong>160€</strong>
                     </p>
                   </div>
                 </CardContent>
