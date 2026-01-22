@@ -563,20 +563,20 @@ export default function PourquoiMoketPage() {
             <div className="grid md:grid-cols-3 gap-6 max-w-5xl mx-auto">
               {[
                 {
-                  text: "Canapé comme neuf, je recommande ! L'équipe est professionnelle et le résultat est vraiment visible.",
-                  author: 'Marie',
-                  location: 'Paris 15e',
+                  text: 'Intervention rapide et de très grande qualité. Mon tapis est impeccable. Je recommande.',
+                  author: 'Béatrice B.',
+                  location: 'Honfleur (14)',
                   rating: 5,
                 },
                 {
-                  text: "Très satisfait du nettoyage de mon matelas. L'odeur de transpiration a complètement disparu.",
-                  author: 'Thomas',
-                  location: 'Boulogne',
+                  text: 'Merci beaucoup pour votre professionnalisme et votre rapidité. Mes matelas sont comme neufs !',
+                  author: 'Sarah L.',
+                  location: 'Caen-Mondeville',
                   rating: 5,
                 },
                 {
-                  text: 'Tapis persan nettoyé avec soin. Les couleurs sont ravivées et aucune mauvaise surprise.',
-                  author: 'Sophie',
+                  text: 'On hésitait à racheter un tapis. Finalement le nettoyage a suffi, les couleurs sont revenues. Économie de 800€ !',
+                  author: 'Sophie & Marc',
                   location: 'Rouen',
                   rating: 5,
                 },
