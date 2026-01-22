@@ -40,6 +40,7 @@ const jsonLd = {
       url: base,
       email: 'contact@moket.fr',
       currenciesAccepted: 'EUR',
+      priceRange: '€€',
 
       telephone: '+33635090095',
       image: `${base}/og.jpg`,
@@ -90,7 +91,7 @@ const jsonLd = {
             '@type': 'Offer',
             name: 'Nettoyage de tapis à domicile',
             priceCurrency: 'EUR',
-            priceSpecification: { '@type': 'UnitPriceSpecification', price: 35, priceCurrency: 'EUR', unitText: 'm²' },
+            priceSpecification: { '@type': 'UnitPriceSpecification', price: 30, priceCurrency: 'EUR', unitText: 'm²' },
             url: `${base}/services/tapis`,
           },
           {
@@ -109,10 +110,10 @@ const jsonLd = {
 export const metadata: Metadata = {
   metadataBase: new URL('https://moket.fr'),
   title: {
-    default: 'MOKET — Nettoyage textile profond à domicile (Paris, Île-de-France & Normandie)',
+    default: 'Nettoyage canapé, matelas, tapis à domicile | MOKET',
     template: '%s — MOKET',
   },
-  description: 'Nettoyage textile profond à domicile : matelas, tapis, moquettes, canapés. Injecteur-extracteur professionnel. Intervention premium à Paris, Île-de-France & Normandie.',
+  description: 'Nettoyage professionnel de canapé, matelas et tapis à domicile en Île-de-France et Normandie. Devis gratuit, résultat garanti.',
   applicationName: 'MOKET',
   alternates: {
     canonical: 'https://moket.fr/',
@@ -121,21 +122,21 @@ export const metadata: Metadata = {
     type: 'website',
     url: 'https://moket.fr',
     siteName: 'MOKET',
-    title: 'MOKET — Nettoyage textile profond à domicile',
+    title: 'Nettoyage canapé, matelas, tapis à domicile | MOKET',
     description: 'Matelas, tapis, moquettes, canapés — Injecteur-extracteur professionnel — Paris, Île-de-France & Normandie.',
     images: [
       {
         url: '/og.jpg',
         width: 1200,
         height: 630,
-        alt: 'MOKET — Nettoyage textile profond à domicile',
+        alt: 'MOKET — Nettoyage professionnel à domicile',
       },
     ],
     locale: 'fr_FR',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'MOKET — Nettoyage textile profond à domicile',
+    title: 'Nettoyage canapé, matelas, tapis à domicile | MOKET',
     description: 'Matelas, tapis, moquettes, canapés — Injecteur-extracteur professionnel — Paris, Île-de-France & Normandie.',
     images: ['/og.jpg'],
   },

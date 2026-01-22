@@ -543,7 +543,7 @@ export default function Home() {
                 </div>
 
                 {/* Floating testimonial - Plus visible */}
-                <div className="absolute -bottom-6 -left-6 md:-left-12 bg-card rounded-2xl p-5 shadow-xl shadow-slate-200/50 border border-slate-100 max-w-[280px] hidden md:block animate-[floatInLeft_0.6s_ease-out_1s_both]">
+                <div className="absolute -bottom-6 -left-6 md:-left-12 bg-card rounded-2xl p-5 shadow-xl shadow-slate-200/50 border border-slate-100 max-w-70 hidden md:block animate-[floatInLeft_0.6s_ease-out_1s_both]">
                   <div className="flex items-center gap-1 mb-2">
                     {[...Array(5)].map((_, i) => (
                       <Star
