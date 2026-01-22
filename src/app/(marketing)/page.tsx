@@ -379,8 +379,8 @@ export default function Home() {
         priceRange: '€€',
         aggregateRating: {
           '@type': 'AggregateRating',
-          ratingValue: '4.9',
-          reviewCount: '47',
+          ratingValue: '5',
+          reviewCount: '2',
           bestRating: '5',
         },
         areaServed: [
@@ -552,7 +552,7 @@ export default function Home() {
                       />
                     ))}
                   </div>
-                  <p className="text-sm text-foreground font-medium leading-snug">"Intervention rapide et de très grande qualité Mon tapis est impeccable"</p>
+                  <p className="text-sm text-foreground font-medium leading-snug">"Intervention rapide et de très grande qualité. Mon tapis est impeccable !"</p>
                   <div className="mt-3 flex items-center gap-2">
                     <div className="w-8 h-8 rounded-full bg-gradient-to-br from-emerald-400 to-teal-500 flex items-center justify-center text-white text-xs font-bold">BB</div>
                     <div>
